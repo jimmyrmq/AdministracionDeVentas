@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="admin">
+    <output-path>$PROJECT_DIR$/out/artifacts/admin</output-path>
+    <root id="archive" name="admin.jar">
+      <element id="module-output" name="Administracion" />
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

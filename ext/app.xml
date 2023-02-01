@@ -1,0 +1,14 @@
+<applications>
+    <application>
+        <name>Disoft JM</name>
+        <file>djm.jar</file>
+    </application>
+    <application>
+        <name>Administration</name>
+        <file>admin.jar</file>
+    </application>
+    <application>
+        <name>Configuracion</name>
+        <file>config.jar</file>
+    </application>
+</applications>
