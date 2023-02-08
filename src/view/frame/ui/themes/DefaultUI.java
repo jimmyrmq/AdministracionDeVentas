@@ -1,4 +1,4 @@
-package view.frame.promocion.themes;
+package view.frame.ui.themes;
 
 import com.djm.ui.themes.ITheme;
 
@@ -9,7 +9,7 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getBackground() {
-        return new Color(211, 217, 220);
+        return new Color(240, 240, 240);
     }
 
     @Override
@@ -19,12 +19,17 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getBackgroundButtonAction() {
-        return null;
+        return new Color(247,247,247);//158, 162, 164);
+    }
+
+    @Override
+    public Color getColorImageButton() {
+        return new Color(31, 31, 31);
     }
 
     @Override
     public Color getBackgroundButtonSelected() {
-        return new Color(159, 158, 158);
+        return new Color(121,182,249);//106, 106, 201);//159, 158, 158
     }
 
     @Override
@@ -34,7 +39,7 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getColorBorder() {
-        return new Color(49, 49, 56);
+        return new Color(139, 139, 139);
     }
 
     @Override
@@ -44,7 +49,7 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Font getFontLabel() {
-        return null;
+        return new Font("Segoe UI",0,12);
     }
 
     @Override
@@ -79,16 +84,26 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getColorBorderField() {
-        return null;
+        return new Color(173, 173, 173);
     }
 
     @Override
     public Color getColorBorderFocusField() {
-        return null;
+        return new Color(72,216,251);
     }
 
     @Override
     public String pathIcon() {
-        return null;
+        return "icon/";
+    }
+
+    @Override
+    public Color getColorChekSelected() {
+        return new Color(79, 92, 100);
+    }
+
+    @Override
+    public Color getColorChekDisabled() {
+        return new Color(136, 151, 159);
     }
 }

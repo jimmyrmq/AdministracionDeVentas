@@ -1,4 +1,4 @@
-package view.frame.themes;
+package view.frame.ui.themes;
 
 import com.djm.ui.themes.ITheme;
 
@@ -24,6 +24,8 @@ public class Blue implements ITheme {
     private Color colorTextEnabled = new Color(70,70,70);
     private Color  colorBorderField= new Color(154, 154, 154);
     private Color  colorBorderFocusField = new Color(72,216,251);
+    private Color  colorChekSelected = new Color(72,216,251);
+    private Color  colorChekDisabled = new Color(47, 104, 121);
 
     @Override
     public Color getBackground() {
@@ -36,12 +38,17 @@ public class Blue implements ITheme {
     }
 
     @Override
-    public Color getBackgroundAction() {
+    public Color getBackgroundButtonAction() {
         return colBackAction;
     }
 
     @Override
-    public Color getBackgroundSelection() {
+    public Color getColorImageButton() {
+        return new Color(233, 235, 241);
+    }
+
+    @Override
+    public Color getBackgroundButtonSelected() {
         return colSelected;
     }
 
@@ -103,5 +110,20 @@ public class Blue implements ITheme {
     @Override
     public Color getColorBorderFocusField() {
         return colorBorderFocusField;
+    }
+
+    @Override
+    public String pathIcon() {
+        return "icon/";
+    }
+
+    @Override
+    public Color getColorChekSelected() {
+        return colorChekSelected;
+    }
+
+    @Override
+    public Color getColorChekDisabled() {
+        return colorChekDisabled;
     }
 }

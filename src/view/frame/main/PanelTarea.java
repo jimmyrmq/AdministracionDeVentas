@@ -9,14 +9,14 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelTarea implements ActionListener {
+public class PanelTarea {// implements ActionListener {
     private JPanel panelTarea;
     private IPanel panel;
     //private Button bClose;
     public PanelTarea(){
         panelTarea = new JPanel(new GridBagLayout());
-        panelTarea.setOpaque(false);
-        //panelTarea.setBackground(Color.RED);
+        panelTarea.setOpaque(true);//false);
+        //panelTarea.setBackground(GlobalUI.getInstance().getBackground().darker());
         /*bClose = new Button(new ImageIcon(("icon/closewb.png")));
         //bClose.setImageAux(new ImageIcon("icon/closer.png"));
         bClose.setDimension(30,30);
@@ -48,8 +48,14 @@ public class PanelTarea implements ActionListener {
         return panel;
     }
 
-    @Override
+    /*@Override
     public void actionPerformed(ActionEvent e) {
+        panelTarea.removeAll();
+        panelTarea.updateUI();
+        panelTarea.repaint();
+    }*/
+
+    public void clear(){
         panelTarea.removeAll();
         panelTarea.updateUI();
         panelTarea.repaint();

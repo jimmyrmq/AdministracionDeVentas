@@ -1,4 +1,4 @@
-package view.frame.themes;
+package view.frame.ui.themes;
 
 import com.djm.ui.themes.ITheme;
 import com.djm.ui.themes.ManagerTextlUI;
@@ -31,6 +31,8 @@ public class LookAndFeel {
             }
             if(!e)
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            GlobalUI.getInstance().setTheme(new DefaultUI());
         } catch (Exception e) {
             System.out.println("Imposible modificar el tema visual");
         }
@@ -47,28 +49,28 @@ public class LookAndFeel {
             }*/
 
             boolean personalizar = theme!=null;
-            Font font = new Font("Tahoma",0,14);;
+            Font font = new Font("Tahoma",0,12);
 
             if(personalizar) {
                 font = theme.getFontLabel();
 
                 Color colBack = theme.getBackground();
-                Color colBackButton = theme.getBackgroundButton();
-                Color colBackAction = theme.getBackgroundAction();
-                Color colBackSelected = theme.getBackgroundSelection();
+                //Color colBackButton = theme.getBackgroundButton();
+                Color colBackAction = theme.getBackgroundButtonAction();
+                Color colBackSelected = theme.getBackgroundButtonSelected();
                 Color colFore = theme.getForeground();
-                Color cborder = theme.getColorBorder();
+                /*Color cborder = theme.getColorBorder();
                 Color cborderbutton = theme.getColorBorderButton();
                 Color colForeTextKey = theme.getColorTextKeyButton();
                 Color colForeTextKeySelect = theme.getColorTextButtonKeySelected();
 
                 GlobalUI.getInstance().setBackgroundButton(colBackButton);//Color.RED);//new Color(211, 217, 220));
-                GlobalUI.getInstance().setColorSelected(colBackSelected);//Color.RED);//new Color(211, 217, 220));
+                GlobalUI.getInstance().setColorButtonSelected(colBackSelected);//Color.RED);//new Color(211, 217, 220));
                 GlobalUI.getInstance().setForeground(colFore);//Color.RED);//new Color(211, 217, 220));
                 GlobalUI.getInstance().setColorBorder(cborder);
                 GlobalUI.getInstance().setColorBorderButton(cborderbutton);
                 GlobalUI.getInstance().setColorTextButtonKey(colForeTextKey);
-                GlobalUI.getInstance().setColorTextButtonKeySelected(colForeTextKeySelect);
+                GlobalUI.getInstance().setColorTextButtonKeySelected(colForeTextKeySelect);*/
 
                 ManagerTextlUI.setTheme(theme);
                 //UIManager.put("Application.useSystemFontSettings", false);
@@ -83,10 +85,19 @@ public class LookAndFeel {
                 UIManager.put("OptionPane.buttonAreaBorder", null);
 
                 UIManager.put("Label.foreground", colFore);
-                UIManager.put("Label.font", font);
 
                 UIManager.put("CheckBox.foreground", colFore);
                 UIManager.put("CheckBox.background", colBack);
+
+                UIManager.put("ComboBox.foreground", colFore);
+                UIManager.put("ComboBox.background", colBack);
+                UIManager.put("ComboBox.selectionForeground", colBackSelected);
+                UIManager.put("ComboBox.selectionBackground", colBack);
+
+                UIManager.put("ComboBox.buttonDarkShadow", colBack);
+                UIManager.put("ComboBox.buttonBackground", colFore);
+                UIManager.put("ComboBox.buttonHighlight",  colFore);
+                UIManager.put("ComboBox.buttonShadow",     colFore);
 
                 UIManager.put("TextArea.foreground", colFore);
                 UIManager.put("TextArea.background", colBack);
@@ -102,6 +113,13 @@ public class LookAndFeel {
 
                 UIManager.put("List.foreground",Color.BLUE);
                 UIManager.put("List.background",Color.BLUE);
+
+                UIManager.put("TabbedPane.foreground",colFore);
+                UIManager.put("TabbedPane.background",colBack);
+                UIManager.put("TabbedPane.shadow",Color.RED);
+                UIManager.put("TabbedPane.tabAreaBackground",Color.yellow);
+                UIManager.put("TabbedPane.selected",Color.GREEN);
+                UIManager.put("TabbedPane.focus",Color.BLUE);
 
                 UIManager.put("Button.defaultButtonFollowsFocus", false);
                 UIManager.put("Button.foreground", colFore);
@@ -121,6 +139,9 @@ public class LookAndFeel {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             }
 
+            UIManager.put("Label.font", font);
+            UIManager.put("Combox.font", font);
+            UIManager.put("TabbedPane.font",font);
             UIManager.put("Button.font", font);
             UIManager.put("CheckBox.font", font);
             UIManager.put("TextArea.font", font);

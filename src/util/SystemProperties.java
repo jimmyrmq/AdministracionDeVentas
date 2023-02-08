@@ -15,7 +15,7 @@ public class SystemProperties {
     private Properties system= new Properties();
     private static SystemProperties systemProperties;
     private String lang="es.properties";
-    private String dirLang="lang/es.properties";
+    private String dirLang="conf/es.properties";
 
     public static SystemProperties getInstance(){
         if(systemProperties == null){
@@ -68,7 +68,7 @@ public class SystemProperties {
     
     public void setLanguaje(String lang){
         this.lang = lang;
-        this.dirLang="lang/"+lang;
+        this.dirLang="conf/"+lang;
     }
 }
 

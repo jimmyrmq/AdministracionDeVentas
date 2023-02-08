@@ -1,6 +1,5 @@
-package view.frame.component;
+package view.frame.ui.component;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ButtonGroup {
 
     public void clearSelection() {
         for(Button b:buttons){
-            b.setSelected(false);
+            b.setPaintBackEnteredMouse(false);
         }
     }
 }

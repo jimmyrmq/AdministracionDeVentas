@@ -1,5 +1,4 @@
-import util.Global;
-import util.Init;
+import view.frame.main.Init;
 
 public class Principal {
     public static void main(String args[]){
