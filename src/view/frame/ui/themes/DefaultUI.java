@@ -1,20 +1,45 @@
 package view.frame.ui.themes;
 
-import com.djm.ui.themes.ITheme;
+import com.djm.ui.themes.button.ButtonDefaultUI;
+import com.djm.ui.themes.button.IButtonUI;
+import com.djm.ui.themes.checkbox.CheckBoxDefaultUI;
+import com.djm.ui.themes.checkbox.ICheckBoxUI;
+import com.djm.ui.themes.global.ITheme;
+import com.djm.ui.themes.panel.IPanelUI;
+import com.djm.ui.themes.panel.PanelDefaultUI;
+import com.djm.ui.themes.text.ITextUI;
+import com.djm.ui.themes.text.TextDefaultUI;
 
-import java.awt.Color;
-import java.awt.Font;
 
 public class DefaultUI implements ITheme {
+    @Override
+    public IButtonUI getButtonUI() {
+        return new ButtonDefaultUI();
+    }
 
     @Override
+    public ITextUI getTextUI() {
+        return new TextDefaultUI();
+    }
+
+    @Override
+    public IPanelUI getPanelUI() {
+        return new PanelDefaultUI();
+    }
+
+    @Override
+    public ICheckBoxUI getCheckBox() {
+        return new CheckBoxDefaultUI();
+    }
+/*
+    @Override
     public Color getBackground() {
-        return new Color(240, 240, 240);
+        return new Color(242, 242, 242);
     }
 
     @Override
     public Color getBackgroundButton() {
-        return new Color(211, 217, 220);
+        return  new Color(253, 255, 254);
     }
 
     @Override
@@ -44,7 +69,7 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getColorBorderButton() {
-        return new Color(134, 134, 154);
+        return new Color(194, 194, 194);
     }
 
     @Override
@@ -59,17 +84,17 @@ public class DefaultUI implements ITheme {
 
     @Override
     public Color getColorTextButtonKeySelected() {
-        return new Color(217, 214, 214);
+        return new Color(140, 140, 140);
     }
 
     @Override
     public Color getBackgroundField() {
-        return null;
+        return new Color(255,255,255);
     }
 
     @Override
     public Color getColorCaretField() {
-        return null;
+        return new Color(40,38,40);
     }
 
     @Override
@@ -105,5 +130,5 @@ public class DefaultUI implements ITheme {
     @Override
     public Color getColorChekDisabled() {
         return new Color(136, 151, 159);
-    }
+    }*/
 }

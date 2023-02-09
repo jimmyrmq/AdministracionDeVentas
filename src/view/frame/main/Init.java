@@ -5,8 +5,8 @@ import com.djm.db.connection.DataConnection;
 import com.djm.util.LayoutPanel;
 import util.SystemProperties;
 import view.frame.dashboard.ActionButton;
-import view.frame.ui.component.CheckBox;
-import view.frame.ui.themes.Dark;
+import view.frame.ui.component.Button;
+import view.frame.ui.themes.dark.Dark;
 import view.frame.ui.themes.GlobalUI;
 import view.frame.ui.themes.LookAndFeel;
 import view.frame.dashboard.Dashboard;
@@ -19,10 +19,11 @@ public class Init {
     public Init (){
 
         //LoadExtension lext = new LoadExtension();
-        GlobalUI.getInstance().setTheme(new Dark());
+        //GlobalUI.getInstance().setTheme(new Dark());
+        new LookAndFeel();//new Dark());//
         SystemProperties.getInstance().setLanguaje("es.properties");
-        LookAndFeel lf = new LookAndFeel();
-        lf.setTheme(GlobalUI.getInstance().getTheme());//"Windows");//
+        //LookAndFeel lf = new LookAndFeel();
+        //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//
 
         FrameMain fm = new FrameMain();
 
@@ -35,13 +36,14 @@ public class Init {
 
         JSeparator sep = new JSeparator();
         sep.setOrientation(SwingConstants.HORIZONTAL);
-        sep.setForeground(GlobalUI.getInstance().getTheme().getColorBorder());
-        sep.setBackground(GlobalUI.getInstance().getTheme().getBackground());
 
-        //fm.getContainer().add(new CheckBox("Prueba"),LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        fm.getContainer().add(ds.getPanel(), LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        fm.getContainer().add(sep, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 1.0f, 0.0f));
-        fm.getContainer().add(panelTarea.getPanel(), LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
+        sep.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
+        sep.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+
+        //fm.getContainer().add(new Button("Enabled"),LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        fm.getContainer().add(ds.getPanel(), LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        fm.getContainer().add(sep, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 1.0f, 0.0f));
+        fm.getContainer().add(panelTarea.getPanel(), LayoutPanel.constantePane(0, 4, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
 
         //Inicializamos la conexion con la base de datos.
         initConnBD();

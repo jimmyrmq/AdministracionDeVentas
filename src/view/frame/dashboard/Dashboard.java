@@ -3,7 +3,9 @@ package view.frame.dashboard;
 import com.djm.util.LayoutPanel;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
+import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
+import view.frame.ui.themes.ButtonExitUI;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -19,33 +21,20 @@ public class Dashboard {
         SystemProperties sp = SystemProperties.getInstance();
         //String dirIcon = GlobalUI.getInstance().getTheme().pathIcon();
         //System.out.println(dirIcon);
-        Button bProducto = new Button(sp.getValue("produtos.buttom.dashboard"), new ImageIcon("icon/product.png"));
-        Button bStock = new Button(sp.getValue("stock.buttom.dashboard"), new ImageIcon("icon/stock.png"));
-        Button bCliente = new Button(sp.getValue("cliente.buttom.dashboard"), new ImageIcon("icon/cliente.png"));
-        Button bInforme = new Button(sp.getValue("informe.buttom.dashboard"), new ImageIcon("icon/informe.png"));
-        Button bFormaPago = new Button(sp.getValue("formapago.buttom.dashboard"), new ImageIcon("icon/fpago.png"));
-        Button bImpuesto = new Button(sp.getValue("impuesto.buttom.dashboard"), new ImageIcon("icon/impuesto.png"));
-        Button bPromociones = new Button(sp.getValue("promociones.buttom.dashboard"), new ImageIcon("icon/promo.png"));
-        Button bConfiguracion = new Button(sp.getValue("configuracion.buttom.dashboard"), new ImageIcon("icon/config.png"));
-        Button bUsuario = new Button(sp.getValue("usuario.buttom.dashboard"), new ImageIcon("icon/user.png"));
-        Button bSalir = new Button(sp.getValue("salir.buttom.dashboard"), new ImageIcon("icon/exit.png"));
+        ButtonTabbed bProducto = new ButtonTabbed(sp.getValue("produtos.buttom.dashboard"), new ImageIcon("icon/product.png"));
+        ButtonTabbed bStock = new ButtonTabbed(sp.getValue("stock.buttom.dashboard"), new ImageIcon("icon/stock.png"));
+        ButtonTabbed bCliente = new ButtonTabbed(sp.getValue("cliente.buttom.dashboard"), new ImageIcon("icon/cliente.png"));
+        ButtonTabbed bInforme = new ButtonTabbed(sp.getValue("informe.buttom.dashboard"), new ImageIcon("icon/informe.png"));
+        ButtonTabbed bFormaPago = new ButtonTabbed(sp.getValue("formapago.buttom.dashboard"), new ImageIcon("icon/fpago.png"));
+        ButtonTabbed bImpuesto = new ButtonTabbed(sp.getValue("impuesto.buttom.dashboard"), new ImageIcon("icon/impuesto.png"));
+        ButtonTabbed bPromociones = new ButtonTabbed(sp.getValue("promociones.buttom.dashboard"), new ImageIcon("icon/promo.png"));
+        ButtonTabbed bConfiguracion = new ButtonTabbed(sp.getValue("configuracion.buttom.dashboard"), new ImageIcon("icon/config.png"));
+        ButtonTabbed bUsuario = new ButtonTabbed(sp.getValue("usuario.buttom.dashboard"), new ImageIcon("icon/user.png"));
+        Button bSalir = new Button(sp.getValue("salir.buttom.dashboard"), new ImageIcon("icon/closed.png"));
 
         bProducto.setActionCommand(sp.getValue("produtos.buttom.dashboard.id"));
 
-        //bProducto.setPaintBack(false);
-        bProducto.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bStock.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bCliente.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bFormaPago.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bPromociones.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bInforme.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bUsuario.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bImpuesto.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-        bConfiguracion.setColorBack(GlobalUI.getInstance().getTheme().getBackground());
-
-        bSalir.setPaintSelected(true);
-        bSalir.setColorBack(Color.RED);
-        bSalir.setColorFore(Color.WHITE);
+        bSalir.setButtonUI(new ButtonExitUI());
 
         ButtonGroup bg = new ButtonGroup();
         bg.add(bProducto);
@@ -78,7 +67,7 @@ public class Dashboard {
         panel.add(bPromociones, LayoutPanel.constantePane(6, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.CENTER, 0, 3, 0, 0, 0.0f, 0.0f));
         panel.add(bConfiguracion, LayoutPanel.constantePane(7, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.CENTER, 0, 3, 0, 0, 0.0f, 0.0f));
         panel.add(bUsuario, LayoutPanel.constantePane(9, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.CENTER, 0, 3, 0, 0, 0.0f, 0.0f));
-        //panel.add(bSalir, LayoutPanel.constantePane(10, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.CENTER, 5, 0, 10, 10, 0.0f, 0.0f));
+        panel.add(bSalir, LayoutPanel.constantePane(10, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 0, 0, 0, 10, 1.0f, 0.0f));
 
         //Border roundedBorder = new LineBorder(GlobalUI.getInstance().getTheme().getColorBorder(), 1, false);
         //Border roundedBorder  = BorderFactory.createMatteBorder(0, 0, 0, 1,GlobalUI.getInstance().getTheme().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());

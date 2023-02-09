@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ButtonGroup {
-    private List<Button> buttons = new ArrayList<>();
+    private List<ButtonTabbed> buttonTabbeds = new ArrayList<>();
 
     public ButtonGroup(){}
 
-    public void add(Button b){
+    public void add(ButtonTabbed b){
         if(b == null) {
             return;
         }
 
-        buttons.add(b);
+        buttonTabbeds.add(b);
         b.setGroup(this);
     }
 
     public void clearSelection() {
-        for(Button b:buttons){
+        for(ButtonTabbed b: buttonTabbeds){
             b.setPaintBackEnteredMouse(false);
         }
     }

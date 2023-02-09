@@ -1,6 +1,11 @@
 package view.frame.ui.component;
 
+import com.djm.ui.themes.button.IButtonUI;
+import com.djm.ui.themes.checkbox.ICheckBoxUI;
+import com.djm.ui.themes.panel.IPanelUI;
+import com.djm.ui.themes.text.ITextUI;
 import view.frame.ui.themes.GlobalUI;
+import view.frame.ui.themes.blue.CheckBoxUI;
 
 import javax.swing.*;
 import java.awt.AlphaComposite;
@@ -28,14 +33,14 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
     private final int WIDTH_BOX = 15;
     private final int HEIGHT_BOX = 15;
 
-    private Color colorIn = GlobalUI.getInstance().getTheme().getBackgroundButtonAction();
-    private Color colorBack = GlobalUI.getInstance().getTheme().getBackground();//new Color(97,99,101);
-    private Color colorBorderFocus= GlobalUI.getInstance().getTheme().getColorBorderFocusField();
-    private Color colorBorder= GlobalUI.getInstance().getTheme().getColorBorderField();//new Color(97,99,101);
+    private Color colorIn = null;
+    private Color colorBack = null;//new Color(97,99,101);
+    private Color colorBorderFocus= null;// GlobalUI.getInstance().getTheme().getColorBorderFocusField();
+    private Color colorBorder;//= GlobalUI.getInstance().getTheme().getColorBorderField();//new Color(97,99,101);
     private Color colorPaint = null;
-    private Color colorFore = GlobalUI.getInstance().getTheme().getForeground();
-    private Color colorCheck = GlobalUI.getInstance().getTheme().getColorChekSelected();
-    private Color colorDisabled = GlobalUI.getInstance().getTheme().getColorChekDisabled();
+    private Color colorFore;//=  = GlobalUI.getInstance().getTheme().getForeground();
+    private Color colorCheck;//=  = GlobalUI.getInstance().getTheme().getColorChekSelected();
+    private Color colorDisabled;//=  = GlobalUI.getInstance().getTheme().getColorChekDisabled();
     private int width = 120;
     private int heght = 18;
     private Font font;
@@ -47,7 +52,19 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
     public CheckBox(String title, boolean selected){
         this.title = title;
         this.selected = selected;
-        this.font = GlobalUI.getInstance().getTheme().getFontLabel();
+        this.font = GlobalUI.getInstance().getTheme().getPanelUI().getFont();
+
+        ICheckBoxUI checkBoxUI = GlobalUI.getInstance().getTheme().getCheckBox();
+
+        colorIn = checkBoxUI.getBackgroundAction();
+        colorBack = checkBoxUI.getBackground();
+        colorBorderFocus= checkBoxUI.getColorBorderFocus();
+        colorBorder= checkBoxUI.getColorBorder();//new Color(97,99,101);
+        colorFore = checkBoxUI.getForeground();
+        colorCheck = checkBoxUI.getColorChekSelected();
+        colorDisabled = checkBoxUI.getColorChekDisabled();
+
+
 
         calulateDimension();
         Dimension dim = new Dimension(width,heght);
@@ -95,7 +112,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
         g2.drawRoundRect(2, 2, WIDTH_BOX-2 , HEIGHT_BOX-2 ,2,2);
 
         if(enabled && clic) {
-            g2.setColor(GlobalUI.getInstance().getTheme().getColorBorderFocusField());
+            g2.setColor(GlobalUI.getInstance().getTheme().getTextUI().getColorBorderFocus());
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(1, 1, WIDTH_BOX, HEIGHT_BOX, 2, 2);
         }
@@ -103,6 +120,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
         g2.setColor(enabled?colorFore:colorDisabled);
         g2.setFont(font);
         if(title!=null){
+            g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.drawString(title, WIDTH_BOX+4, posFontY);
         }
 

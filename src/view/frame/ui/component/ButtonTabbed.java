@@ -3,11 +3,16 @@ package view.frame.ui.component;
 import com.djm.ui.themes.button.IButtonUI;
 import view.frame.ui.themes.GlobalUI;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,32 +24,29 @@ import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Button extends JComponent implements  MouseMotionListener, MouseListener , Accessible {
+public class ButtonTabbed extends JComponent implements  MouseMotionListener, MouseListener  , Accessible{
     private String actionCommand;
     private String title;
     private String textKey;
-    private String rutaImage1;
-    private String rutaImage2;
     private boolean in =false;
     private boolean out =true;
     private boolean pressed = false;
     private boolean sizeDefault = false;
     private Font font = new Font("Segoe UI",0,12);
-    private Font fontKey = new Font("Segoe UI",1,10);
+    private Font fontKey = new Font("Segoe UI",1,11);
     private Color colorBack = null;
     private Color colorFore = new Color(0,0,0);
     private Color colorForeKey;// = new Color(140, 140, 140);
     private Color colorBorder = new Color(0,0,0);
-    private Color cbSelected = new Color(0,0,0);
+    private Color cBackSelected = new Color(0,0,0);
     private Color cbackPaint = colorBack;
     private Color cborderPaint = colorBorder;
     private Color cfPaint = colorFore;
     private Color cfkPaint = colorForeKey;
     private Color cbackIn = new Color(82,6,140);
     private Color cfkIn = new Color(217, 214, 214);
+    private Color coloSelect ;//= new Color(82,6,140);
     private Color cborderIn ;//= new Color(82,6,140);
-    private Color colorAccion;//= new Color(82,6,140);
-    private Color colorBorderSelect ;//= new Color(82,6,140);
     private ButtonGroup buttonGroup;
     private Image image0 =null;
     private Image image1=null;
@@ -57,8 +59,8 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
     private int posx_ii;
     private int posx_tt;
     private int posy_tt;
-    //private boolean paintSelected = false;
-    //private boolean paintClickSelected = true;
+    private boolean paintSelected = false;
+    private boolean paintClickSelected = true;
     public static final byte NONE = -1;
     public static final byte CENTER = 0;
     public static final byte TOP = 1;
@@ -68,39 +70,50 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
     private byte orientationText = LEFT;
     private byte orientationImageX = RIGHT;
     private byte orientationImageY = CENTER;
+    private boolean paintBack = true;
+    private boolean paintBorder = false;
     private int posx_tk = 0;
     private int posy_tk = 0;
     private boolean isFilterImage ;
 
-    public Button(ImageIcon ii) {
+    public ButtonTabbed(ImageIcon ii) {
         this(null,null,ii,NONE,true);
     }
-    public Button(ImageIcon ii, boolean filter) {
+    public ButtonTabbed(ImageIcon ii, boolean filter) {
         this(null,null,ii,NONE,filter);
     }
-    public Button(String title) {
+    public ButtonTabbed(String title) {
         this(title,null,null,NONE,false);
     }
-    public Button(String title, String textKey, ImageIcon ii){
+    public ButtonTabbed(String title, String textKey, ImageIcon ii){
         this(title,textKey,ii,NONE,true);
     }
-    public Button(String title, String textKey, ImageIcon ii, boolean filter){
+    public ButtonTabbed(String title, String textKey, ImageIcon ii, boolean filter){
         this(title,textKey,ii,NONE,filter);
     }
 
-    public Button(String title, ImageIcon ii){
+    public ButtonTabbed(String title, ImageIcon ii){
         this(title,null,ii,NONE,true);
     }
 
-    public Button(String title, String textKey, ImageIcon ii, byte orientationText, boolean filter){
-        setOpaque(false);
-
+    public ButtonTabbed(String title, String textKey, ImageIcon ii, byte orientationText, boolean filter){
         this.textKey = textKey;
         this.title = title;
         this.actionCommand = title!=null?title:ii.getDescription();
         this.isFilterImage = filter;
         //FontHelper fh = new FontHelper();
         //font = fh.font(12);
+
+        IButtonUI buttonUI = GlobalUI.getInstance().getTheme().getButtonUI();
+        this.colorBack = buttonUI.getBackground();
+        this.colorFore = buttonUI.getForeground();
+        this.cBackSelected = buttonUI.getBackgroundSelected();
+        this.colorBorder = buttonUI.getColorBorder();
+        this.cborderIn = buttonUI.getColorBorderSelected();
+        this.colorForeKey = buttonUI.getColorTextKey();
+        this.cfkIn = buttonUI.getColorTexteySelected();
+        this.cbackIn = buttonUI.getBackgroundMouseEntered();
+        this.coloSelect = buttonUI.getColorSelected();
 
         this.orientationText = orientationText;
         if(title != null) {
@@ -110,25 +123,19 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
 
         this.orientationImageY = CENTER;
 
-        /*Color cb = buttonUI.getBackground();//GlobalUI.getInstance().getTheme().getBackgroundButton();
-        Color cme = buttonUI.getBackgroundMouseEntered();
-        Color cf = buttonUI.getForeground();//GlobalUI.getInstance().getTheme().getForeground();
-        Color cbs = buttonUI.getBackgroundSelected();//GlobalUI.getInstance().getTheme().getBackgroundButtonSelected();
-        Color cbrd = buttonUI.getColorBorder();//GlobalUI.getInstance().getTheme().getColorBorderButton();
-        Color cftk = buttonUI.getColorTextKey();//GlobalUI.getInstance().getTheme().getColorTextKeyButton();
-        Color cftks = buttonUI.getColorTexteySelected();//GlobalUI.getInstance().getTheme().getColorTextButtonKeySelected();
-        *///Color cs = buttonUI.getColorSelected();
+        this.paintBack = true;
+        this.paintBorder = false;
 
-        IButtonUI buttonUI = GlobalUI.getInstance().getTheme().getButtonUI();
-        setButtonUI(buttonUI);
+        setOpaque(false);
+        /*setContentAreaFilled(false);
+        setFocusPainted(false);
+        setBorderPainted(false);*/
 
         if(ii!=null) {
             //boolean rtn = setColorImage(GlobalUI.getInstance().getTheme().getColorImageButton());
             if (this.isFilterImage) {
-                rutaImage1 = ii.getDescription();
-                rutaImage2 = rutaImage1;
-                image0 = filterImage(rutaImage1,buttonUI.getColorImage(),false);//ii.getImage();
-                image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
+                image0 = filterImage(ii.getDescription(),buttonUI.getColorImage(),false);//ii.getImage();
+                image1 = null;//filterImage(ii.getDescription(),cborderIn,true);//ii.getImage();
                 imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
             }else {
                 image0 = ii.getImage();
@@ -137,79 +144,10 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
             }
         }
 
-        //setColorBack(cb);
-        /*setColorFore(cf);
-        setColorBackSelected(cbs);
-        setColorBorder(cbrd);*/
-
-        //setRequestFocusEnabled(true);
         setDimension();
 
         addMouseMotionListener(this);
         addMouseListener(this);
-
-    }
-
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-
-        if (in) {
-            cbackPaint = cbackIn;
-            cborderPaint =  cborderIn;
-        }
-        else if (out) {
-            cbackPaint = colorBack;
-            cborderPaint = colorBorder;
-            //cfkPaint = colorForeKey;
-            //cfPaint = colorFore;
-        }
-
-        if(pressed) {
-            //cfPaint = colorSelected;
-            imagePaint = image1;
-            cborderPaint = colorBorderSelect;
-            cbackPaint = cbSelected;
-        }
-        else {
-            cfPaint = colorFore;
-            imagePaint = image0;
-        }
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        g2.setColor(cbackPaint);
-        g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
-
-        /*if(paintSelected) {
-            g2.setColor(cbackPaint);
-            g2.fillRoundRect(0, getHeight() -3, getWidth() , getHeight() , 2, 2);
-        }*/
-
-        g2.setColor(cborderPaint);
-        g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 4, 4);
-
-        if(imagePaint!=null)
-            g2.drawImage(imagePaint,posx_ii,posy_ii,null);
-
-        //g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        if(title!=null) {
-            g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-            g2.setFont(font);
-            g2.setColor(cfPaint);
-            g2.drawString(title, posx_tt, posy_tt);
-        }
-
-        if(textKey!=null) {
-            g2.setFont(fontKey);
-            g2.setColor(cfkPaint);
-            g2.drawString(textKey, posx_tk, posy_tk);
-        }
-
-        super.paintComponent(g);
     }
 
     private void setDimension(){
@@ -228,13 +166,13 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         if(title!=null) {
             FontMetrics fmt = getFontMetrics(font);
             fw = fmt.stringWidth(title);
-            h = fmt.getHeight()+5;
-            w += fw + 20;
+            h = fmt.getHeight()+10;
+            w += fw + 10;
         }
 
         if(image0 !=null) {
-            w += dimy_ii + 5;
-            h = dimy_ii+5;
+            w += dimy_ii + 10;
+            h = dimy_ii+10;
         }
 
         /*if(image0 !=null && title!=null){
@@ -331,6 +269,77 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         setPreferredSize(new Dimension(width,height));
         calculePosicion();
     }
+
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        //g2.setStroke ( new BasicStroke(1, BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND ));
+        if(paintSelected){
+            cbackPaint = cBackSelected;
+            cborderPaint = colorBorder;
+            //cfPaint = colorFore;
+            cfkPaint = cfkIn;
+            if(image1!=null)
+                imagePaint = image0;
+        }else {
+            if(pressed) {
+                //cfPaint = colorSelected;
+                if(image1!=null)
+                    imagePaint = image1;
+            }
+            else {
+                //cfPaint = colorFore;
+                imagePaint = image0;
+            }
+
+            if (in) {
+                cbackPaint = cbackIn;
+                cborderPaint = cborderIn;
+                //cfPaint = colorSelected;
+                cfkPaint = cfkIn;
+
+            } else if (out) {
+                cbackPaint = colorBack;
+                cborderPaint = colorBorder;
+                cfkPaint = colorForeKey;
+                //cfPaint = colorFore;
+            }
+        }
+
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        if(in) {
+            g2.setColor(cbackIn);
+            g2.fillRoundRect(0, 0, getWidth() , getHeight() , 2, 2);
+        }
+
+        if(paintSelected) {
+            g2.setColor(coloSelect);
+            g2.fillRoundRect(0, getHeight() -3, getWidth() , getHeight() , 2, 2);
+        }
+
+        if(paintBorder) {
+            g2.setColor(cborderPaint);
+            g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 2, 2);
+        }
+
+        if(imagePaint!=null)
+            g2.drawImage(imagePaint,posx_ii,posy_ii,null);
+
+        if(title!=null) {
+            g2.setRenderingHint( RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+            g2.setFont(font);
+            g2.setColor(colorFore);
+            g2.drawString(title, posx_tt, posy_tt);
+        }
+
+        if(textKey!=null) {
+            g2.setFont(fontKey);
+            g2.setColor(cfkPaint);
+            g2.drawString(textKey, posx_tk, posy_tk);
+        }
+
+        super.paintComponent(g);
+    }
     public void setOrientationText(byte orientationText){
         this.orientationText = orientationText;
         calculePosicion();
@@ -359,21 +368,19 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
 
             if(buttonGroup!=null)
                 buttonGroup.clearSelection();
-
-            /*if(paintBack && paintClickSelected)
-                paintSelected =!paintSelected;*/
+            //System.out.println(title+" "+paintBack+" && "+paintClickSelected+" "+(paintBack && paintClickSelected));
+            if(paintBack && paintClickSelected)
+                paintSelected =!paintSelected;
         }
         repaint();
     }
 
-/*
     public void selected(){
         //in = true;
         //pressed = true;
         paintSelected = true;
         repaint();
     }
-*/
 
     @Override
     public void mouseEntered(MouseEvent e) {
@@ -399,16 +406,15 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
     }
 
     public void setColorBackSelected(Color cbSelected) {
-        this.cbSelected = cbSelected;
+        this.cBackSelected = cbSelected;
     }
-/*
+
     private void setColorBack(Color colorBack) {
         this.colorBack = colorBack;
-        cbackIn = filterColor(colorBack);//new Color(r,g,b);
-    }*/
+    }
 
 
-    private void setColorFore(Color colorFore) {
+    public void setColorFore(Color colorFore) {
         this.colorFore = colorFore;
     }
 
@@ -441,10 +447,9 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         this.actionCommand = actionCommand;
     }
 
-
-    private void actionPerformed(ActionEvent event) {
+    /*private void actionPerformed(ActionEvent event) {
         fireActionPerformed(event);
-    }
+    }*/
 
     private void fireActionPerformed(ActionEvent event) {
         // Guaranteed to return a non-null array
@@ -468,11 +473,11 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         }
     }
 
-    /*//Pintar de fondo el buton cuando se pasa el mouse
+    //Pintar de fondo el buton cuando se pasa el mouse
     protected void setPaintBackEnteredMouse(boolean s){
         paintSelected = s;
         repaint();
-    }*/
+    }
 
 
     /*public boolean isSelected(){
@@ -484,14 +489,20 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
     }
 
     //Fijar el button cuando se hace click
-    /*public void setPaintSelected(boolean paintClickSelected){
+    public void setPaintSelected(boolean paintClickSelected){
         this.paintClickSelected = paintClickSelected;
-    }*/
+    }
 
     public void setFont(Font font){
         this.font = font;
     }
 
+    public void setPaintBack(boolean paintBack){
+        this.paintBack = paintBack;
+    }
+    public void setPaintBorder(boolean paintBorder){
+        this.paintBorder = paintBorder;
+    }
 
     public void setOrientationImageX(byte orientationImage){
         this.orientationImageX = orientationImage;
@@ -502,6 +513,16 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         this.orientationImageX = orientationImage;
         calculePosicion();
     }
+    /*private boolean setColorImage(Color col) {
+        boolean filter = col != null;
+        if (filter){
+            red = col.getRed();
+            green = col.getGreen();
+            blue = col.getBlue();
+        }
+
+        return filter;
+    }*/
 
     private BufferedImage filterImage(String fileName,Color color,boolean filterCol){
 
@@ -589,37 +610,4 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
 
         return rtn;
     }
-
-    @Override
-    public void setBackground(Color colorBack){
-        this.colorBack = colorBack;
-    }
-
-    @Override
-    public void setForeground(Color colorFore){
-        this.colorFore = colorFore;
-    }
-
-    public void setButtonUI(IButtonUI buttonUI){
-        this.colorBack = buttonUI.getBackground();
-        this.colorFore = buttonUI.getForeground();
-        this.colorBorder = buttonUI.getColorBorder();
-        this.cborderIn = buttonUI.getColorBorderSelected();
-        this.colorForeKey = buttonUI.getColorTextKey();
-        this.cfkIn = buttonUI.getColorTexteySelected();
-        this.cbackIn = buttonUI.getBackgroundMouseEntered();
-        //this.colorSelect = buttonUI.getColorSelected();
-        this.colorAccion = buttonUI.getBackgroundAction();
-        this.colorBorderSelect = buttonUI.getColorBorderSelected();
-        this.cbSelected =  buttonUI.getBackgroundSelected();
-
-        if(image0!=null && this.isFilterImage) {
-            image0 = filterImage(rutaImage1 ,buttonUI.getColorImage(),false);//ii.getImage();
-            image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
-            imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
-        }
-
-        repaint();
-    }
-
 }

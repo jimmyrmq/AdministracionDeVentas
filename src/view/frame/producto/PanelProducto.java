@@ -2,25 +2,24 @@ package view.frame.producto;
 
 import com.djm.ui.TextArea;
 import com.djm.ui.TextField;
+import com.djm.ui.themes.button.IButtonUI;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Impuesto;
 import util.IPanel;
 import util.SystemProperties;
-import view.frame.ui.FontHelper;
 import view.frame.ui.component.Button;
+import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -55,9 +54,7 @@ public class PanelProducto implements IPanel , ActionListener {
 
         Button bAceptar = new Button("Aceptar");//,new ImageIcon("icon/ok.png"));
         Button bCancelar = new Button("Cancelar");//,new ImageIcon("icon/close.png"));
-        bAceptar.setPaintSelected(false);
 
-        bCancelar.setPaintSelected(false);
         //bAceptar.setDimension(100,32);
         //bCancelar.setDimension(100,32);
 
@@ -69,7 +66,8 @@ public class PanelProducto implements IPanel , ActionListener {
         lPanel[2] = pStock();
 
         panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
-        //panel.add(bCancelar, LayoutPanel.constantePane(1, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(bAceptar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
 
         JScrollPane jspi = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
@@ -85,12 +83,13 @@ public class PanelProducto implements IPanel , ActionListener {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
         panel.setPreferredSize(new Dimension(410,440));
-        //panel.setBorder(BorderFactory.createLineBorder(Color.red));
+        //Color cb = GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder();
+        //panel.setBorder(BorderFactory.createLineBorder(cb));
         //panel.setBackground(Color.RED);
 
-        Button bDetalle = new Button (sp.getValue("produtos.tabbedpane.title.producto"));
-        Button bPrecioImpuesto = new Button (sp.getValue("produtos.tabbedpane.title.precio"));
-        Button bStock = new Button (sp.getValue("produtos.tabbedpane.title.stock"));
+        ButtonTabbed bDetalle = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.producto"));
+        ButtonTabbed bPrecioImpuesto = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.precio"));
+        ButtonTabbed bStock = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.stock"));
         ButtonGroup bg = new ButtonGroup();
         bg.add(bDetalle);
         bg.add(bPrecioImpuesto);
@@ -98,8 +97,8 @@ public class PanelProducto implements IPanel , ActionListener {
 
         JSeparator sep = new JSeparator();
         sep.setOrientation(SwingConstants.HORIZONTAL);
-        sep.setForeground(GlobalUI.getInstance().getTheme().getColorBorder());
-        sep.setBackground(GlobalUI.getInstance().getTheme().getBackground());
+        sep.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
+        sep.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
         pActividad = new JPanel(new GridBagLayout());
         pActividad.setOpaque(false);
@@ -158,14 +157,14 @@ public class PanelProducto implements IPanel , ActionListener {
         tNota.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getColorBorderFocusField());// GlobalUI.getInstance().getTheme().getColorBorderField());
+                Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorderFocus());// GlobalUI.getInstance().getTheme().getColorBorderField());
                 jsp.setViewportBorder(matte);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
                 jsp.repaint();
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getColorBorderField());// GlobalUI.getInstance().getTheme().getColorBorderField());
+                Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());
                 jsp.setViewportBorder(matte);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
                 jsp.repaint();
             }
@@ -190,7 +189,7 @@ public class PanelProducto implements IPanel , ActionListener {
         //cbCategoria.setUI(new MyComboBoxUI());
 
         jsp = new JScrollPane(tNota, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getColorBorderField());// GlobalUI.getInstance().getTheme().getColorBorderField());
+        Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());
         jsp.setViewportBorder(matte);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
         jsp.getViewport().setOpaque(false);
         jsp.setOpaque(false);
@@ -230,8 +229,6 @@ public class PanelProducto implements IPanel , ActionListener {
         //panel.setBorder(getBorder("Precio & Impuesto"));
 
         Button agregarImpuesto = new Button(sp.getValue("produtos.button.agregarImpuesto"));
-        agregarImpuesto.setPaintSelected(true);
-        agregarImpuesto.setFont(new Font("Tahoma",0,12));
 
         JLabel lCosto = new JLabel(sp.getValue("produtos.label.costo")+":");
         JLabel lPrecio1 = new JLabel(sp.getValue("produtos.label.precio1")+":");
@@ -259,7 +256,7 @@ public class PanelProducto implements IPanel , ActionListener {
         tPrecio3.textDecimal(",");
 
         JScrollPane jspi = new JScrollPane(lImpuesto, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getColorBorderField());// GlobalUI.getInstance().getTheme().getColorBorderField());
+        Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());
         jspi.setViewportBorder(matte);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
         jspi.getViewport().setOpaque(false);
         jspi.setOpaque(false);
@@ -376,10 +373,11 @@ public class PanelProducto implements IPanel , ActionListener {
         @Override
         protected JButton createArrowButton() {
             //Feel free to play with the colors:
-            final Color background = GlobalUI.getInstance().getTheme().getBackgroundButton();     //Default is UIManager.getColor("ComboBox.buttonBackground").
-            final Color pressedButtonBorderColor = GlobalUI.getInstance().getTheme().getBackgroundButton();; //Default is UIManager.getColor("ComboBox.buttonShadow"). The color of the border of the button, while it is pressed.
+            IButtonUI buttonUI = GlobalUI.getInstance().getTheme().getButtonUI();
+            final Color background = buttonUI.getBackground();     //Default is UIManager.getColor("ComboBox.buttonBackground").
+            final Color pressedButtonBorderColor = buttonUI.getBackground();; //Default is UIManager.getColor("ComboBox.buttonShadow"). The color of the border of the button, while it is pressed.
             final Color triangle = Color.red;//GlobalUI.getInstance().getBackgroundButton();              //Default is UIManager.getColor("ComboBox.buttonDarkShadow"). The color of the triangle.
-            final Color highlight = GlobalUI.getInstance().getTheme().getBackgroundButton();              //Default is UIManager.getColor("ComboBox.buttonHighlight"). Another color to show the button as highlighted.
+            final Color highlight = buttonUI.getBackground();              //Default is UIManager.getColor("ComboBox.buttonHighlight"). Another color to show the button as highlighted.
             final JButton button = new BasicArrowButton(BasicArrowButton.SOUTH, background, pressedButtonBorderColor, triangle, highlight);
             button.setName("ComboBox.arrowButton"); //Mandatory, as per BasicComboBoxUI#createArrowButton().
             return button;

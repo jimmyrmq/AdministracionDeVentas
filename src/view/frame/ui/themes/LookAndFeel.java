@@ -1,7 +1,10 @@
 package view.frame.ui.themes;
 
-import com.djm.ui.themes.ITheme;
-import com.djm.ui.themes.ManagerTextlUI;
+
+import com.djm.ui.themes.button.IButtonUI;
+import com.djm.ui.themes.global.ITheme;
+import com.djm.ui.themes.global.ManagerTextlUI;
+import com.djm.ui.themes.panel.IPanelUI;
 
 import javax.swing.*;
 import java.awt.Color;
@@ -10,16 +13,35 @@ import java.awt.Insets;
 
 public class LookAndFeel {
     public LookAndFeel(){
-        /*String ths [] = {"Metal",
-                "Nimbus",
-                "CDE/Motif",
-                "Windows",
-                "Windows Classic"};*/
+        this(null);
     }
 
-    public void setTheme(String theme){
+    public LookAndFeel(ITheme theme){
+
+        if(theme==null) {
+            theme = new DefaultUI();}
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+
+        GlobalUI.getInstance().setTheme(theme);
+        setTheme(theme);
+    }
+
+    /*public void getUIDefaults(String theme){
 
         try {
+            //String ths [] = {"Metal","Nimbus","CDE/Motif","Windows","Windows Classic"};
+            /*UIDefaults defaults = UIManager.getDefaults();
+            Enumeration<Object> keysEnumeration = defaults.keys();
+            ArrayList<Object> keysList = Collections.list(keysEnumeration);
+            for (Object key : keysList) {
+                System.out.println(key);
+            }//*
+
             boolean e = false;
             cont:for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
                 //System.out.println(info.getName());
@@ -33,32 +55,26 @@ public class LookAndFeel {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
             GlobalUI.getInstance().setTheme(new DefaultUI());
+            setTheme(GlobalUI.getInstance().getTheme());
         } catch (Exception e) {
             System.out.println("Imposible modificar el tema visual");
         }
-    }
+    }*/
 
     public void setTheme(ITheme theme){
 
         try {
-            /*UIDefaults defaults = UIManager.getDefaults();
-            Enumeration<Object> keysEnumeration = defaults.keys();
-            ArrayList<Object> keysList = Collections.list(keysEnumeration);
-            for (Object key : keysList) {
-                System.out.println(key);
-            }*/
+            IPanelUI panelUI = theme.getPanelUI();
+            Font font = panelUI.getFont();//new Font("Tahoma",0,12);
 
-            boolean personalizar = theme!=null;
-            Font font = new Font("Tahoma",0,12);
+                //font = theme.getFontLabel();
+                IButtonUI buttonUI = theme.getButtonUI();
 
-            if(personalizar) {
-                font = theme.getFontLabel();
-
-                Color colBack = theme.getBackground();
+                Color colBack = panelUI.getBackground();
                 //Color colBackButton = theme.getBackgroundButton();
-                Color colBackAction = theme.getBackgroundButtonAction();
-                Color colBackSelected = theme.getBackgroundButtonSelected();
-                Color colFore = theme.getForeground();
+                Color colBackAction = buttonUI.getBackgroundAction();
+                Color colBackSelected = buttonUI.getBackgroundSelected();
+                Color colFore = panelUI.getForeground();
                 /*Color cborder = theme.getColorBorder();
                 Color cborderbutton = theme.getColorBorderButton();
                 Color colForeTextKey = theme.getColorTextKeyButton();
@@ -134,10 +150,7 @@ public class LookAndFeel {
                 UIManager.put("Button.rollover", false);
                 UIManager.put("Button.defaultButtonFollowsFocus", true);
                 UIManager.put("Button.dashedRectGapWidth", null);
-            }
-            else{
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            }
+
 
             UIManager.put("Label.font", font);
             UIManager.put("Combox.font", font);

@@ -54,7 +54,7 @@ public class FrameMain {
 
         //frame.add(panel);
         //Dimension dim = new Dimension(1300, 690);
-        Dimension dim = new Dimension(800, 670);
+        Dimension dim = new Dimension(1100, 670);
         //frame.addMouseMotionListener(this);
         frame.setUndecorated(false);
         frame.setDefaultLookAndFeelDecorated(true);
@@ -62,7 +62,7 @@ public class FrameMain {
         frame.setResizable(true);
         Image icon = Toolkit.getDefaultToolkit().getImage("icon/main.png");
         frame.setIconImage(icon);//Icono.getInstance().loadIcon(soft.getNameIcon()).getImage());
-        frame.setExtendedState(6);//6: Expandir la ventana
+        //frame.setExtendedState(6);//6: Expandir la ventana
         //frame.setSize(dim);
         frame.setMinimumSize(dim);
         //frame.setBackground(new Color(158,162,144));

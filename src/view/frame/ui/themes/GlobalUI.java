@@ -1,6 +1,6 @@
 package view.frame.ui.themes;
 
-import com.djm.ui.themes.ITheme;
+import com.djm.ui.themes.global.ITheme;
 
 public class GlobalUI {
 

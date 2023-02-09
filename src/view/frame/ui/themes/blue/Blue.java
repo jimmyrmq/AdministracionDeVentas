@@ -1,12 +1,28 @@
-package view.frame.ui.themes;
+package view.frame.ui.themes.blue;
 
-import com.djm.ui.themes.ITheme;
-
-import java.awt.Color;
-import java.awt.Font;
+import com.djm.ui.themes.global.ITheme;
 
 public class Blue implements ITheme {
+    @Override
+    public ButtonUI getButtonUI() {
+        return new ButtonUI();
+    }
 
+    @Override
+    public TextUI getTextUI() {
+        return new TextUI();
+    }
+
+    @Override
+    public PanelUI getPanelUI() {
+        return new PanelUI();
+    }
+
+    @Override
+    public CheckBoxUI getCheckBox() {
+        return new CheckBoxUI();
+    }
+/*
     private Color colBack = new Color(61, 145, 213);
     private Color colBackButton = new Color(29, 71, 101);
     private Color colBackAction = new Color(152, 199, 232);
@@ -125,5 +141,5 @@ public class Blue implements ITheme {
     @Override
     public Color getColorChekDisabled() {
         return colorChekDisabled;
-    }
+    }*/
 }
