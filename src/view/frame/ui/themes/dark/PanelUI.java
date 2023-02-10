@@ -28,4 +28,9 @@ public class PanelUI implements IPanelUI {
     public Font getFont() {
         return GlobalDark.font;
     }
+
+    @Override
+    public Color getColorBackgoundControl() {
+        return new Color(65,68,70);
+    }
 }

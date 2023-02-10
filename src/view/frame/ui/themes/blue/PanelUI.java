@@ -25,4 +25,9 @@ public class PanelUI implements IPanelUI {
     public Font getFont() {
         return null;
     }
+
+    @Override
+    public Color getColorBackgoundControl() {
+        return null;
+    }
 }

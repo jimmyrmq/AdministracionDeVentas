@@ -5,6 +5,8 @@ import com.djm.ui.themes.button.IButtonUI;
 import com.djm.ui.themes.global.ITheme;
 import com.djm.ui.themes.global.ManagerTextlUI;
 import com.djm.ui.themes.panel.IPanelUI;
+import view.frame.ui.themes.DefaultUI;
+import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import java.awt.Color;
@@ -19,13 +21,14 @@ public class LookAndFeel {
     public LookAndFeel(ITheme theme){
 
         if(theme==null) {
-            theme = new DefaultUI();}
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            theme = new DefaultUI();
+        }
 
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         GlobalUI.getInstance().setTheme(theme);
         setTheme(theme);
@@ -105,15 +108,15 @@ public class LookAndFeel {
                 UIManager.put("CheckBox.foreground", colFore);
                 UIManager.put("CheckBox.background", colBack);
 
-                UIManager.put("ComboBox.foreground", colFore);
+                /*UIManager.put("ComboBox.foreground", colFore);
                 UIManager.put("ComboBox.background", colBack);
                 UIManager.put("ComboBox.selectionForeground", colBackSelected);
                 UIManager.put("ComboBox.selectionBackground", colBack);
-
                 UIManager.put("ComboBox.buttonDarkShadow", colBack);
                 UIManager.put("ComboBox.buttonBackground", colFore);
                 UIManager.put("ComboBox.buttonHighlight",  colFore);
-                UIManager.put("ComboBox.buttonShadow",     colFore);
+                UIManager.put("ComboBox.buttonShadow",     colFore);*/
+                UIManager.put("ComboBox.border", BorderFactory.createEmptyBorder());
 
                 UIManager.put("TextArea.foreground", colFore);
                 UIManager.put("TextArea.background", colBack);
@@ -161,6 +164,7 @@ public class LookAndFeel {
             UIManager.put("TextField.font", font);
             UIManager.put("ScrollPane.font", font);
             UIManager.put("List.font", font);
+
 
             UIManager.put("TabbedPane.tabAreaInsets", new Insets(1,1,1,1));//Afuera
             //UIManager.put("TabbedPane.tabInsets", new Insets(0,0,0,0));

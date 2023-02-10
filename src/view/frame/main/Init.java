@@ -5,13 +5,14 @@ import com.djm.db.connection.DataConnection;
 import com.djm.util.LayoutPanel;
 import util.SystemProperties;
 import view.frame.dashboard.ActionButton;
-import view.frame.ui.component.Button;
-import view.frame.ui.themes.dark.Dark;
+import view.frame.ui.component.ComboBox;
 import view.frame.ui.themes.GlobalUI;
 import view.frame.ui.themes.LookAndFeel;
 import view.frame.dashboard.Dashboard;
+import view.frame.ui.themes.dark.Dark;
 
 import javax.swing.*;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
 public class Init {
@@ -40,7 +41,7 @@ public class Init {
         sep.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
-        //fm.getContainer().add(new Button("Enabled"),LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        //fm.getContainer().add(combobox1,LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
         fm.getContainer().add(ds.getPanel(), LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
         fm.getContainer().add(sep, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 1.0f, 0.0f));
         fm.getContainer().add(panelTarea.getPanel(), LayoutPanel.constantePane(0, 4, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
