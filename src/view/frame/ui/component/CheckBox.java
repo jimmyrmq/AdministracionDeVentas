@@ -154,6 +154,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
         //pressed = false;
         clic = false;
         if(enabled && in){
+            requestFocus();
             selected = !selected;
             repaint();
         }

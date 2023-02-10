@@ -6,6 +6,7 @@ import com.djm.ui.themes.button.IButtonUI;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Impuesto;
+import util.Global;
 import util.IPanel;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
@@ -52,6 +53,7 @@ public class PanelProducto implements IPanel , ActionListener {
     public PanelProducto(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
+
 
         Button bAceptar = new Button("Aceptar");//,new ImageIcon("icon/ok.png"));
         Button bCancelar = new Button("Cancelar");//,new ImageIcon("icon/close.png"));

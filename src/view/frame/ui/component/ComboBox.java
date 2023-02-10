@@ -1,10 +1,11 @@
 package view.frame.ui.component;
 
-import view.frame.ui.component.border.RoundedCornerBorder;
+import view.frame.ui.component.border.BorderComboBox;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
@@ -27,23 +28,23 @@ public class ComboBox<E> extends JComboBox<E> {
 
         setPreferredSize(new Dimension(140,21));
         setUI(new ComboBoxUI());
-        setBorder(new RoundedCornerBorder());//new EmptyBorder(2, 2, 2, 2));
+        setBorder(new BorderComboBox());//new EmptyBorder(2, 2, 2, 2));
         //getEditor().getEditorComponent().setBackground(Color.BLACK);
 
         ((JTextField) getEditor().getEditorComponent()).setOpaque(false);
-
+        //Color en el fondo del menu item
         setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
                 Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-                setBorder(new EmptyBorder(3, 2, 3, 2));
+                setBorder(new EmptyBorder(2, 2, 2, 2));
                 if (isSelected) {
                     c.setBackground(GlobalUI.getInstance().getTheme().getButtonUI().getColorSelected());
-                    c.setForeground(GlobalUI.getInstance().getTheme().getButtonUI().getForeground());
+                    c.setForeground(GlobalUI.getInstance().getTheme().getButtonUI().getForegroundSelected());
                 }else{
-                    c.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+                    c.setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
                     c.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getForeground());
                 }
                 return c;

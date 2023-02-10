@@ -19,12 +19,13 @@ import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class Button extends JComponent implements  MouseMotionListener, MouseListener , Accessible {
+public class Button extends JComponent implements  FocusListener,MouseMotionListener, MouseListener , Accessible {
     private String actionCommand;
     private String title;
     private String textKey;
     private String rutaImage1;
-    private String rutaImage2;
+    //private String rutaImage2;
+    private boolean focus =false;
     private boolean in =false;
     private boolean out =true;
     private boolean pressed = false;
@@ -126,7 +127,7 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
             //boolean rtn = setColorImage(GlobalUI.getInstance().getTheme().getColorImageButton());
             if (this.isFilterImage) {
                 rutaImage1 = ii.getDescription();
-                rutaImage2 = rutaImage1;
+                //rutaImage2 = rutaImage1;
                 image0 = filterImage(rutaImage1,buttonUI.getColorImage(),false);//ii.getImage();
                 image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
                 imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
@@ -147,7 +148,7 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
 
         addMouseMotionListener(this);
         addMouseListener(this);
-
+        addFocusListener(this);
     }
 
 
@@ -163,7 +164,7 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         }
         else if (out) {
             cbackPaint = colorBack;
-            cborderPaint = colorBorder;
+            cborderPaint = focus?colorBorderSelect:colorBorder;
             //cfkPaint = colorForeKey;
             //cfPaint = colorFore;
         }
@@ -623,4 +624,15 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         repaint();
     }
 
+    @Override
+    public void focusGained(FocusEvent e) {
+        focus = true;
+        repaint();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        focus = false;
+        repaint();
+    }
 }

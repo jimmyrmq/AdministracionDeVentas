@@ -62,7 +62,7 @@ public class FrameMain {
         frame.setResizable(true);
         Image icon = Toolkit.getDefaultToolkit().getImage("icon/main.png");
         frame.setIconImage(icon);//Icono.getInstance().loadIcon(soft.getNameIcon()).getImage());
-        //frame.setExtendedState(6);//6: Expandir la ventana
+        frame.setExtendedState(6);//6: Expandir la ventana
         //frame.setSize(dim);
         frame.setMinimumSize(dim);
         //frame.setBackground(new Color(158,162,144));

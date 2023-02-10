@@ -1,6 +1,6 @@
 package view.frame.ui.component;
 
-import view.frame.ui.component.border.BottomRoundedCornerBorder;
+import view.frame.ui.component.border.BorderPopupMenuComboBoxComboBox;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -9,7 +9,6 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -64,8 +63,9 @@ public class ComboBoxUI extends BasicComboBoxUI {
             Graphics2D g2 = (Graphics2D) grphcs;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2.setColor(GlobalUI.getInstance().getTheme().getPanelUI().getColorBackgoundControl());
-
             g2.fillRoundRect(0, 0, width, height, 1, 1);
+
+
             g2.setColor(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
             g2.setStroke(new BasicStroke(1));//, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
 
@@ -93,7 +93,7 @@ public class ComboBoxUI extends BasicComboBoxUI {
             }
         }*/;
 
-        pop.setBorder(new BottomRoundedCornerBorder());//LineBorder(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder(), 1));
+        pop.setBorder(new BorderPopupMenuComboBoxComboBox());//LineBorder(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder(), 1));
         return pop;
     }
 

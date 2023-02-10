@@ -27,6 +27,11 @@ public class ButtonExitUI implements IButtonUI {
     }
 
     @Override
+    public Color getForegroundSelected() {
+        return null;
+    }
+
+    @Override
     public Color getBackgroundMouseEntered() {
         return new Color(255,83,73);
     }

@@ -37,6 +37,11 @@ public class ButtonUI implements IButtonUI {
     }
 
     @Override
+    public Color getForegroundSelected() {
+        return new Color(253,254,252);
+    }
+
+    @Override
     public Color getBackgroundMouseEntered() {
         return colBackEntered;
     }
@@ -58,7 +63,7 @@ public class ButtonUI implements IButtonUI {
 
     @Override
     public Color getColorSelected() {
-        return new Color(30,104,179);
+        return new Color(75,110,175);
     }
 
     @Override

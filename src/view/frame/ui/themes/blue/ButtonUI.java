@@ -27,6 +27,11 @@ public class ButtonUI implements IButtonUI {
     }
 
     @Override
+    public Color getForegroundSelected() {
+        return null;
+    }
+
+    @Override
     public Color getBackgroundMouseEntered() {
         return null;
     }

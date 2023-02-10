@@ -3,6 +3,7 @@ package view.frame.main;
 import com.djm.db.connection.Connection;
 import com.djm.db.connection.DataConnection;
 import com.djm.util.LayoutPanel;
+import util.Global;
 import util.SystemProperties;
 import view.frame.dashboard.ActionButton;
 import view.frame.ui.component.ComboBox;
@@ -21,7 +22,7 @@ public class Init {
 
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
-        new LookAndFeel(new Dark());//);//
+        new LookAndFeel();//new Dark());//
         SystemProperties.getInstance().setLanguaje("es.properties");
         //LookAndFeel lf = new LookAndFeel();
         //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//
