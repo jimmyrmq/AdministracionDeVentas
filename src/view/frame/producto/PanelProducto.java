@@ -12,6 +12,7 @@ import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
+import view.frame.ui.component.ComboBox;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -36,7 +37,7 @@ public class PanelProducto implements IPanel , ActionListener {
     private boolean open = false;
     private TextField tCodigo,tCodigoBarra,tNombre,tDescripcion,tUnidadMedida,
                         tCosto,tPrecio1,tPrecio2,tPrecio3,tUtilidad,tStockBajo;
-    private JComboBox<Categoria> cbCategoria;
+    private ComboBox<Categoria> cbCategoria;
     private TextArea tNota;
     private CheckBox disponible, servicio, precioImpuesto;
     private DefaultComboBoxModel<Categoria> dcbCategoria;
@@ -178,7 +179,7 @@ public class PanelProducto implements IPanel , ActionListener {
         cat2.setDesrcripcion("Servicio");
         dcbCategoria.addElement(cat1);
         dcbCategoria.addElement(cat2);
-        cbCategoria = new JComboBox<>(dcbCategoria);
+        cbCategoria = new ComboBox<>(dcbCategoria);
         cbCategoria.setOpaque(false);
         cbCategoria.setPreferredSize(cbdim);
         cbCategoria.setMaximumRowCount(20);

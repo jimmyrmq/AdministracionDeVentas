@@ -356,6 +356,7 @@ public class Button extends JComponent implements  MouseMotionListener, MouseLis
         if(in){
             ActionEvent ae=new ActionEvent(e.getSource(), e.getID(),actionCommand);//me.paramString());
             fireActionPerformed(ae);
+            requestFocus();
 
             if(buttonGroup!=null)
                 buttonGroup.clearSelection();

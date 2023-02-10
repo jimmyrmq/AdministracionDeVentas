@@ -5,25 +5,29 @@ import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.ColorUIResource;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public class ComboBox<E> extends JComboBox<E> {
     public ComboBox() {
+        this(null);
+    }
+
+    public ComboBox(ComboBoxModel<E> aModel) {
         //UIManager.put("ComboBox.border", BorderFactory.createLineBorder(Color.red));
-        UIManager.put("ComboBox.selectionBackground", GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+        UIManager.put("ComboBox.selectionBackground", GlobalUI.getInstance().getTheme().getTextUI().getBackground());
         UIManager.put("ComboBox.selectionForeground", GlobalUI.getInstance().getTheme().getPanelUI().getForeground());
         UIManager.put("ComboBox.font", GlobalUI.getInstance().getTheme().getPanelUI().getFont());
+        setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getForeground());
+        setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
+
+        if(aModel!=null){
+            setModel(aModel);
+        }
 
         setPreferredSize(new Dimension(140,21));
-        setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getForeground());
-        setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
-        setBorder(new RoundedCornerBorder());//new EmptyBorder(2, 2, 2, 2));
         setUI(new ComboBoxUI());
+        setBorder(new RoundedCornerBorder());//new EmptyBorder(2, 2, 2, 2));
         //getEditor().getEditorComponent().setBackground(Color.BLACK);
 
         ((JTextField) getEditor().getEditorComponent()).setOpaque(false);
@@ -46,5 +50,13 @@ public class ComboBox<E> extends JComboBox<E> {
             }
         });
     }
-
+    /*@Override
+    public void updateUI() {
+        super.updateUI();
+        Object o = getAccessibleContext().getAccessibleChild(0);
+        if (o instanceof JComponent) {
+            JComponent c = (JComponent) o;
+            c.setBorder(new RoundedCornerBorder());
+        }
+    }*/
 }

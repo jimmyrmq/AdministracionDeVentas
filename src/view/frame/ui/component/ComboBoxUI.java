@@ -1,10 +1,13 @@
 package view.frame.ui.component;
 
+import view.frame.ui.component.border.BottomRoundedCornerBorder;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicComboPopup;
+import javax.swing.plaf.basic.ComboPopup;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -74,10 +77,10 @@ public class ComboBoxUI extends BasicComboBoxUI {
         }
     }
 
-   /* @Override
+    @Override
     protected ComboPopup createPopup() {
-        BasicComboPopup pop = new BasicComboPopup(comboBox) {
-            @Override
+        BasicComboPopup pop = new BasicComboPopup(comboBox) /* {
+           @Override
             protected JScrollPane createScroller() {
                 list.setFixedCellHeight(20);
                 JScrollPane scroll = new JScrollPane(list);
@@ -88,10 +91,11 @@ public class ComboBoxUI extends BasicComboBoxUI {
                 scroll.setVerticalScrollBar(sb);
                 return scroll;
             }
-        };
-        pop.setBorder(new LineBorder(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder(), 1));
+        }*/;
+
+        pop.setBorder(new BottomRoundedCornerBorder());//LineBorder(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder(), 1));
         return pop;
-    }*/
+    }
 
     /*@Override
     public void paint(Graphics grphcs, JComponent jc) {
