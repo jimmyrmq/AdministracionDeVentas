@@ -565,11 +565,13 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         this.colorBorderSelect = buttonUI.getColorBorderSelected();
         this.colorBorderDisabled = buttonUI.getColorBorderDisabled();
         this.cbSelected =  buttonUI.getBackgroundSelected();
-        filterImage(buttonUI.getColorImage());
+        setColorImage(buttonUI.getColorImage());
 
         repaint();
     }
-    private void filterImage(Color cimage){
+
+
+    public void setColorImage(Color cimage){
 
         if(image0!=null && this.isFilterImage) {
             image0 = ColorFilter.filterImage(rutaImage1 ,cimage,false);//ii.getImage();
@@ -598,9 +600,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     public void setEnabled(boolean enabled){
         this.enabled = enabled;
         if(enabled)
-            filterImage(buttonUI.getColorImage());
+            setColorImage(buttonUI.getColorImage());
         else
-            filterImage(buttonUI.getForegroundDisabled());
+            setColorImage(buttonUI.getForegroundDisabled());
         repaint();
     }
 }

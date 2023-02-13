@@ -22,8 +22,8 @@ public class PanelProducto  implements IPanel {
         PCategoria pcat = new PCategoria();
 
         pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        pPrincipal.add(pcat.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 1.0f));
-        pPrincipal.add(plist, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 1.0f));
+        pPrincipal.add(pcat.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
+        pPrincipal.add(plist, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
         pPrincipal.add(dp.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 1.0f, 1.0f));
 
     }

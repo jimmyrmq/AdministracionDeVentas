@@ -1,19 +1,25 @@
 package view.frame.producto;
 
-import com.djm.ui.TextField;
+import com.djm.ui.component.TextField;
+import com.djm.ui.themes.button.IButtonUI;
 import com.djm.ui.themes.panel.IPanelUI;
+import com.djm.ui.themes.table.ITableUI;
+import com.djm.ui.themes.text.ITextUI;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
+import view.frame.ui.component.Button;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -26,11 +32,19 @@ public class PListaProducto extends JPanel{
     private JTable tabla;
     private TableRowSorter<TableModel> sorter;
     private TextField tBuscar;
+    private Button bEditar;
+    private Button bEliminar;
 
     public PListaProducto() {
         super(new GridBagLayout());
-        tBuscar = new TextField(25);
 
+        bEditar = new Button("Editar",new ImageIcon("icon/edit.png"));
+        bEliminar = new Button("Eliminar",new ImageIcon("icon/delete.png"));
+        bEliminar.setColorImage(Color.RED);
+        bEliminar.setForeground(Color.RED);
+
+        tBuscar = new TextField(25);
+        tBuscar.setHint("Buscar Producto...");
         tBuscar.addKeyListener(new KeyListener(){
             public void keyPressed(KeyEvent ke){
                 int key = ke.getKeyCode();
@@ -45,7 +59,7 @@ public class PListaProducto extends JPanel{
             public 	void keyTyped(KeyEvent ke){}
         });
 
-
+        IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
         ModeloTabla modelo = new ModeloTabla();
         tabla = new JTable(modelo);
 
@@ -53,34 +67,40 @@ public class PListaProducto extends JPanel{
         GlobalProduct.getInstance().table = tabla;
 
         //tabla.setAutoCreateColumnsFromModel(false);
-        tabla.setFillsViewportHeight(true);
         tabla.setShowGrid(false);//Mostrar las lineas
-        tabla.setShowHorizontalLines(false);
+        tabla.setFillsViewportHeight(false);
+        tabla.setShowHorizontalLines(true);
         tabla.setShowVerticalLines(false);
-        tabla.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
-        //tabla.setRowSelectionAllowed(true);
+        //tabla.setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
+        tabla.setRowSelectionAllowed(true);
         //tabla.setCellSelectionEnabled(true);
-        //tabla.setGridColor(new Color(170,170,170));
         tabla.setOpaque(true);
-        tabla.getTableHeader().setReorderingAllowed(false);
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//Ajustarlo al tama�o del JScrollPane
         //tabla.setSelectionForeground( Color.white );
-
+        tabla.setGridColor(panelUI.getColorBorder());
+        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        tabla.setRowHeight(21);
         sorter = new TableRowSorter<TableModel>(modelo);
         tabla.setRowSorter(sorter);
 
+        /*KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+        t1.getTable().getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "ENTER");
+        t1.getTable().getActionMap().put("ENTER",new EnterAction());*/
+        int dimX = 0;
         TableColumn column=null;
-        int []anchoColum={100,140,140,150,40};
+        int []anchoColum={80,140,140,150,40};
         for (int i = 0; i <anchoColum.length; i++) {//tabla.getColumnCount()
+            sorter.setSortable(i, false);
             column = tabla.getColumnModel().getColumn(i);
             column.setMinWidth(anchoColum[i]);
             column.setPreferredWidth(anchoColum[i]);
+            dimX +=anchoColum[i];
         }
+        tabla.setPreferredScrollableViewportSize(new Dimension(dimX, 100));
 
         addProductPrueba(modelo);
-
-        IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
-        lookColumn(panelUI.getBackground(),panelUI.getForeground(),panelUI.getColorBorder(),Color.BLUE,panelUI.getFont());
+        ITableUI tableUI = GlobalUI.getInstance().getTheme().getTableUI();
+        lookColumn(tableUI.getBackgroundHeader(),tableUI.getForegroundHeader(),panelUI.getColorBorder(),tableUI.getFont());
 
         JScrollPane jsp = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
@@ -88,8 +108,10 @@ public class PListaProducto extends JPanel{
         jsp.setOpaque(false);
         jsp.setBorder(null);
 
-        add(tBuscar, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 10, 0.0f, 0.0f));
-        add(jsp, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 10, 1.0f, 1.0f));
+        add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
+        add(jsp, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
+        add(bEditar, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        add(bEliminar, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
 
     }
 
@@ -113,19 +135,30 @@ public class PListaProducto extends JPanel{
         }
     }
 
-    public void lookColumn(Color back, Color fore, Color border, Color gridColor, Font font) {
+    public void lookColumn(Color back, Color fore, Color border, Font font) {
         JTableHeader th = tabla.getTableHeader();
         th.setOpaque(false);
-        th.setFont(font);
-        th.setBackground(back);
-        th.setForeground(fore);
-        th.setBorder(BorderFactory.createLineBorder(border));
-        th.setPreferredSize(new Dimension(0, 21));
+        //th.setFont(new Font("Tahoma",1,15));
+        //th.setBorder(BorderFactory.createLineBorder(border));
+        //th.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, border));
+        //th.setBorder(new LineBorder(Color.BLACK));//new MatteBorder(0,0,1,0, border));
+        th.setEnabled(false);
+        th.setPreferredSize(new Dimension(0, 25));
+        th.setReorderingAllowed(false);
+        th.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-        /*tabla.setShowGrid(true);
-        tabla.setShowHorizontalLines(false);
-        tabla.setShowVerticalLines(true);*/
-        tabla.setGridColor(gridColor);
+                c.setFont(font);
+                c.setHorizontalAlignment(SwingConstants.CENTER);
+                c.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, border));
+                c.setBackground(back);
+                c.setForeground(fore);
+                return c;
+            }
+        });
+
     }
 
 
