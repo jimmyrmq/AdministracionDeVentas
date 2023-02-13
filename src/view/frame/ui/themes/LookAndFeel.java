@@ -130,8 +130,8 @@ public class LookAndFeel {
                 UIManager.put("ScrollPane.foreground",Color.BLUE);
                 UIManager.put("ScrollPane.border",BorderFactory.createLineBorder(new Color(241, 11, 11)));
 
-                UIManager.put("List.foreground",Color.BLUE);
-                UIManager.put("List.background",Color.BLUE);
+                /*UIManager.put("List.foreground",Color.BLUE);
+                UIManager.put("List.background",Color.BLUE);*/
 
                 UIManager.put("TabbedPane.foreground",colFore);
                 UIManager.put("TabbedPane.background",colBack);

@@ -271,6 +271,7 @@ public class ButtonTabbed extends JComponent implements  MouseMotionListener, Mo
     }
 
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         //g2.setStroke ( new BasicStroke(1, BasicStroke.CAP_BUTT,BasicStroke.JOIN_ROUND ));
         if(paintSelected){
@@ -338,7 +339,8 @@ public class ButtonTabbed extends JComponent implements  MouseMotionListener, Mo
             g2.drawString(textKey, posx_tk, posy_tk);
         }
 
-        super.paintComponent(g);
+        g2.dispose();
+        g.dispose();
     }
     public void setOrientationText(byte orientationText){
         this.orientationText = orientationText;

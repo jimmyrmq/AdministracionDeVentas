@@ -1,5 +1,8 @@
 package view.frame.main;
 
+import util.SystemProperties;
+import view.frame.ui.component.OptionPane;
+
 import javax.swing.*;
 
 public class Salir {
@@ -13,9 +16,11 @@ public class Salir {
     }
 
     public void exitSystem(JFrame frame){
-        Object[] opcion = new Object[]{"Si", "No"};
-        int n = JOptionPane.showOptionDialog(frame, "¿Deseas salir del sistema?","Administracion", 0, 3, (Icon)null, opcion, "No");
-        if(n == 0){
+        int n0 = OptionPane.questionYesOrKey(frame,SystemProperties.getInstance().getValue("label.mensaje.salir"));
+         if(n0 == OptionPane.OK){
+            try {
+                Thread.sleep(100);
+            }catch (InterruptedException exc){}
             frame.setVisible(false);
             frame.dispose();
             System.gc();

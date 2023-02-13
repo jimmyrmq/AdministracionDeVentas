@@ -19,7 +19,6 @@ import java.awt.GridBagConstraints;
 public class Init {
     private Connection conn;
     public Init (){
-
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
         new LookAndFeel();//new Dark());//

@@ -11,12 +11,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 import javax.accessibility.Accessible;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class Button extends JComponent implements  FocusListener,MouseMotionListener, MouseListener , Accessible {
@@ -128,7 +124,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
             if (this.isFilterImage) {
                 rutaImage1 = ii.getDescription();
                 //rutaImage2 = rutaImage1;
-                image0 = filterImage(rutaImage1,buttonUI.getColorImage(),false);//ii.getImage();
+                image0 = ColorFilter.filterImage(rutaImage1,buttonUI.getColorImage(),false);//ii.getImage();
                 image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
                 imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
             }else {
@@ -151,9 +147,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         addFocusListener(this);
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
@@ -185,6 +181,8 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         g2.setColor(cbackPaint);
         g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
 
+        g2.fillRoundRect(0, 0, getWidth() , getHeight() , 2, 2);
+
         /*if(paintSelected) {
             g2.setColor(cbackPaint);
             g2.fillRoundRect(0, getHeight() -3, getWidth() , getHeight() , 2, 2);
@@ -210,7 +208,8 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
             g2.drawString(textKey, posx_tk, posy_tk);
         }
 
-        super.paintComponent(g);
+        g2.dispose();
+        g.dispose();
     }
 
     private void setDimension(){
@@ -505,92 +504,6 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         calculePosicion();
     }
 
-    private BufferedImage filterImage(String fileName,Color color,boolean filterCol){
-
-        boolean filter = color!=null;
-
-        BufferedImage image = null;
-
-        if(filter) {
-            int red = color.getRed();
-            int green = color.getGreen();
-            int blue = color.getBlue();
-            File fime = new File(fileName);
-            if (fime.exists()) {
-                try {
-                    image = ImageIO.read(fime);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                if (image != null) {
-                    int alto = image.getHeight();
-                    int ancho = image.getHeight();
-                    //Color array[][] = new Color[ancho][alto];
-                    Color col;
-                    for (int y = 0; y < alto; y++) {
-                        for (int x = 0; x < ancho; x++) {
-                            int srcPixel = image.getRGB(x, y);
-                            //int p = (col.getBlue()+col.getGreen()+col.getRed())/3;
-                            //System.out.println(col.getAlpha());
-
-                            int alpha = (srcPixel >> 24) & 0xff;
-                        /*int red = (srcPixel >> 16) & 0xff;
-                        int green = (srcPixel >> 8) & 0xff;
-                        int blue = (srcPixel >> 0) & 0xff;
-
-                       /*if(srcPixel!=0){
-                           array[y][x]=new Color(255,255,255,1);
-                       }else*/
-                            if (filterCol)
-                                col = filterColor(new Color(red, green, blue, alpha));
-                            else
-                                col = new Color(red, green, blue, alpha);
-
-                            image.setRGB(x, y, col.getRGB());
-                        }
-                    }
-
-                }
-            }
-        }
-        return image;
-    }
-
-    private Color filterColor(Color color) {
-        int r = color.getRed();
-        int g = color.getGreen();
-        int b = color.getBlue();
-        //System.out.print(r+" "+g+" "+b+" ");
-        if(r == 0)
-            r=50;
-        if(g == 0)
-            g=50;
-        if(b == 0)
-            b=50;
-        r += (r*5)/100;
-        g += (g*5)/100;
-        b += (b*5)/100;
-
-        if(r<0)
-            r = 0;
-        else if(r>255)
-            r=255;
-
-        if(g<0)
-            g = 0;
-        else if(g>255)
-            g=255;
-
-        if(b<0)
-            b = 0;
-        else if(b>255)
-            b=255;
-
-        //System.out.println(r+" "+g+" "+b+" ");
-        Color rtn = new Color(r,g,b,color.getAlpha());
-
-        return rtn;
-    }
 
     @Override
     public void setBackground(Color colorBack){
@@ -616,7 +529,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         this.cbSelected =  buttonUI.getBackgroundSelected();
 
         if(image0!=null && this.isFilterImage) {
-            image0 = filterImage(rutaImage1 ,buttonUI.getColorImage(),false);//ii.getImage();
+            image0 = ColorFilter.filterImage(rutaImage1 ,buttonUI.getColorImage(),false);//ii.getImage();
             image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
             imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
         }
