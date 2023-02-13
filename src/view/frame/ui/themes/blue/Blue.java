@@ -1,6 +1,8 @@
 package view.frame.ui.themes.blue;
 
+import com.djm.ui.themes.checkbox.ICheckBoxUI;
 import com.djm.ui.themes.global.ITheme;
+import com.djm.ui.themes.table.ITableUI;
 
 public class Blue implements ITheme {
     @Override
@@ -19,9 +21,15 @@ public class Blue implements ITheme {
     }
 
     @Override
-    public CheckBoxUI getCheckBox() {
+    public ICheckBoxUI getCheckBoxUI() {
         return new CheckBoxUI();
     }
+
+    @Override
+    public ITableUI getTableUI() {
+        return new TableUI();
+    }
+
 /*
     private Color colBack = new Color(61, 145, 213);
     private Color colBackButton = new Color(29, 71, 101);

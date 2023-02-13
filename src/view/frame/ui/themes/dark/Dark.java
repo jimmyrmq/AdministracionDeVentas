@@ -4,6 +4,7 @@ import com.djm.ui.themes.button.IButtonUI;
 import com.djm.ui.themes.checkbox.ICheckBoxUI;
 import com.djm.ui.themes.global.ITheme;
 import com.djm.ui.themes.panel.IPanelUI;
+import com.djm.ui.themes.table.ITableUI;
 import com.djm.ui.themes.text.ITextUI;
 
 public class Dark implements ITheme {
@@ -23,7 +24,12 @@ public class Dark implements ITheme {
     }
 
     @Override
-    public ICheckBoxUI getCheckBox() {
+    public ICheckBoxUI getCheckBoxUI() {
         return new CheckBoxUI();
+    }
+
+    @Override
+    public ITableUI getTableUI() {
+        return new TableUI();
     }
 }

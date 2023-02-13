@@ -17,6 +17,11 @@ public class TextUI implements ITextUI {
     }
 
     @Override
+    public Color getForeground() {
+        return GlobalDark.colFore;
+    }
+
+    @Override
     public Color getColorCaret() {
         return colorCaret;
     }

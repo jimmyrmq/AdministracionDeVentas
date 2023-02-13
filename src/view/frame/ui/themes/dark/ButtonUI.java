@@ -68,7 +68,7 @@ public class ButtonUI implements IButtonUI {
 
     @Override
     public Color getColorSelected() {
-        return new Color(75,110,175);
+        return GlobalDark.colorSelected;
     }
 
     @Override

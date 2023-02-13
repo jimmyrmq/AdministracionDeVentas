@@ -28,7 +28,8 @@ public class PCategoria {
 
         PanelList pl = new PanelList();
 
-        pl.add(new CategoriaUI(1,"Producto",Color.ORANGE));
+        pl.add(new CategoriaUI(1,"Productos",Color.ORANGE));
+        pl.add(new CategoriaUI(2,"Servicios",Color.MAGENTA));
 
         JScrollPane jspi = new JScrollPane(pl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);
@@ -38,7 +39,7 @@ public class PCategoria {
         jspi.setPreferredSize(new Dimension(250,500));
         //jspi.setSize(new Dimension(70,500));
 
-        pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 0, 1.0f, 1.0f));
+        pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 0, 1.0f, 1.0f));
 
     }
 

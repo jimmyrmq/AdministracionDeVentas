@@ -7,6 +7,8 @@ import com.djm.ui.themes.checkbox.ICheckBoxUI;
 import com.djm.ui.themes.global.ITheme;
 import com.djm.ui.themes.panel.IPanelUI;
 import com.djm.ui.themes.panel.PanelDefaultUI;
+import com.djm.ui.themes.table.ITableUI;
+import com.djm.ui.themes.table.TableDefaultUI;
 import com.djm.ui.themes.text.ITextUI;
 import com.djm.ui.themes.text.TextDefaultUI;
 
@@ -28,8 +30,13 @@ public class DefaultUI implements ITheme {
     }
 
     @Override
-    public ICheckBoxUI getCheckBox() {
+    public ICheckBoxUI getCheckBoxUI() {
         return new CheckBoxDefaultUI();
+    }
+
+    @Override
+    public ITableUI getTableUI() {
+        return new TableDefaultUI();
     }
 /*
     @Override

@@ -54,7 +54,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
         this.selected = selected;
         this.font = GlobalUI.getInstance().getTheme().getPanelUI().getFont();
 
-        ICheckBoxUI checkBoxUI = GlobalUI.getInstance().getTheme().getCheckBox();
+        ICheckBoxUI checkBoxUI = GlobalUI.getInstance().getTheme().getCheckBoxUI();
 
         colorIn = checkBoxUI.getBackgroundAction();
         colorBack = checkBoxUI.getBackground();

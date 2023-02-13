@@ -1,19 +1,17 @@
 package view.frame.producto;
 
-import com.djm.ui.TextArea;
-import com.djm.ui.TextField;
+import com.djm.ui.component.TextArea;
+import com.djm.ui.component.TextField;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Impuesto;
 import model.Marca;
-import model.Producto;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
 import view.frame.ui.component.ComboBox;
-import view.frame.ui.themes.ButtonExitUI;
 import view.frame.ui.themes.ButtonNewUI;
 import view.frame.ui.themes.GlobalUI;
 
