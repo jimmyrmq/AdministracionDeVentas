@@ -22,14 +22,18 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private String rutaImage1;
     //private String rutaImage2;
     private boolean focus =false;
+    private boolean enabled =true;
     private boolean in =false;
     private boolean out =true;
     private boolean pressed = false;
-    private boolean sizeDefault = false;
+    private boolean sizeDefault = true;
     private Font font = new Font("Segoe UI",0,12);
     private Font fontKey = new Font("Segoe UI",1,10);
     private Color colorBack = null;
+    private Color colorBackEnabled = null;
+    private Color colorBorderDisabled = null;
     private Color colorFore = new Color(0,0,0);
+    private Color colorForeDisabled = new Color(0,0,0);
     private Color colorForeKey;// = new Color(140, 140, 140);
     private Color colorBorder = new Color(0,0,0);
     private Color cbSelected = new Color(0,0,0);
@@ -155,33 +159,35 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
 
         if (in) {
-            cbackPaint = cbackIn;
-            cborderPaint =  cborderIn;
-        }
-        else if (out) {
-            cbackPaint = colorBack;
-            cborderPaint = focus?colorBorderSelect:colorBorder;
+            cbackPaint = enabled?cbackIn:colorBackEnabled;
+            cborderPaint = cborderIn;
+        } else if (out) {
+            cbackPaint = enabled?colorBack:colorBackEnabled;
+            cborderPaint = focus ? colorBorderSelect : colorBorder;
             //cfkPaint = colorForeKey;
             //cfPaint = colorFore;
         }
+        if(enabled) {
+            if (pressed) {
+                //cfPaint = colorSelected;
+                imagePaint = image1;
+                cborderPaint = colorBorderSelect;
+                cbackPaint = cbSelected;
+            } else {
+                cfPaint = colorFore;
+                imagePaint = image0;
+            }
+        }else {
+            cfPaint = colorForeDisabled;
+            cborderPaint = colorBorderDisabled;
+        }
 
-        if(pressed) {
-            //cfPaint = colorSelected;
-            imagePaint = image1;
-            cborderPaint = colorBorderSelect;
-            cbackPaint = cbSelected;
-        }
-        else {
-            cfPaint = colorFore;
-            imagePaint = image0;
-        }
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2.setColor(cbackPaint);
         g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
 
-        g2.fillRoundRect(0, 0, getWidth() , getHeight() , 2, 2);
 
         /*if(paintSelected) {
             g2.setColor(cbackPaint);
@@ -270,7 +276,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
                         width = dimx_ii;
                     } else
                         width = fmt.stringWidth(title);
-                    width += 5;
+                    width += 10;
+
+                    //System.out.println( this.orientationImageX+" "+this.orientationImageY+" "+actionCommand);
                 }
 
                 if (orientationText == LEFT) {
@@ -290,7 +298,11 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
                 }
                 else if(orientationText == BUTTOM) {
                     posx_tt = (width-fmt.stringWidth(title))/2;
-                    posy_tt = height-3;//(dimy_ii+fmt.getHeight())+2;
+                    if(image0!=null) {
+                        posy_tt = dimy_ii+fmt.getHeight();
+                    }
+                    else
+                        posy_tt = height-3;//(dimy_ii+fmt.getHeight())+2;
                 }
                 else if(orientationText == NONE){
                     if(textKey!=null)
@@ -340,31 +352,36 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        repaint();
+        if(enabled)
+            repaint();
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        pressed = true;
+        if(enabled) {
+            pressed = true;
 
-        repaint();
+            repaint();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        pressed = false;
-        if(in){
-            ActionEvent ae=new ActionEvent(e.getSource(), e.getID(),actionCommand);//me.paramString());
-            fireActionPerformed(ae);
-            requestFocus();
+        if(enabled) {
+            pressed = false;
+            if (in) {
+                ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), actionCommand);//me.paramString());
+                fireActionPerformed(ae);
+                requestFocus();
 
-            if(buttonGroup!=null)
-                buttonGroup.clearSelection();
+                if (buttonGroup != null)
+                    buttonGroup.clearSelection();
 
             /*if(paintBack && paintClickSelected)
                 paintSelected =!paintSelected;*/
+            }
+            repaint();
         }
-        repaint();
     }
 
 /*
@@ -378,21 +395,27 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        in = true;
-        out = false;
-        repaint();
+        if(enabled) {
+            in = true;
+            out = false;
+            repaint();
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        in = false;
-        out = true;
-        repaint();
+        if(enabled) {
+            in = false;
+            out = true;
+            repaint();
+        }
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        repaint();
+        if(enabled) {
+            repaint();
+        }
     }
 
     @Override
@@ -499,6 +522,15 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         calculePosicion();
     }
 
+
+    public void setOrientationImage(byte orientationImageX,byte orientationImageY){
+        this.orientationImageX = orientationImageX;
+        this.orientationImageY = orientationImageY;
+        calculePosicion();
+        setPreferredSize(new Dimension(width,height));
+        revalidate();
+    }
+
     public void setOrientationImageY(byte orientationImage){
         this.orientationImageX = orientationImage;
         calculePosicion();
@@ -515,9 +547,14 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         this.colorFore = colorFore;
     }
 
+    private IButtonUI buttonUI;
     public void setButtonUI(IButtonUI buttonUI){
+        this.buttonUI = buttonUI;
+
         this.colorBack = buttonUI.getBackground();
+        this.colorBackEnabled = buttonUI.getBackgroundDisabled();
         this.colorFore = buttonUI.getForeground();
+        this.colorForeDisabled = buttonUI.getForegroundDisabled();
         this.colorBorder = buttonUI.getColorBorder();
         this.cborderIn = buttonUI.getColorBorderSelected();
         this.colorForeKey = buttonUI.getColorTextKey();
@@ -526,26 +563,44 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         //this.colorSelect = buttonUI.getColorSelected();
         this.colorAccion = buttonUI.getBackgroundAction();
         this.colorBorderSelect = buttonUI.getColorBorderSelected();
+        this.colorBorderDisabled = buttonUI.getColorBorderDisabled();
         this.cbSelected =  buttonUI.getBackgroundSelected();
+        filterImage(buttonUI.getColorImage());
+
+        repaint();
+    }
+    private void filterImage(Color cimage){
 
         if(image0!=null && this.isFilterImage) {
-            image0 = ColorFilter.filterImage(rutaImage1 ,buttonUI.getColorImage(),false);//ii.getImage();
+            image0 = ColorFilter.filterImage(rutaImage1 ,cimage,false);//ii.getImage();
             image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
             imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
         }
 
-        repaint();
     }
 
     @Override
     public void focusGained(FocusEvent e) {
-        focus = true;
-        repaint();
+        if(enabled) {
+            focus = true;
+            repaint();
+        }
     }
 
     @Override
     public void focusLost(FocusEvent e) {
-        focus = false;
+        if(enabled) {
+            focus = false;
+            repaint();
+        }
+    }
+    @Override
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
+        if(enabled)
+            filterImage(buttonUI.getColorImage());
+        else
+            filterImage(buttonUI.getForegroundDisabled());
         repaint();
     }
 }

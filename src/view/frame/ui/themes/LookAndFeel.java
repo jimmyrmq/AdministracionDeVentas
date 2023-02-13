@@ -68,10 +68,11 @@ public class LookAndFeel {
 
         try {
             IPanelUI panelUI = theme.getPanelUI();
+            IButtonUI buttonUI = theme.getButtonUI();
+
             Font font = panelUI.getFont();//new Font("Tahoma",0,12);
 
                 //font = theme.getFontLabel();
-                IButtonUI buttonUI = theme.getButtonUI();
 
                 Color colBack = panelUI.getBackground();
                 //Color colBackButton = theme.getBackgroundButton();
@@ -126,19 +127,18 @@ public class LookAndFeel {
                 UIManager.put("TextField.background", colBack);
                 UIManager.put("TextField.caretForeground", colFore);
 
-                UIManager.put("ScrollPane.foreground",Color.red);
                 UIManager.put("ScrollPane.foreground",Color.BLUE);
-                UIManager.put("ScrollPane.border",BorderFactory.createLineBorder(new Color(241, 11, 11)));
+                UIManager.put("ScrollPane.border",panelUI.getColorBorder());
 
-                /*UIManager.put("List.foreground",Color.BLUE);
-                UIManager.put("List.background",Color.BLUE);*/
+                /*UIManager.put("List.foreground",Color.BLUE);*/
+                UIManager.put("List.background",colBack);
 
-                UIManager.put("TabbedPane.foreground",colFore);
+                /*UIManager.put("TabbedPane.foreground",colFore);
                 UIManager.put("TabbedPane.background",colBack);
                 UIManager.put("TabbedPane.shadow",Color.RED);
                 UIManager.put("TabbedPane.tabAreaBackground",Color.yellow);
                 UIManager.put("TabbedPane.selected",Color.GREEN);
-                UIManager.put("TabbedPane.focus",Color.BLUE);
+                UIManager.put("TabbedPane.focus",Color.BLUE);*/
 
                 UIManager.put("Button.defaultButtonFollowsFocus", false);
                 UIManager.put("Button.foreground", colFore);

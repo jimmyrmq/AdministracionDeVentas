@@ -42,6 +42,11 @@ public class ButtonUI implements IButtonUI {
     }
 
     @Override
+    public Color getForegroundDisabled() {
+        return new Color(177, 177, 190);
+    }
+
+    @Override
     public Color getBackgroundMouseEntered() {
         return colBackEntered;
     }

@@ -38,7 +38,7 @@ public class PCategoria {
         jspi.setPreferredSize(new Dimension(250,500));
         //jspi.setSize(new Dimension(70,500));
 
-        pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 1.0f, 1.0f));
+        pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 0, 1.0f, 1.0f));
 
     }
 

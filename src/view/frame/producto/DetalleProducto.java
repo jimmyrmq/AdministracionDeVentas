@@ -5,12 +5,16 @@ import com.djm.ui.TextField;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Impuesto;
+import model.Marca;
+import model.Producto;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
 import view.frame.ui.component.ComboBox;
+import view.frame.ui.themes.ButtonExitUI;
+import view.frame.ui.themes.ButtonNewUI;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -28,12 +32,14 @@ public class DetalleProducto implements ActionListener {
     private JPanel pActividad;
     private SystemProperties sp = SystemProperties.getInstance();
     private boolean open = false;
-    private TextField tCodigo,tCodigoBarra,tNombre,tDescripcion,tUnidadMedida,
+    private TextField tCodigo,tCodigoBarra,tNombre,tUnidadMedida,//,tDescripcion
                         tCosto,tPrecio1,tPrecio2,tPrecio3,tUtilidad,tStockBajo, tDisponible;
     private ComboBox<Categoria> cbCategoria;
+    private ComboBox<Marca> cbMarca;
     private TextArea tNota;
     private CheckBox disponible, servicio, precioImpuesto;
     private DefaultComboBoxModel<Categoria> dcbCategoria;
+    private DefaultComboBoxModel<Marca> dcbMarca;
     private JScrollPane jsp = null;
     private JList<Impuesto> lImpuesto;
     private DefaultListModel dlmImpuestp;
@@ -48,7 +54,12 @@ public class DetalleProducto implements ActionListener {
 
         Button bAceptar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
         Button bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
+        Button bNuevo = new Button(sp.getValue("button.nuevo"),new ImageIcon("icon/new.png"));
 
+        bAceptar.addActionListener(this);
+
+        bNuevo.setButtonUI(new ButtonNewUI());
+        bNuevo.setEnabled(false);
         //bAceptar.setDimension(100,32);
         //bCancelar.setDimension(100,32);
 
@@ -59,16 +70,16 @@ public class DetalleProducto implements ActionListener {
         lPanel[1] = pPrecioImpuesto();
         lPanel[2] = pStock();
 
-        panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(bAceptar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        panel.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 1.0f, 0.0f));
+        panel.add(bAceptar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(bCancelar, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
 
         JScrollPane jspi = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
         jspi.getViewport().setOpaque(false);
         jspi.setOpaque(false);
         jspi.setBorder(null);
-
 
         pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 1.0f));
     }
@@ -127,16 +138,16 @@ public class DetalleProducto implements ActionListener {
         JLabel lCodigo = new JLabel(sp.getValue("produtos.label.codigo")+":");
         JLabel lCodigoBarra = new JLabel(sp.getValue("produtos.label.codigobarra")+":");
         JLabel lNombre = new JLabel(sp.getValue("produtos.label.nombre")+":");
-        JLabel lDescripcion = new JLabel(sp.getValue("produtos.label.descripcion")+":");
+        //JLabel lDescripcion = new JLabel(sp.getValue("produtos.label.descripcion")+":");
         JLabel lUnidadMedida = new JLabel(sp.getValue("produtos.label.unidadmedida")+":");
         JLabel lCategoria = new JLabel(sp.getValue("produtos.label.categoria")+":");
-        //JLabel lDisponible= new JLabel(sp.getValue("produtos.label.disponible"));
+        JLabel lMarca= new JLabel(sp.getValue("produtos.label.marca")+":");
         JLabel lNota= new JLabel(sp.getValue("produtos.label.nota")+":");
 
         tCodigo = new TextField(10,7);
         tCodigoBarra = new TextField(25);
         tNombre = new TextField(20);
-        tDescripcion = new TextField(25);
+        //tDescripcion = new TextField(25);
         tUnidadMedida = new TextField(5);
 
         tNota = new TextArea(3,25);
@@ -170,6 +181,7 @@ public class DetalleProducto implements ActionListener {
         cat1.setDesrcripcion("Producto");
         Categoria cat2 =  new Categoria();
         cat2.setDesrcripcion("Servicio");
+
         dcbCategoria.addElement(cat1);
         dcbCategoria.addElement(cat2);
         cbCategoria = new ComboBox<>(dcbCategoria);
@@ -181,6 +193,22 @@ public class DetalleProducto implements ActionListener {
         //cbMediero.setBackground(new Color(255,255,255));
         cbCategoria.setEnabled(true);
         //cbCategoria.setUI(new MyComboBoxUI());
+
+
+        dcbMarca = new DefaultComboBoxModel<Marca> ();
+        Marca mc1 =  new Marca();
+        mc1.setDesrcripcion("Sin Marca");
+
+        dcbMarca.addElement(mc1);
+        cbMarca = new ComboBox<>(dcbMarca);
+        cbMarca.setOpaque(false);
+        cbMarca.setPreferredSize(cbdim);
+        cbMarca.setMaximumRowCount(20);
+        cbMarca.setEditable(false);
+        //cbMarca.getEditor().getEditorComponent().setBackground(Color.RED);
+        //cbMarca.setBackground(new Color(255,255,255));
+        cbMarca.setEnabled(true);
+        //cbMarca.setUI(new MyComboBoxUI());
 
         jsp = new JScrollPane(tNota, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());
@@ -202,17 +230,19 @@ public class DetalleProducto implements ActionListener {
         panel.add(tCodigoBarra, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         panel.add(lNombre, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
         panel.add(tNombre, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(lDescripcion, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tDescripcion, LayoutPanel.constantePane(1, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        //panel.add(lDescripcion, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        //panel.add(tDescripcion, LayoutPanel.constantePane(1, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         panel.add(lUnidadMedida, LayoutPanel.constantePane(0, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
         panel.add(tUnidadMedida, LayoutPanel.constantePane(1, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         panel.add(lCategoria, LayoutPanel.constantePane(0, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
         panel.add(cbCategoria, LayoutPanel.constantePane(1, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(disponible, LayoutPanel.constantePane(1, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(servicio, LayoutPanel.constantePane(1, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lMarca, LayoutPanel.constantePane(0, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(cbMarca, LayoutPanel.constantePane(1, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(disponible, LayoutPanel.constantePane(1, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(servicio, LayoutPanel.constantePane(1, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         //panel.add(disponible, LayoutPanel.constantePane(0, 13, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        panel.add(lNota, LayoutPanel.constantePane(0, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 0, 0, 0, 0.0f, 1.0f));
-        panel.add(jsp, LayoutPanel.constantePane(1, 8, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 1.0f, 1.0f));
+        panel.add(lNota, LayoutPanel.constantePane(0, 9, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 0, 0, 0, 0.0f, 1.0f));
+        panel.add(jsp, LayoutPanel.constantePane(1, 9, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 1.0f, 1.0f));
 
         return panel;
     }
@@ -320,6 +350,20 @@ public class DetalleProducto implements ActionListener {
             if(!stock) {
                 stock = true;
                 setActividad(lPanel[2]);
+            }
+        }
+        else if(action.equals("Guardar")){
+            int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
+            if(index != -1) {
+                int[] selection = GlobalProduct.getInstance().table.getSelectedRows();
+                if(selection.length == 1) {
+                    int row = GlobalProduct.getInstance().table.convertRowIndexToModel(selection[0]);
+
+                    if (row != -1) {
+                        GlobalProduct.getInstance().producto = GlobalProduct.getInstance().modelTable.getValue(row);
+                        //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
+                    }
+                }
             }
         }
     }

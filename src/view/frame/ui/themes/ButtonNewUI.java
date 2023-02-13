@@ -1,29 +1,29 @@
-package view.frame.ui.themes.blue;
+package view.frame.ui.themes;
 
 import com.djm.ui.themes.button.IButtonUI;
 
 import java.awt.Color;
 import java.awt.Font;
 
-public class ButtonUI implements IButtonUI {
+public class ButtonNewUI implements IButtonUI {
     @Override
     public Color getBackground() {
-        return null;
+        return new Color(58, 74, 255);
     }
 
     @Override
     public Color getBackgroundAction() {
-        return null;
+        return new Color(89, 122, 255);
     }
 
     @Override
     public Color getBackgroundDisabled() {
-        return null;
+        return GlobalUI.getInstance().getTheme().getPanelUI().getBackground();
     }
 
     @Override
-    public Color getBackgroundSelected() {
-        return null;
+    public Color getBackgroundSelected() {//Cuando hace clic
+        return new Color(114, 140, 243);
     }
 
     @Override
@@ -33,27 +33,27 @@ public class ButtonUI implements IButtonUI {
 
     @Override
     public Color getForegroundDisabled() {
-        return null;
+        return new Color(114, 114, 122);
     }
 
     @Override
     public Color getBackgroundMouseEntered() {
-        return null;
+        return new Color(73, 109, 255);
     }
 
     @Override
     public Color getColorImage() {
-        return null;
+        return Color.WHITE;
     }
 
     @Override
     public Color getForeground() {
-        return null;
+        return Color.WHITE;
     }
 
     @Override
     public Color getColorBorder() {
-        return null;
+        return new Color(58, 61, 255);
     }
 
     @Override
@@ -63,17 +63,17 @@ public class ButtonUI implements IButtonUI {
 
     @Override
     public Color getColorBorderSelected() {
-        return null;
+        return new Color(58, 74, 255);
     }
 
     @Override
     public Color getColorBorderDisabled() {
-        return null;
+        return new Color(114, 114, 122);
     }
 
     @Override
     public Font getFont() {
-        return null;
+        return new Font("Segoe UI",0,11);
     }
 
     @Override
@@ -88,6 +88,6 @@ public class ButtonUI implements IButtonUI {
 
     @Override
     public String pathIcon() {
-        return null;
+        return "icon/";
     }
 }
