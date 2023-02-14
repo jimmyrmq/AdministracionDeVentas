@@ -28,7 +28,6 @@ public class ActionListenerProduct implements ActionListener {
         else if (action.equals("DROP_PRODUCT")){
             Producto prod = selectedProduct();
             if(prod!=null) {
-                System.out.println("Elimimando a _ " + prod.getID());
                 int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
                 if(index!=-1)
                     GlobalProduct.getInstance().modelTable.delProduct(index);

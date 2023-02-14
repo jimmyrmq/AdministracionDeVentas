@@ -149,6 +149,7 @@ public class OptionPane {
             buttons[buttonCancel].setActionMap(actionMap);
         }
 
+        dialog.setVisible(true);
     }
 
     private static class ActionListenerButton implements ActionListener{

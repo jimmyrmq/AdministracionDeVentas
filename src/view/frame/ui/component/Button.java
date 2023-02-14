@@ -113,10 +113,12 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         ActionMap actionMap0 = getActionMap();
         AbstractAction actionListener = new AbstractAction() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(e.getSource()+" "+e.getID()+" "+actionCommand);
-               ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), "0");//me.paramString());
-               fireActionPerformed(ae);
+            public void actionPerformed(ActionEvent e) {//
+                // System.out.println(e.getSource()+" "+e.getID()+" "+actionCommand);
+               if(focus) {
+                   ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), actionCommand);//me.paramString());
+                   fireActionPerformed(ae);
+               }
 
             }
         };
@@ -495,10 +497,11 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         this.actionCommand = actionCommand;
     }
 
-
-    /*private void actionPerformed(ActionEvent event) {
+/*
+    private void actionPerformed(ActionEvent event) {
         fireActionPerformed(event);
-    }*/
+    }
+*/
 
     private void fireActionPerformed(ActionEvent event) {
         // Guaranteed to return a non-null array
@@ -615,7 +618,6 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     @Override
     public void focusGained(FocusEvent e) {
         if(enabled) {
-
             focus = true;
             repaint();
         }
@@ -625,6 +627,10 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     public void focusLost(FocusEvent e) {
         if(enabled) {
             focus = false;
+            in = false;
+            out = true;
+            pressed = false;
+
             repaint();
         }
     }
@@ -636,7 +642,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         else {
             setColorImage(buttonUI.getForegroundDisabled());
 
-            focus = true;
+            focus = false;
             in = false;
             out = true;
             pressed = false;

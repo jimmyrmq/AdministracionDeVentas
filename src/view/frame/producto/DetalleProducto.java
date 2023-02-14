@@ -39,7 +39,7 @@ public class DetalleProducto implements ActionListener {
     private ComboBox<Categoria> cbCategoria;
     private ComboBox<Marca> cbMarca;
     private TextArea tNota;
-    private CheckBox disponible, servicio, precioImpuesto;
+    private CheckBox disponible, requiereStock, precioImpuesto;
     private DefaultComboBoxModel<Categoria> dcbCategoria;
     private DefaultComboBoxModel<Marca> dcbMarca;
     private JScrollPane jsp = null;
@@ -228,8 +228,8 @@ public class DetalleProducto implements ActionListener {
         disponible.setOpaque(false);
         disponible.setSelected(true);
 
-        servicio = new CheckBox(sp.getValue("produtos.label.servicio"));
-        servicio.setOpaque(false);
+        requiereStock = new CheckBox(sp.getValue("produtos.label.servicio"));
+        requiereStock.setOpaque(false);
 
         panel.add(lCodigo, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
         panel.add(tCodigo, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 0.0f, 0.0f));
@@ -246,7 +246,7 @@ public class DetalleProducto implements ActionListener {
         panel.add(lMarca, LayoutPanel.constantePane(0, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
         panel.add(cbMarca, LayoutPanel.constantePane(1, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         panel.add(disponible, LayoutPanel.constantePane(1, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(servicio, LayoutPanel.constantePane(1, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(requiereStock, LayoutPanel.constantePane(1, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
         //panel.add(disponible, LayoutPanel.constantePane(0, 13, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
         panel.add(lNota, LayoutPanel.constantePane(0, 9, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 0, 0, 0, 0.0f, 1.0f));
         panel.add(jsp, LayoutPanel.constantePane(1, 9, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 1.0f, 1.0f));
@@ -363,8 +363,77 @@ public class DetalleProducto implements ActionListener {
             bGuardar.setEnabled(true);
             bCancelar.setEnabled(true);
             bNuevo.setEnabled(false);
-            tCodigo.requestFocus();
-            tCodigo.setText("1");
+            String cod = tCodigo.getText();
+            if(cod == null || cod.trim().isEmpty()) {
+                tCodigo.setText("1");
+                tCodigo.requestFocus();
+            }
+        }
+        else if(action.equals("BUTTON_GUARDAR")){
+            String cod = tCodigo.getText();
+            String codBarra = tCodigoBarra.getText();
+            String nombre = tNombre.getText();
+            String unidMed = tUnidadMedida.getText();
+            boolean disp = disponible.isSelected();
+            boolean reqStock = requiereStock.isSelected();
+            String nota = tNota.getText();
+            String costo = tCosto.getText();
+            String precio1 = tPrecio1.getText();
+            String precio2 = tPrecio2.getText();
+            String precio3 = tPrecio3.getText();
+            boolean isImpuesto = precioImpuesto.isSelected();
+
+            Marca marca = (Marca)dcbMarca.getSelectedItem();
+            Categoria categoria = (Categoria) dcbCategoria.getSelectedItem();
+
+            String stockCrititco = tStockCritico.getText();
+            String stock = tStock.getText();
+            Double c = 0.0;
+            if(costo!=null && !costo.trim().isEmpty())
+                c = Double.parseDouble(costo);
+
+            Double p1 = 0.0;
+            if(precio1!= null && !precio1.trim().isEmpty())
+                p1 = Double.parseDouble(precio1);
+
+            Double p2 = 0.0;
+            if(precio2!= null && !precio2.trim().isEmpty())
+                p2 = Double.parseDouble(precio2);
+
+            Double p3 = 0.0;
+            if(precio3!= null && !precio3.trim().isEmpty())
+                p3 = Double.parseDouble(precio3);
+
+            Integer scritico = 0;
+            if(stockCrititco !=null && !stockCrititco.trim().isEmpty())
+                scritico = Integer.parseInt(stockCrititco);
+
+            Integer stck = 0;
+            if(stock!=null && !stock.trim().isEmpty())
+                stck = Integer.parseInt(stock);
+
+            Producto prod = new Producto();
+            prod.setCodigo(cod);
+            prod.setCodigoBarra(codBarra);
+            prod.setNombre(nombre);
+            prod.setUnidadMedida(unidMed);
+            prod.setMarca(marca);
+            prod.setCategoria(categoria);
+            prod.setDisponible(disp);
+            prod.setNoRequiereStock(reqStock);
+            prod.setNota(nota);
+            prod.setPrecioCosto(c);
+            prod.setPrecio1(p1);
+            prod.setPrecio2(p2);
+            prod.setPrecio3(p3);
+            prod.setPrecioIncluyeImpuesto(isImpuesto);
+            prod.setStockCritico(scritico);
+            prod.setStock(stck);
+
+            AdministracionProducto administracionProducto = new AdministracionProducto();
+            administracionProducto.guardar(prod);
+
+            clear();
         }
         else if(action.equals("BUTTON_CANCELAR")){
             clear();
@@ -385,7 +454,7 @@ public class DetalleProducto implements ActionListener {
             tNombre.setText(prod.getNombre());
             tUnidadMedida.setText(prod.getUnidadMedida());
             disponible.setSelected(prod.isDisponible());
-            servicio.setSelected(prod.isNoRequiereStock());
+            requiereStock.setSelected(prod.isNoRequiereStock());
             tNota.setText(prod.getNota());
             tCosto.setText(String.valueOf(prod.getPrecioCosto()));
             tPrecio1.setText(String.valueOf(prod.getPrecio1()));
@@ -412,7 +481,7 @@ public class DetalleProducto implements ActionListener {
         tNombre.setText(null);
         tUnidadMedida.setText(null);
         disponible.setSelected(true);
-        servicio.setSelected(false);
+        requiereStock.setSelected(false);
         tNota.setText(null);
         tCosto.setText(null);
         tPrecio1.setText(null);
