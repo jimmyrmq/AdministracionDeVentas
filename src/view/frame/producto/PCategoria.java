@@ -36,7 +36,7 @@ public class PCategoria {
         jspi.getViewport().setOpaque(false);
         jspi.setOpaque(false);
         jspi.setBorder(BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder()));
-        jspi.setPreferredSize(new Dimension(250,500));
+        jspi.setPreferredSize(new Dimension(235,500));
         //jspi.setSize(new Dimension(70,500));
 
         pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 0, 1.0f, 1.0f));

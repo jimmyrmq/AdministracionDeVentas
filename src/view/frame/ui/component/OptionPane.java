@@ -13,13 +13,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class OptionPane {
     private static JDialog dialog;
     private static Button buttons[];
     private static int rtn = -1;
-    public static int OK = 0;
     private static ActionListenerButton actionListenerButton = new ActionListenerButton();
+    public final static int OK = 0;
+    private static int buttonCancel = -1;
+    private static int buttonRequest = -1;
 
     private final static int QUESTION = 0;
     private final static int INFORMATION = 1;
@@ -32,34 +35,47 @@ public class OptionPane {
 
     public static void information(JFrame frame, String message){
         String [] buttons = {sp.getValue("button.aceptar")};
+        buttonCancel = 0;
         createDialog(frame,message,INFORMATION,buttons);
     }
 
     public static void error(JFrame frame, String message){
         String [] buttons = {sp.getValue("button.cerrar")};
+        buttonCancel = 0;
+        buttonRequest = 0;
         createDialog(frame,message,ERROR,buttons);
+
     }
 
     public static int questionYesOrKey(JFrame frame, String message){
-
         String [] options = {sp.getValue("button.si"),sp.getValue("button.no")};
+        buttonCancel = 1;
+        buttonRequest = 1;
         createDialog(frame,message,QUESTION,options);
         return rtn;
     }
 
     public static int questionAcceptOrCancel(JFrame frame, String message){
         String [] options = {sp.getValue("button.aceptar"),sp.getValue("button.cancelar")};
+        buttonCancel = 1;
+        buttonRequest = 1;
         createDialog(frame,message,QUESTION,options);
         return rtn;
     }
 
     public static void warning(JFrame frame, String message){
         String [] options = {sp.getValue("button.aceptar")};
+        buttonCancel = 0;
+        buttonRequest = 0;
         createDialog(frame,message,WARNING,options);
     }
 
-    public static void createDialog(JFrame frame, String message, int type,String[] optionButtons){
+    private static void createDialog(JFrame frame, String message, int type,String[] optionButtons){
         dialog = new JDialog(frame,"Administración",true);
+        /*if(buttonCancel == -1) {
+            if (optionButtons.length == 1)
+                buttonCancel = 0;
+        }*/
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
@@ -113,7 +129,26 @@ public class OptionPane {
         dialog.setResizable(false);
         //dialog.setDefaultCloseOperation(0);
         dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+
+        if(buttonCancel!=-1) {
+            buttons[buttonRequest].requestFocus();
+
+            InputMap inputMap = buttons[buttonCancel].getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+            KeyStroke space = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+            inputMap.put(space, "ACTION_KEY");
+
+            ActionMap actionMap = buttons[buttonCancel].getActionMap();
+            actionMap.put("ACTION_KEY", new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    dialog.setVisible(false);
+                    dialog.dispose();
+                }
+            });
+
+            buttons[buttonCancel].setActionMap(actionMap);
+        }
+
     }
 
     private static class ActionListenerButton implements ActionListener{

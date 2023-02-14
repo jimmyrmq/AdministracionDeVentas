@@ -8,7 +8,7 @@ import java.awt.Font;
 public class ButtonNewUI implements IButtonUI {
     @Override
     public Color getBackground() {
-        return new Color(58, 74, 255);
+        return new Color(40, 53, 234);
     }
 
     @Override

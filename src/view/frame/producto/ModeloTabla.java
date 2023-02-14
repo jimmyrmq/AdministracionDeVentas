@@ -6,6 +6,7 @@ package view.frame.producto;
  *
  * Modelo de tabla para el ejmplo de uso del JTable
  */
+import com.djm.db.entity.Table;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
@@ -21,7 +22,15 @@ import java.util.LinkedList;
  * Implementa TableModel y dos métodos para añadir y eliminar Personas del
  * modelo 
  */
-public class ModeloTabla implements TableModel{
+public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
+
+    /** Lista con los datos. Cada elemento de la lista es una instancia de
+     * Producto */
+    private LinkedList<E> datos = new LinkedList();
+
+    /** Lista de suscriptores. El JTable será un suscriptor de este modelo de
+     * datos */
+    private LinkedList listeners = new LinkedList();
 
     private final int COLUMN_COUNT = 5;
     /** Returns the number of columns in the model. A
@@ -87,33 +96,25 @@ public class ModeloTabla implements TableModel{
      * Borra del modelo la persona en la fila indicada
      */
     public void delProduct (int fila){
-        // Se borra la fila 
+        // Se borra la fila
         datos.remove(fila);
 
-        // Y se avisa a los suscriptores, creando un TableModelEvent...
         TableModelEvent evento = new TableModelEvent (this, fila, fila,
                 TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
 
-        // ... y pasándoselo a los suscriptores
-        //avisaSuscriptores (evento);
+        avisaSuscriptores (evento);
     }
 
-    /**
-     * Añade una persona al final de la tabla
-     */
-    public void addProduct (Producto newProduct)
-    {
+     public void addProduct (E newProduct) {
         // Añade la persona al modelo 
         datos.add (newProduct);
 
         // Avisa a los suscriptores creando un TableModelEvent...
-        TableModelEvent evento;
-        evento = new TableModelEvent (this, this.getRowCount()-1,
-                this.getRowCount()-1, TableModelEvent.ALL_COLUMNS,
-                TableModelEvent.INSERT);
+        TableModelEvent evento = new TableModelEvent (this, this.getRowCount()-1,
+                this.getRowCount()-1, TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
 
         // ... y avisando a los suscriptores
-        //avisaSuscriptores (evento);
+        avisaSuscriptores (evento);
     }
 
     /** Adds a listener to the list that is notified each time a change
@@ -269,17 +270,10 @@ public class ModeloTabla implements TableModel{
             ((TableModelListener)listeners.get(i)).tableChanged(evento);
     }
 
-    public Producto getValue(int row){
-        Producto producto = (Producto) datos.get(row);
+    public E getValue(int row){
+        E producto = (E) datos.get(row);
 
         return producto;
     }
 
-    /** Lista con los datos. Cada elemento de la lista es una instancia de
-     * Producto */
-    private LinkedList datos = new LinkedList();
-
-    /** Lista de suscriptores. El JTable será un suscriptor de este modelo de
-     * datos */
-    private LinkedList listeners = new LinkedList();
 }

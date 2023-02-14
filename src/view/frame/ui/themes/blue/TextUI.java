@@ -11,6 +11,11 @@ public class TextUI implements ITextUI {
     }
 
     @Override
+    public Color getForeground() {
+        return null;
+    }
+
+    @Override
     public Color getColorCaret() {
         return null;
     }

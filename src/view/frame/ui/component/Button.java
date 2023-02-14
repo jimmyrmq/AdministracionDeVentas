@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -95,6 +96,35 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
     public Button(String title, String textKey, ImageIcon ii, byte orientationText, boolean filter){
         setOpaque(false);
+        setFocusable(true);
+        //setRequestFocusEnabled(true);
+        //getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0,false), "none");
+
+        setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
+        setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
+
+        KeyStroke space= KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0,false);
+        KeyStroke enter= KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0,false);
+
+        InputMap inputMap0 = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap0.put(space, "ACTION_KEY_SPACE");
+        inputMap0.put(enter, "ACTION_KEY_ENTER");
+
+        ActionMap actionMap0 = getActionMap();
+        AbstractAction actionListener = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(e.getSource()+" "+e.getID()+" "+actionCommand);
+               ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), "0");//me.paramString());
+               fireActionPerformed(ae);
+
+            }
+        };
+
+        actionMap0.put("ACTION_KEY_SPACE", actionListener);
+        actionMap0.put("ACTION_KEY_ENTER", actionListener);
+
+        setActionMap(actionMap0);
 
         this.textKey = textKey;
         this.title = title;
@@ -187,7 +217,6 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
         g2.setColor(cbackPaint);
         g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
-
 
         /*if(paintSelected) {
             g2.setColor(cbackPaint);
@@ -370,9 +399,10 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         if(enabled) {
             pressed = false;
             if (in) {
+                requestFocus();
+                //System.out.println(e.getSource()+" "+e.getID()+" "+actionCommand);
                 ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), actionCommand);//me.paramString());
                 fireActionPerformed(ae);
-                requestFocus();
 
                 if (buttonGroup != null)
                     buttonGroup.clearSelection();
@@ -466,9 +496,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     }
 
 
-    private void actionPerformed(ActionEvent event) {
+    /*private void actionPerformed(ActionEvent event) {
         fireActionPerformed(event);
-    }
+    }*/
 
     private void fireActionPerformed(ActionEvent event) {
         // Guaranteed to return a non-null array
@@ -478,6 +508,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         // those that are interested in this event
         for (int i = listeners.length-2; i>=0; i-=2) {
             if (listeners[i]==ActionListener.class){
+                System.out.println(listeners[i]+" "+actionCommand);
 				  /*String actionCommand0 = event.getActionCommand();
 				  if(actionCommand0 == null)
 					 actionCommand0 = getActionCommand();*/
@@ -584,6 +615,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     @Override
     public void focusGained(FocusEvent e) {
         if(enabled) {
+
             focus = true;
             repaint();
         }
@@ -601,8 +633,14 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         this.enabled = enabled;
         if(enabled)
             setColorImage(buttonUI.getColorImage());
-        else
+        else {
             setColorImage(buttonUI.getForegroundDisabled());
+
+            focus = true;
+            in = false;
+            out = true;
+            pressed = false;
+        }
         repaint();
     }
 }

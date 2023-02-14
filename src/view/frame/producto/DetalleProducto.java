@@ -6,6 +6,7 @@ import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Impuesto;
 import model.Marca;
+import model.Producto;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
@@ -24,14 +25,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.List;
 
 public class DetalleProducto implements ActionListener {
     private JPanel pPrincipal;
     private JPanel pActividad;
-    private SystemProperties sp = SystemProperties.getInstance();
-    private boolean open = false;
-    private TextField tCodigo,tCodigoBarra,tNombre,tUnidadMedida,//,tDescripcion
-                        tCosto,tPrecio1,tPrecio2,tPrecio3,tUtilidad,tStockBajo, tDisponible;
+    private final SystemProperties sp = SystemProperties.getInstance();
+    private Button bNuevo;
+    private Button bGuardar;
+    private Button bCancelar;
+    private TextField tCodigo,tCodigoBarra,tNombre,tUnidadMedida,//,tDescripcion,tUtilidad
+                        tCosto,tPrecio1,tPrecio2,tPrecio3, tStockCritico, tStock;
     private ComboBox<Categoria> cbCategoria;
     private ComboBox<Marca> cbMarca;
     private TextArea tNota;
@@ -50,14 +54,21 @@ public class DetalleProducto implements ActionListener {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        Button bAceptar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
-        Button bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
-        Button bNuevo = new Button(sp.getValue("button.nuevo"),new ImageIcon("icon/new.png"));
+        bGuardar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
+        bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
+        bNuevo = new Button(sp.getValue("produtos.buttom.nuevo_producto"),new ImageIcon("icon/new.png"));
 
-        bAceptar.addActionListener(this);
+        bGuardar.addActionListener(this);
+        bCancelar.addActionListener(this);
+        bNuevo.addActionListener(this);
+
+        bGuardar.setActionCommand("BUTTON_GUARDAR");
+        bCancelar.setActionCommand("BUTTON_CANCELAR");
+        bNuevo.setActionCommand("BUTTON_NUEVO");
 
         bNuevo.setButtonUI(new ButtonNewUI());
-        bNuevo.setEnabled(false);
+        bGuardar.setEnabled(false);
+        bCancelar.setEnabled(false);
         //bAceptar.setDimension(100,32);
         //bCancelar.setDimension(100,32);
 
@@ -70,7 +81,7 @@ public class DetalleProducto implements ActionListener {
 
         panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
         panel.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 1.0f, 0.0f));
-        panel.add(bAceptar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(bGuardar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
         panel.add(bCancelar, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
 
         JScrollPane jspi = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -176,12 +187,10 @@ public class DetalleProducto implements ActionListener {
         Dimension cbdim = new Dimension(210,21);
         dcbCategoria = new DefaultComboBoxModel<Categoria> ();
         Categoria cat1 =  new Categoria();
-        cat1.setDesrcripcion("Producto");
-        Categoria cat2 =  new Categoria();
-        cat2.setDesrcripcion("Servicio");
+        cat1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
 
         dcbCategoria.addElement(cat1);
-        dcbCategoria.addElement(cat2);
+
         cbCategoria = new ComboBox<>(dcbCategoria);
         cbCategoria.setOpaque(false);
         cbCategoria.setPreferredSize(cbdim);
@@ -195,7 +204,7 @@ public class DetalleProducto implements ActionListener {
 
         dcbMarca = new DefaultComboBoxModel<Marca> ();
         Marca mc1 =  new Marca();
-        mc1.setDesrcripcion("Sin Marca");
+        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
 
         dcbMarca.addElement(mc1);
         cbMarca = new ComboBox<>(dcbMarca);
@@ -256,7 +265,7 @@ public class DetalleProducto implements ActionListener {
         JLabel lPrecio1 = new JLabel(sp.getValue("produtos.label.precio1")+":");
         JLabel lPrecio2 = new JLabel(sp.getValue("produtos.label.precio2")+":");
         JLabel lPrecio3 = new JLabel(sp.getValue("produtos.label.precio3")+":");
-        JLabel lUtilidad = new JLabel(sp.getValue("produtos.label.utilidad")+":");
+        //JLabel lUtilidad = new JLabel(sp.getValue("produtos.label.utilidad")+":");
 
         dlmImpuestp = new DefaultListModel<Impuesto>();
         lImpuesto = new JList<>(dlmImpuestp);
@@ -270,7 +279,7 @@ public class DetalleProducto implements ActionListener {
         tPrecio1 = new TextField(10,10);
         tPrecio2 = new TextField(10,10);
         tPrecio3 = new TextField(10,10);
-        tUtilidad = new TextField(10,10);
+        //tUtilidad = new TextField(10,10);
 
         tCosto.textDecimal(",");
         tPrecio1.textDecimal(",");
@@ -286,17 +295,17 @@ public class DetalleProducto implements ActionListener {
 
         panel.add(lCosto, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
         panel.add(tCosto, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(lUtilidad, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tUtilidad, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(lPrecio1, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tPrecio1, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(lPrecio2, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tPrecio2, LayoutPanel.constantePane(1, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(lPrecio3, LayoutPanel.constantePane(0, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tPrecio3, LayoutPanel.constantePane(1, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(precioImpuesto, LayoutPanel.constantePane(1, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(agregarImpuesto, LayoutPanel.constantePane(1, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(jspi, LayoutPanel.constantePane(1, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 5, 0, 0, 1.0f, 1.0f));
+        //panel.add(lUtilidad, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        //panel.add(tUtilidad, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio1, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(tPrecio1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio2, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(tPrecio2, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio3, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(tPrecio3, LayoutPanel.constantePane(1, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(precioImpuesto, LayoutPanel.constantePane(1, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(agregarImpuesto, LayoutPanel.constantePane(1, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(jspi, LayoutPanel.constantePane(1, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 5, 0, 0, 1.0f, 1.0f));
 
         return panel;
     }
@@ -310,15 +319,15 @@ public class DetalleProducto implements ActionListener {
         JLabel lAdvertencia = new JLabel(sp.getValue("produtos.label.advertenciaStock")+":");
         JLabel lDisponible = new JLabel(sp.getValue("produtos.label.cantidad_disponible")+":");
 
-        tStockBajo = new TextField(5,5,true);
-        tDisponible = new TextField(5);
-        tDisponible.setEditable(false);
+        tStockCritico = new TextField(5,5,true);
+        tStock = new TextField(5);
+        tStock.setEditable(false);
         //tDisponible.setEnabled(false);
 
         panel.add(lAdvertencia, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        panel.add(tStockBajo, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(tStockCritico, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 0.0f, 0.0f));
         panel.add(lDisponible, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        panel.add(tDisponible, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 1.0f, 1.0f));
+        panel.add(tStock, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 1.0f, 1.0f));
 
         return panel;
     }
@@ -350,19 +359,15 @@ public class DetalleProducto implements ActionListener {
                 setActividad(lPanel[2]);
             }
         }
-        else if(action.equals("Guardar")){
-            int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
-            if(index != -1) {
-                int[] selection = GlobalProduct.getInstance().table.getSelectedRows();
-                if(selection.length == 1) {
-                    int row = GlobalProduct.getInstance().table.convertRowIndexToModel(selection[0]);
-
-                    if (row != -1) {
-                        GlobalProduct.getInstance().producto = GlobalProduct.getInstance().modelTable.getValue(row);
-                        //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
-                    }
-                }
-            }
+        else if(action.equals("BUTTON_NUEVO")){
+            bGuardar.setEnabled(true);
+            bCancelar.setEnabled(true);
+            bNuevo.setEnabled(false);
+            tCodigo.requestFocus();
+            tCodigo.setText("1");
+        }
+        else if(action.equals("BUTTON_CANCELAR")){
+            clear();
         }
     }
     private void setActividad(JPanel panel){
@@ -370,6 +375,62 @@ public class DetalleProducto implements ActionListener {
         pActividad.add(panel, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 1.0f));
         pActividad.revalidate();
         pActividad.repaint();
+    }
+
+    public void fillerProducto(){
+        Producto prod = GlobalProduct.getInstance().producto;
+        if(prod!=null) {
+            tCodigo.setText(prod.getCodigo());
+            tCodigoBarra.setText(prod.getCodigoBarra());
+            tNombre.setText(prod.getNombre());
+            tUnidadMedida.setText(prod.getUnidadMedida());
+            disponible.setSelected(prod.isDisponible());
+            servicio.setSelected(prod.isNoRequiereStock());
+            tNota.setText(prod.getNota());
+            tCosto.setText(String.valueOf(prod.getPrecioCosto()));
+            tPrecio1.setText(String.valueOf(prod.getPrecio1()));
+            tPrecio2.setText(String.valueOf(prod.getPrecio2()));
+            tPrecio3.setText(String.valueOf(prod.getPrecio3()));
+            precioImpuesto.setSelected(prod.isPrecioIncluyeImpuesto());
+            List<Impuesto> impuestoList = prod.getImpuestoList();
+            Marca marca = prod.getMarca();
+            Categoria categoria = prod.getCategoria();
+            tStockCritico.setText(String.valueOf(prod.getStockCritico()));
+            tStock.setText(String.valueOf(prod.getStock()));
+
+            bNuevo.setEnabled(false);
+            bGuardar.setEnabled(true);
+            bCancelar.setEnabled(true);
+        }
+    }
+
+    private void clear(){
+        GlobalProduct.getInstance().producto = null;
+
+        tCodigo.setText(null);
+        tCodigoBarra.setText(null);
+        tNombre.setText(null);
+        tUnidadMedida.setText(null);
+        disponible.setSelected(true);
+        servicio.setSelected(false);
+        tNota.setText(null);
+        tCosto.setText(null);
+        tPrecio1.setText(null);
+        tPrecio2.setText(null);
+        tPrecio3.setText(null);
+        precioImpuesto.setSelected(false);
+
+        cbCategoria.setSelectedIndex(0);
+        cbMarca.setSelectedIndex(0);
+
+        /*List<Impuesto> impuestoList = prod.getImpuestoList();*/
+
+        tStockCritico.setText(null);
+        tStock.setText(null);
+
+        bNuevo.setEnabled(true);
+        bGuardar.setEnabled(false);
+        bCancelar.setEnabled(false);
     }
 
     public JPanel getPanel() {

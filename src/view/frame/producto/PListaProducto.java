@@ -9,6 +9,7 @@ import com.djm.util.LayoutPanel;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
+import util.SystemProperties;
 import view.frame.ui.component.Button;
 import view.frame.ui.themes.GlobalUI;
 
@@ -26,25 +27,38 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class PListaProducto extends JPanel{
+public class PListaProducto{
 
+    private JPanel pPrincipal;
     private JTable tabla;
     private TableRowSorter<TableModel> sorter;
     private TextField tBuscar;
     private Button bEditar;
     private Button bEliminar;
 
-    public PListaProducto() {
-        super(new GridBagLayout());
+    private ActionListenerProduct actionListener = GlobalProduct.getInstance().actionListener;
 
-        bEditar = new Button("Editar",new ImageIcon("icon/edit.png"));
-        bEliminar = new Button("Eliminar",new ImageIcon("icon/delete.png"));
+    private final SystemProperties sp = SystemProperties.getInstance();
+    public PListaProducto() {
+        pPrincipal = new JPanel(new GridBagLayout());
+        pPrincipal.setOpaque(false);
+
+        bEditar = new Button(sp.getValue("button.editar"),new ImageIcon("icon/edit.png"));
+        bEliminar = new Button(sp.getValue("button.eliminar"),new ImageIcon("icon/delete.png"));
         bEliminar.setColorImage(Color.RED);
         bEliminar.setForeground(Color.RED);
 
+        bEditar.setActionCommand("EDIT_PRODUCT");
+        bEliminar.setActionCommand("DROP_PRODUCT");
+
+        bEditar.addActionListener(actionListener);
+        bEliminar.addActionListener(actionListener);
+
         tBuscar = new TextField(25);
-        tBuscar.setHint("Buscar Producto...");
+        tBuscar.setHint(sp.getValue("produtos.label.buscar_producto"));
         tBuscar.addKeyListener(new KeyListener(){
             public void keyPressed(KeyEvent ke){
                 int key = ke.getKeyCode();
@@ -60,7 +74,7 @@ public class PListaProducto extends JPanel{
         });
 
         IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
-        ModeloTabla modelo = new ModeloTabla();
+        ModeloTabla<Producto> modelo = new ModeloTabla<Producto>();
         tabla = new JTable(modelo);
 
         GlobalProduct.getInstance().modelTable = modelo;
@@ -102,16 +116,24 @@ public class PListaProducto extends JPanel{
         ITableUI tableUI = GlobalUI.getInstance().getTheme().getTableUI();
         lookColumn(tableUI.getBackgroundHeader(),tableUI.getForegroundHeader(),panelUI.getColorBorder(),tableUI.getFont());
 
+        tabla.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    System.out.println("Se ha hecho doble click");
+                }
+            }
+        });
+
         JScrollPane jsp = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
         jsp.getViewport().setOpaque(false);
         jsp.setOpaque(false);
         jsp.setBorder(null);
 
-        add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
-        add(jsp, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
-        add(bEditar, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        add(bEliminar, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        pPrincipal.add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
+        pPrincipal.add(jsp, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
+        pPrincipal.add(bEditar, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        pPrincipal.add(bEliminar, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
 
     }
 
@@ -123,6 +145,7 @@ public class PListaProducto extends JPanel{
             cat0.setDesrcripcion("Automovil "+i);
 
             Producto prod1 = new Producto();
+            prod1.setID(i);
             prod1.setCodigo("000"+i);
             prod1.setNombre("Carro "+i);
             prod1.setCodigoBarra("78945112"+i);
@@ -130,6 +153,9 @@ public class PListaProducto extends JPanel{
             prod1.setCategoria(cat0);
             prod1.setStock(1);
             prod1.setNota("Esto es una nota del producto prueba; proudcto: "+i);
+            prod1.setNoRequiereStock(false);
+            prod1.setPrecioIncluyeImpuesto(false);
+            prod1.setDisponible(true);
 
             modelo.addProduct(prod1);
         }
@@ -169,5 +195,9 @@ public class PListaProducto extends JPanel{
             sorter.setRowFilter(RowFilter.regexFilter(text));
 
         tabla.updateUI();
+    }
+
+    public JPanel getPanel(){
+        return pPrincipal;
     }
 }

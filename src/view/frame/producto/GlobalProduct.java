@@ -6,8 +6,11 @@ import javax.swing.*;
 
 public class GlobalProduct {
     protected JTable table;
-    protected ModeloTabla modelTable;
+    protected ModeloTabla <Producto> modelTable;
     protected Producto producto;
+    protected DetalleProducto detalleProducto;
+    //private PListaProducto listaProducto;
+    protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
     private GlobalProduct(){}
 
