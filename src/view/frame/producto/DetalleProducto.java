@@ -188,10 +188,10 @@ public class DetalleProducto implements ActionListener {
         });
 
         Dimension cbdim = new Dimension(210,21);
+
         dcbCategoria = new DefaultComboBoxModel<Categoria> ();
         Categoria cat1 =  new Categoria();
         cat1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
-
         dcbCategoria.addElement(cat1);
 
         cbCategoria = new ComboBox<>(dcbCategoria);
@@ -204,12 +204,14 @@ public class DetalleProducto implements ActionListener {
         cbCategoria.setEnabled(true);
         //cbCategoria.setUI(new MyComboBoxUI());
 
+        List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();
+        if(lcat!=null && !lcat.isEmpty()) {
+            for (Categoria c : lcat)
+                dcbCategoria.addElement(c);
+        }else cbCategoria.setEnabled(false);
 
         dcbMarca = new DefaultComboBoxModel<Marca> ();
-        Marca mc1 =  new Marca();
-        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
 
-        dcbMarca.addElement(mc1);
         cbMarca = new ComboBox<>(dcbMarca);
         cbMarca.setOpaque(false);
         cbMarca.setPreferredSize(cbdim);
@@ -219,6 +221,20 @@ public class DetalleProducto implements ActionListener {
         //cbMarca.setBackground(new Color(255,255,255));
         cbMarca.setEnabled(true);
         //cbMarca.setUI(new MyComboBoxUI());
+
+        Marca mc1 =  new Marca();
+        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
+        dcbMarca.addElement(mc1);
+
+        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
+        if(lmarca!=null && !lmarca.isEmpty()){
+            for(Marca mc: lmarca)
+                dcbMarca.addElement(mc);
+        }
+        else{
+            cbMarca.setEnabled(false);
+        }
+
 
         jsp = new JScrollPane(tNota, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         Border matte  = BorderFactory.createMatteBorder(1, 1, 1, 1,GlobalUI.getInstance().getTheme().getTextUI().getColorBorder());// GlobalUI.getInstance().getTheme().getColorBorderField());

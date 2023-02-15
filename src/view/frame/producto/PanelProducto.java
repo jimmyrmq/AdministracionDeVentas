@@ -58,7 +58,6 @@ public class PanelProducto  implements IPanel {
         marca.setOrientationText(Button.BUTTOM);
         marca.setOrientationImage(Button.CENTER,Button.TOP);
 
-
         Button printer = new Button("Imprimir",new ImageIcon("icon/printer.png"));
         printer.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         printer.setOrientationText(Button.BUTTOM);
@@ -84,8 +83,6 @@ public class PanelProducto  implements IPanel {
     }
     @Override
     public void init(){
-        GlobalProduct.getInstance().consultaCategoria.getListCategoria();
-        GlobalProduct.getInstance().consultaProducto.listarProducto();
 
         createPanel();
 

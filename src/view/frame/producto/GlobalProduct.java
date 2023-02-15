@@ -12,6 +12,7 @@ public class GlobalProduct {
 
     protected final ConsultaCategoria consultaCategoria = new ConsultaCategoria();
     protected final ConsultaProducto consultaProducto = new ConsultaProducto();
+    protected final ConsultaMarca consultaMarca = new ConsultaMarca();
 
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;

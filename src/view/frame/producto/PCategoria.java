@@ -2,20 +2,13 @@ package view.frame.producto;
 
 import com.djm.util.LayoutPanel;
 import model.Categoria;
-import view.frame.ui.ListCellRendererCategoria;
-import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.PanelList;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class PCategoria {
@@ -45,7 +38,7 @@ public class PCategoria {
 
     private void init(){
         Thread thread = new Thread(()-> {
-            List<Categoria> lCat = GlobalProduct.getInstance().consultaCategoria.getListCategoria();
+            List<Categoria> lCat = GlobalProduct.getInstance().consultaCategoria.getList();
             pl.setListCategoria(lCat);
         });
         thread.start();
