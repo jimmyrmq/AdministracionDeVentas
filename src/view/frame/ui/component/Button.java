@@ -511,7 +511,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         // those that are interested in this event
         for (int i = listeners.length-2; i>=0; i-=2) {
             if (listeners[i]==ActionListener.class){
-                System.out.println(listeners[i]+" "+actionCommand);
+                //System.out.println(listeners[i]+" "+actionCommand);
 				  /*String actionCommand0 = event.getActionCommand();
 				  if(actionCommand0 == null)
 					 actionCommand0 = getActionCommand();*/

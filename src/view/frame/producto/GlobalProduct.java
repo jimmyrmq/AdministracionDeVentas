@@ -9,7 +9,10 @@ public class GlobalProduct {
     protected ModeloTabla <Producto> modelTable;
     protected Producto producto;
     protected DetalleProducto detalleProducto;
-    //private PListaProducto listaProducto;
+
+    protected final ConsultaCategoria consultaCategoria = new ConsultaCategoria();
+    protected final ConsultaProducto consultaProducto = new ConsultaProducto();
+
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
     private GlobalProduct(){}

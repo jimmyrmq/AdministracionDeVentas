@@ -17,11 +17,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 
 public class Init {
-    private Connection conn;
     public Init (){
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
-        new LookAndFeel();//new Dark());//
+        new LookAndFeel(new Dark());//);//
         SystemProperties.getInstance().setLanguaje("es.properties");
         //LookAndFeel lf = new LookAndFeel();
         //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//
@@ -58,11 +57,8 @@ public class Init {
     private void initConnBD() {
         DataConnection dconn = new DataConnection();
         dconn.setDBName("ventas");
-        this.conn = new  Connection(dconn);
+        Connection conn = new  Connection(dconn);
+        Global.getInstance().setConnection(conn);
         //conn.testConnection();
-    }
-
-    public Connection getConnectionBD(){
-        return conn;
     }
 }

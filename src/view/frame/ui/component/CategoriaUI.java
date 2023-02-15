@@ -1,5 +1,7 @@
 package view.frame.ui.component;
 
+import model.Categoria;
+
 import javax.accessibility.Accessible;
 import javax.swing.*;
 import java.awt.BasicStroke;
@@ -28,11 +30,14 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
     private boolean in = false;
     private boolean selected = false;
     private boolean focus = false;
-    public CategoriaUI(Integer ID,String title, Color color){
-        this.ID = ID;
+    private Categoria categoria;
+    public CategoriaUI(Categoria categoria){//Integer ID,String title, Color color
+        this.categoria =  categoria;
+
+        this.ID = categoria.getID();
         setOpaque(false);
-        this.title = title;
-        this.color = color;
+        this.title = categoria.getDesrcripcion();
+        this.color = categoria.getColor();
         this.colorClic = ColorFilter.getColor(color);
 
         Dimension dim = new Dimension(width,height);
@@ -131,5 +136,9 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
 
     public Integer getID() {
         return ID;
+    }
+
+    public Categoria getCategoria(){
+        return this.categoria;
     }
 }

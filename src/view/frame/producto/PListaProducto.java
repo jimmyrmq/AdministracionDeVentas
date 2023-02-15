@@ -1,13 +1,9 @@
 package view.frame.producto;
 
 import com.djm.ui.component.TextField;
-import com.djm.ui.themes.button.IButtonUI;
 import com.djm.ui.themes.panel.IPanelUI;
 import com.djm.ui.themes.table.ITableUI;
-import com.djm.ui.themes.text.ITextUI;
 import com.djm.util.LayoutPanel;
-import model.Categoria;
-import model.Marca;
 import model.Producto;
 import util.SystemProperties;
 import view.frame.ui.component.Button;
@@ -29,6 +25,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class PListaProducto{
 
@@ -79,13 +76,14 @@ public class PListaProducto{
 
         GlobalProduct.getInstance().modelTable = modelo;
         GlobalProduct.getInstance().table = tabla;
+        ITableUI tableUI = GlobalUI.getInstance().getTheme().getTableUI();
 
         //tabla.setAutoCreateColumnsFromModel(false);
         tabla.setShowGrid(false);//Mostrar las lineas
         tabla.setFillsViewportHeight(false);
         tabla.setShowHorizontalLines(true);
         tabla.setShowVerticalLines(false);
-        //tabla.setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
+        tabla.setBackground(tableUI.getBackground());
         tabla.setRowSelectionAllowed(true);
         //tabla.setCellSelectionEnabled(true);
         tabla.setOpaque(true);
@@ -112,8 +110,8 @@ public class PListaProducto{
         }
         tabla.setPreferredScrollableViewportSize(new Dimension(dimX, 100));
 
-        addProductPrueba(modelo);
-        ITableUI tableUI = GlobalUI.getInstance().getTheme().getTableUI();
+        addProductPrueba();
+
         lookColumn(tableUI.getBackgroundHeader(),tableUI.getForegroundHeader(),panelUI.getColorBorder(),tableUI.getFont());
 
         tabla.addMouseListener(new MouseAdapter() {
@@ -126,9 +124,10 @@ public class PListaProducto{
 
         JScrollPane jsp = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
-        jsp.getViewport().setOpaque(false);
+        jsp.getViewport().setOpaque(true);
         jsp.setOpaque(false);
         jsp.setBorder(null);
+        jsp.getViewport().setBackground(tableUI.getBackground());
 
         pPrincipal.add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
         pPrincipal.add(jsp, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
@@ -137,8 +136,17 @@ public class PListaProducto{
 
     }
 
-    private void addProductPrueba(ModeloTabla modelo) {
-        for(int i=1;i<=700;i++) {
+    private void addProductPrueba(){//ModeloTabla modelo) {
+        Thread thread = new Thread(()-> {
+            List<Producto> list = GlobalProduct.getInstance().consultaProducto.getList();
+            if (list != null) {
+                for (Producto prod : list)
+                    GlobalProduct.getInstance().modelTable.addProduct(prod);
+            }
+        });
+        thread.start();
+
+        /*for(int i=1;i<=700;i++) {
             Marca mrc0 = new Marca();
             mrc0.setDesrcripcion("Fiat "+i);
             Categoria cat0 = new Categoria();
@@ -158,7 +166,7 @@ public class PListaProducto{
             prod1.setDisponible(true);
 
             modelo.addProduct(prod1);
-        }
+        }*/
     }
 
     public void lookColumn(Color back, Color fore, Color border, Font font) {

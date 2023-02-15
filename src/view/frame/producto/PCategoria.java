@@ -16,20 +16,21 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class PCategoria {
     private JPanel pPrincipal;
     private JList listCategoria;
     private DefaultListModel dlmCategoria;
+    private PanelList pl;
 
     public PCategoria(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        PanelList pl = new PanelList();
+        pl = new PanelList();
 
-        pl.add(new CategoriaUI(1,"Productos",Color.ORANGE));
-        pl.add(new CategoriaUI(2,"Servicios",Color.MAGENTA));
+        init();
 
         JScrollPane jspi = new JScrollPane(pl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);
@@ -40,7 +41,14 @@ public class PCategoria {
         //jspi.setSize(new Dimension(70,500));
 
         pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 20, 0, 1.0f, 1.0f));
+    }
 
+    private void init(){
+        Thread thread = new Thread(()-> {
+            List<Categoria> lCat = GlobalProduct.getInstance().consultaCategoria.getListCategoria();
+            pl.setListCategoria(lCat);
+        });
+        thread.start();
     }
 
     public JPanel getPanel() {

@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 
 public class ActionListenerProduct implements ActionListener {
 
-
     public ActionListenerProduct(){}
 
     @Override
@@ -26,15 +25,19 @@ public class ActionListenerProduct implements ActionListener {
             }
         }
         else if (action.equals("DROP_PRODUCT")){
+            SystemProperties sp = SystemProperties.getInstance();
             Producto prod = selectedProduct();
-            if(prod!=null) {
-                int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
-                if(index!=-1)
-                    GlobalProduct.getInstance().modelTable.delProduct(index);
-                //GlobalProduct.getInstance().modelTable.removeRow(3);
-            }else{
-                SystemProperties sp = SystemProperties.getInstance();
-                OptionPane.error(FrameMain.frame,sp.getValue("produtos.message.selected_product_delete"));
+            if (prod != null) {
+                OptionPane.warning(FrameMain.frame, sp.getValue("produtos.message.warning_delete"));
+                int yes = OptionPane.questionYesOrKey(FrameMain.frame,sp.getValue("produtos.message.delete"));
+                if(yes == OptionPane.OK) {
+                    int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
+                    if (index != -1)
+                        GlobalProduct.getInstance().modelTable.delProduct(index);
+                    //GlobalProduct.getInstance().modelTable.removeRow(3);
+                }
+            } else {
+                OptionPane.error(FrameMain.frame, sp.getValue("produtos.message.selected_product_delete"));
             }
         }
 

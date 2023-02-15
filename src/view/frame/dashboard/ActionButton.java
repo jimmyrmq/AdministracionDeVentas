@@ -4,7 +4,6 @@ import util.SystemProperties;
 import view.frame.main.FrameMain;
 import view.frame.main.PanelTarea;
 import view.frame.main.Salir;
-import view.frame.producto.DetalleProducto;
 import view.frame.producto.PanelProducto;
 import view.frame.ui.component.ButtonTabbed;
 
@@ -26,8 +25,10 @@ public class ActionButton  implements ActionListener {
         if(ButtonTabbed.class == ob.getClass() ){
             panel.clear();
             if(action.equalsIgnoreCase(sp.getValue("produtos.buttom.dashboard.id"))){
-                if(pp==null)
+                if(pp==null) {
                     pp = new PanelProducto();
+                    pp.init();
+                }
 
                 panel.setTarea(pp);
             }

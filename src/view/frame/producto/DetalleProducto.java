@@ -8,16 +8,19 @@ import model.Impuesto;
 import model.Marca;
 import model.Producto;
 import util.SystemProperties;
+import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
 import view.frame.ui.component.ComboBox;
+import view.frame.ui.component.OptionPane;
 import view.frame.ui.themes.ButtonNewUI;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,7 +34,7 @@ public class DetalleProducto implements ActionListener {
     private JPanel pPrincipal;
     private JPanel pActividad;
     private final SystemProperties sp = SystemProperties.getInstance();
-    private Button bNuevo;
+    //private Button bNuevo;
     private Button bGuardar;
     private Button bCancelar;
     private TextField tCodigo,tCodigoBarra,tNombre,tUnidadMedida,//,tDescripcion,tUtilidad
@@ -56,19 +59,19 @@ public class DetalleProducto implements ActionListener {
 
         bGuardar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
         bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
-        bNuevo = new Button(sp.getValue("produtos.buttom.nuevo_producto"),new ImageIcon("icon/new.png"));
+        //bNuevo = new Button(sp.getValue("produtos.buttom.nuevo_producto"),new ImageIcon("icon/new.png"));
 
         bGuardar.addActionListener(this);
         bCancelar.addActionListener(this);
-        bNuevo.addActionListener(this);
+        //bNuevo.addActionListener(this);
 
         bGuardar.setActionCommand("BUTTON_GUARDAR");
         bCancelar.setActionCommand("BUTTON_CANCELAR");
-        bNuevo.setActionCommand("BUTTON_NUEVO");
+        //bNuevo.setActionCommand("BUTTON_NUEVO");
 
-        bNuevo.setButtonUI(new ButtonNewUI());
-        bGuardar.setEnabled(false);
-        bCancelar.setEnabled(false);
+        //bNuevo.setButtonUI(new ButtonNewUI());
+        //bGuardar.setEnabled(false);
+        //bCancelar.setEnabled(false);
         //bAceptar.setDimension(100,32);
         //bCancelar.setDimension(100,32);
 
@@ -79,10 +82,10 @@ public class DetalleProducto implements ActionListener {
         lPanel[1] = pPrecioImpuesto();
         lPanel[2] = pStock();
 
-        panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 1.0f, 0.0f));
-        panel.add(bGuardar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(bCancelar, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(pTabbed(), LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
+        //panel.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 1.0f, 0.0f));
+        panel.add(bGuardar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 0, 0, 0, 0.0f, 0.0f));
+        panel.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 1.0f, 0.0f));
 
         JScrollPane jspi = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
@@ -159,7 +162,7 @@ public class DetalleProducto implements ActionListener {
         //tDescripcion = new TextField(25);
         tUnidadMedida = new TextField(5);
 
-        tNota = new TextArea(3,25);
+        tNota = new TextArea(3,30);
         tNota.setTabSize(0);
         tNota.setOpaque(false);
         //tNota.setBorder(new EmptyBorder(5, 5, 0, 4));
@@ -359,7 +362,7 @@ public class DetalleProducto implements ActionListener {
                 setActividad(lPanel[2]);
             }
         }
-        else if(action.equals("BUTTON_NUEVO")){
+        /*else if(action.equals("BUTTON_NUEVO")){
             bGuardar.setEnabled(true);
             bCancelar.setEnabled(true);
             bNuevo.setEnabled(false);
@@ -368,8 +371,9 @@ public class DetalleProducto implements ActionListener {
                 tCodigo.setText("1");
                 tCodigo.requestFocus();
             }
-        }
+        }*/
         else if(action.equals("BUTTON_GUARDAR")){
+            FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             String cod = tCodigo.getText();
             String codBarra = tCodigoBarra.getText();
             String nombre = tNombre.getText();
@@ -413,6 +417,10 @@ public class DetalleProducto implements ActionListener {
                 stck = Integer.parseInt(stock);
 
             Producto prod = new Producto();
+
+            if(GlobalProduct.getInstance().producto!=null)
+                prod = GlobalProduct.getInstance().producto;
+
             prod.setCodigo(cod);
             prod.setCodigoBarra(codBarra);
             prod.setNombre(nombre);
@@ -431,9 +439,13 @@ public class DetalleProducto implements ActionListener {
             prod.setStock(stck);
 
             AdministracionProducto administracionProducto = new AdministracionProducto();
-            administracionProducto.guardar(prod);
+            boolean rtn = administracionProducto.guardar(prod);
 
-            clear();
+            FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            if(rtn)
+                clear();
+            else
+                OptionPane.error(FrameMain.frame,administracionProducto.getMensaje());
         }
         else if(action.equals("BUTTON_CANCELAR")){
             clear();
@@ -467,13 +479,14 @@ public class DetalleProducto implements ActionListener {
             tStockCritico.setText(String.valueOf(prod.getStockCritico()));
             tStock.setText(String.valueOf(prod.getStock()));
 
-            bNuevo.setEnabled(false);
-            bGuardar.setEnabled(true);
-            bCancelar.setEnabled(true);
+            //bNuevo.setEnabled(false);
+            //bGuardar.setEnabled(true);
+            //bCancelar.setEnabled(true);
         }
     }
 
     private void clear(){
+        FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         GlobalProduct.getInstance().producto = null;
 
         tCodigo.setText(null);
@@ -497,9 +510,10 @@ public class DetalleProducto implements ActionListener {
         tStockCritico.setText(null);
         tStock.setText(null);
 
-        bNuevo.setEnabled(true);
-        bGuardar.setEnabled(false);
-        bCancelar.setEnabled(false);
+        //bNuevo.setEnabled(true);
+        //bGuardar.setEnabled(false);
+        //bCancelar.setEnabled(false);
+        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     public JPanel getPanel() {

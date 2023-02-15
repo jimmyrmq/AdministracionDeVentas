@@ -13,14 +13,14 @@ public class PanelProducto  implements IPanel {
 
     private boolean open = false;
     private JPanel pPrincipal;
-    public PanelProducto(){
+    public PanelProducto(){}
+    private void createPanel(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
         JSeparator sep1 = new JSeparator(JSeparator.VERTICAL);
         sep1.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep1.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
-
 
         PListaProducto plist = new PListaProducto();
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
@@ -83,7 +83,12 @@ public class PanelProducto  implements IPanel {
         return panel;
     }
     @Override
-    public void init() {
+    public void init(){
+        GlobalProduct.getInstance().consultaCategoria.getListCategoria();
+        GlobalProduct.getInstance().consultaProducto.listarProducto();
+
+        createPanel();
+
         open = true;
     }
 

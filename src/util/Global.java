@@ -6,7 +6,6 @@ public class Global {
     private static Global global = null;
     private Connection conn = null;
 
-
     private Global(){}
 
     public static Global getInstance(){
