@@ -15,7 +15,10 @@ import java.util.List;
 public class ConsultaMarca {
     private List<Marca> list;
     protected void listarMarca(){
-        list = new ArrayList<>();
+        if(list!=null)
+            list.clear();
+        else
+            list = new ArrayList<>();
 
         String query = "select ID,Descripcion from Marca;";
         Connection conn = Global.getInstance().getConnection();
@@ -42,7 +45,7 @@ public class ConsultaMarca {
     public Marca getMarca(int id){
         Marca marca = null;
 
-        System.out.println(id+" "+(list !=null));
+        //System.out.println(id+" "+(list !=null));
         if(list !=null) {
             cont:for (Marca m : list) {
                 if(m.getID() == id){
@@ -51,7 +54,7 @@ public class ConsultaMarca {
                 }
             }
         }
-        System.out.println(id+" "+marca);
+        //System.out.println(id+" "+marca);
 
         return marca;
     }

@@ -6,7 +6,6 @@ package view.frame.producto;
  *
  * Modelo de tabla para el ejmplo de uso del JTable
  */
-import com.djm.db.entity.Table;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
@@ -75,8 +74,7 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
         aux = (Producto)(datos.get(rowIndex));
 
         // Se obtiene el campo apropiado según el valor de columnIndex
-        switch (columnIndex)
-        {
+        switch (columnIndex){
             case 0:
                 return aux.getCodigo();
             case 1:
@@ -95,7 +93,7 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
     /**
      * Borra del modelo la persona en la fila indicada
      */
-    public void delProduct (int fila){
+    public void removeRow(int fila){
         // Se borra la fila
         datos.remove(fila);
 
@@ -274,6 +272,15 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
         E producto = (E) datos.get(row);
 
         return producto;
+    }
+
+    public void clearTable(){
+        int rowCount = getRowCount();
+        if (rowCount> 0) {
+            for (int i = rowCount - 1; i >=0; i--) {
+                removeRow(i);
+            }
+        }
     }
 
 }

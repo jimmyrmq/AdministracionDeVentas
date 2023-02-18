@@ -81,6 +81,10 @@ public class PanelList extends JPanel {
         add(categoriaUI);
     }
 
+    public void delCategoria(int index){
+        this.listCategoriaUI.remove(index);
+    }
+
     public Categoria getItemSelected(){
         Categoria aux = null;
         cont:for(CategoriaUI cate : this.listCategoriaUI){

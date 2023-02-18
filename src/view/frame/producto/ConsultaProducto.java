@@ -18,8 +18,12 @@ import java.util.List;
 public class ConsultaProducto {
     private List<Producto> list;
 
-    public List<Producto> listarProducto(){
-        list = new ArrayList<>();
+    public void listarProducto(){
+        if(list!=null)
+            list.clear();
+        else
+            list = new ArrayList<>();
+
         String ninguno = SystemProperties.getInstance().getValue("produtos.label.ninguno");
 
         String query = "select ID,Codigo,CodigoBarra,Nombre,PrecioCosto," +
@@ -77,8 +81,6 @@ public class ConsultaProducto {
         }
 
         conn.cerrarConexion();
-
-        return list;
     }
 
     /*public void listarProducto(){

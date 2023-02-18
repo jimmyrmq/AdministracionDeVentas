@@ -14,7 +14,10 @@ import java.util.List;
 public class ConsultaCategoria {
     private List<Categoria> list;
     protected void listarCategoria(){
-        list = new ArrayList<>();
+        if(list!=null)
+            list.clear();
+        else
+            list = new ArrayList<>();
 
         String query = "select ID,Descripcion,ColorR,ColorG,ColorB from Categoria;";
         Connection conn = Global.getInstance().getConnection();

@@ -13,8 +13,8 @@ import java.util.List;
 
 public class PCategoria {
     private JPanel pPrincipal;
-    private JList listCategoria;
-    private DefaultListModel dlmCategoria;
+    //private JList listCategoria;
+    //private DefaultListModel dlmCategoria;
     private PanelList pl;
 
     public PCategoria(){

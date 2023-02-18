@@ -7,6 +7,7 @@ import view.frame.main.FrameMain;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.themes.GlobalUI;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -33,12 +34,19 @@ public class ActionListenerProduct implements ActionListener {
                 if(yes == OptionPane.OK) {
                     int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
                     if (index != -1)
-                        GlobalProduct.getInstance().modelTable.delProduct(index);
+                        GlobalProduct.getInstance().modelTable.removeRow(index);
                     //GlobalProduct.getInstance().modelTable.removeRow(3);
                 }
             } else {
                 OptionPane.error(FrameMain.frame, sp.getValue("produtos.message.selected_product_delete"));
             }
+        }
+        else if (action.equals("UPDATE_DATA_PRODUCTO")){
+            FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            new InitProduct();
+            GlobalProduct.getInstance().modelTable.clearTable();
+            FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
         }
 
     }

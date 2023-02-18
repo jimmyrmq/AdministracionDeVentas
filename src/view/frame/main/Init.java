@@ -24,9 +24,12 @@ import java.util.List;
 public class Init {
     public Init (){
 
-        //Inicializamos la conexion con la base de datos.
-        initConnBD();
-        new InitProduct();
+        Thread t = new Thread(()->{
+            //Inicializamos la conexion con la base de datos.
+            initConnBD();
+            new InitProduct();
+        });
+        t.start();
 
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());

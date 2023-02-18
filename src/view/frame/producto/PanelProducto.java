@@ -26,11 +26,11 @@ public class PanelProducto  implements IPanel {
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
         PCategoria pcat = new PCategoria();
 
-        pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        pPrincipal.add(pcat.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
-        pPrincipal.add(plist.getPanel(), LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
-        pPrincipal.add(sep1, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
-        pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 1.0f, 1.0f));
+        pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 4, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 0.0f, 1.0f));
+        pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
+        pPrincipal.add(plist.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
+        pPrincipal.add(pcat.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 10, 1.0f, 1.0f));
 
     }
 
@@ -63,6 +63,12 @@ public class PanelProducto  implements IPanel {
         printer.setOrientationText(Button.BUTTOM);
         printer.setOrientationImage(Button.CENTER,Button.TOP);
 
+        Button actualizar = new Button("Actualizar",new ImageIcon("icon/update.png"));
+        actualizar.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+        actualizar.setOrientationText(Button.BUTTOM);
+        actualizar.setOrientationImage(Button.CENTER,Button.TOP);
+        actualizar.setActionCommand("UPDATE_DATA_PRODUCTO");
+
         JSeparator sep0 = new JSeparator(JSeparator.VERTICAL);
         sep0.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep0.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
@@ -71,13 +77,19 @@ public class PanelProducto  implements IPanel {
         sep1.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep1.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
+        JSeparator sep2 = new JSeparator(JSeparator.VERTICAL);
+        sep2.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
+        sep2.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+
         panel.add(marca, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
         panel.add(category, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 0.0f, 0.0f));
         panel.add(sep0, LayoutPanel.constantePane(2, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 5, 0, 0.0f, 0.0f));
         panel.add(printer, LayoutPanel.constantePane(3, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 0.0f, 0.0f));
         panel.add(sep1, LayoutPanel.constantePane(4, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 5, 0, 0.0f, 0.0f));
         panel.add(importar, LayoutPanel.constantePane(5, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 0.0f, 0.0f));
-        panel.add(export, LayoutPanel.constantePane(6, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 1.0f, 0.0f));
+        panel.add(export, LayoutPanel.constantePane(6, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(sep2, LayoutPanel.constantePane(7, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 5, 0, 0.0f, 0.0f));
+        panel.add(actualizar, LayoutPanel.constantePane(8, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 0, 1.0f, 0.0f));
 
         return panel;
     }
