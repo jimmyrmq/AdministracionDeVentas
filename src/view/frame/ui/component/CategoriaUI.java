@@ -1,8 +1,6 @@
 package view.frame.ui.component;
 
-import com.djm.ui.themes.checkbox.ICheckBoxUI;
 import model.Categoria;
-import view.frame.ui.themes.GlobalUI;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -16,18 +14,17 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class CategoriaUI extends JComponent implements MouseListener, Accessible {//, FocusListener
+public class CategoriaUI extends JComponent implements MouseListener, Accessible {
 
     private String actionCommand;
     private Integer ID;
     private String title;
     private Color color;
     private Color colorClic;
+    private Color colDisable = new Color(192, 190, 190);
     private Font font = new Font("Segoe UI",0,12);
     private int posx_tt;
     private int posy_tt;
@@ -35,12 +32,15 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
     private int height = 100;
     private boolean in = false;
     private boolean selected = false;
-    private boolean focus = false;
+    //private boolean focus = false;
     private Color colorCheck=Color.white;//  = GlobalUI.getInstance().getTheme().getColorChekSelected();
     //private Color colorDisabled;//=  = GlobalUI.getInstance().getTheme().getColorChekDisabled();
     private Categoria categoria;
+    private boolean enabled = true;
+
     public CategoriaUI(Categoria categoria){//Integer ID,String title, Color color
         this.categoria =  categoria;
+        this.enabled = true;
 
         //ICheckBoxUI checkBoxUI = GlobalUI.getInstance().getTheme().getCheckBoxUI();
         //colorCheck = checkBoxUI.getColorChekSelected();
@@ -72,7 +72,10 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //System.out.println("Title: "+title+" "+ getWidth()+" , "+getHeight()+" "+color+" "+focus);
-        g2.setColor(in?colorClic:color);
+        if(enabled)
+            g2.setColor(in?colorClic:color);
+        else
+            g2.setColor(colDisable);
 
         g2.fillRoundRect(1, 1, getWidth()-1 , getHeight()-1 , 2, 2);
 
@@ -84,7 +87,7 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
             g2.drawLine(88,9,90,12);
         }
 
-        if(in){
+        if(enabled && in){
             g2.setColor(colorClic);
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 2, 2);
@@ -117,7 +120,7 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(in){
+        if(enabled && in){
             selected = !selected;
             //requestFocus();
 
@@ -130,14 +133,18 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        in = true;
-        repaint();
+        if(enabled) {
+            in = true;
+            repaint();
+        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        in = false;
-        repaint();
+        if(enabled) {
+            in = false;
+            repaint();
+        }
     }/*
 
     @Override
@@ -166,7 +173,11 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
         return this.categoria;
     }
 
-
+    @Override
+    public void setEnabled(boolean e){
+        enabled = e;
+        repaint();
+    }
 
     public void addActionListener(ActionListener al){
         listenerList.add(ActionListener.class, al);

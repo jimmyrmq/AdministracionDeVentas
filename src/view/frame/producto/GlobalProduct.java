@@ -14,6 +14,7 @@ public class GlobalProduct {
     protected Producto producto;
     protected DetalleProducto detalleProducto;
     protected  PCategoria pCategoria;
+    protected PTablaProducto pTablaProducto;
 
     protected final ConsultaCategoria consultaCategoria = new ConsultaCategoria();
     protected final ConsultaProducto consultaProducto = new ConsultaProducto();

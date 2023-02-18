@@ -15,7 +15,6 @@ import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.component.CheckBox;
 import view.frame.ui.component.ComboBox;
 import view.frame.ui.component.OptionPane;
-import view.frame.ui.themes.ButtonNewUI;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -51,6 +50,7 @@ public class DetalleProducto implements ActionListener {
     private boolean producto = true;
     private boolean precio = false;
     private boolean stock = false;
+    private boolean isEditingProduct = false;
     private JPanel lPanel[] = new JPanel[3];
 
     public DetalleProducto(){
@@ -434,8 +434,13 @@ public class DetalleProducto implements ActionListener {
             boolean rtn = administracionProducto.guardar(prod);
 
             FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            if(rtn)
+
+            if(rtn) {
+                if(isEditingProduct){
+
+                }
                 clear();
+            }
             else
                 OptionPane.error(FrameMain.frame,administracionProducto.getMensaje());
         }
@@ -451,8 +456,11 @@ public class DetalleProducto implements ActionListener {
     }
 
     public void fillerProducto(){
+        FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         Producto prod = GlobalProduct.getInstance().producto;
         if(prod!=null) {
+            isEditingProduct = true;
+
             tCodigo.setText(prod.getCodigo());
             tCodigoBarra.setText(prod.getCodigoBarra());
             tNombre.setText(prod.getNombre());
@@ -466,8 +474,28 @@ public class DetalleProducto implements ActionListener {
             tPrecio3.setText(String.valueOf(prod.getPrecio3()));
             precioImpuesto.setSelected(prod.isPrecioIncluyeImpuesto());
             List<Impuesto> impuestoList = prod.getImpuestoList();
+
             Marca marca = prod.getMarca();
             Categoria categoria = prod.getCategoria();
+
+            int sizeList = dcbCategoria.getSize();
+            cont:for(int i = 0; i<sizeList; i++){
+                Categoria cat = dcbCategoria.getElementAt(i);
+                if(cat.getID() == categoria.getID()){
+                    cbCategoria.setSelectedIndex(i);
+                    break cont;
+                }
+            }
+
+            sizeList = dcbMarca.getSize();
+            cont:for(int i = 0; i<sizeList; i++){
+                Marca marc = dcbMarca.getElementAt(i);
+                if(marc.getID() == marca.getID()){
+                    cbMarca.setSelectedIndex(i);
+                    break cont;
+                }
+            }
+
             tStockCritico.setText(String.valueOf(prod.getStockCritico()));
             tStock.setText(String.valueOf(prod.getStock()));
 
@@ -475,11 +503,15 @@ public class DetalleProducto implements ActionListener {
             //bGuardar.setEnabled(true);
             //bCancelar.setEnabled(true);
         }
+        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     private void clear(){
         FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         GlobalProduct.getInstance().producto = null;
+
+        GlobalProduct.getInstance().pTablaProducto.enabledPane(true);
+        isEditingProduct = false;
 
         tCodigo.setText(null);
         tCodigoBarra.setText(null);

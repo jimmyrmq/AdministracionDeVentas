@@ -25,9 +25,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
-public class PListaProducto{
+public class PTablaProducto {
 
     private JPanel pPrincipal;
     private JTable tabla;
@@ -39,7 +38,7 @@ public class PListaProducto{
     private ActionListenerProduct actionListener = GlobalProduct.getInstance().actionListener;
 
     private final SystemProperties sp = SystemProperties.getInstance();
-    public PListaProducto() {
+    public PTablaProducto() {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
@@ -115,6 +114,7 @@ public class PListaProducto{
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
+                    enabledPane(false);
                     Producto prod = GlobalProduct.getInstance().getProductTableSelected();
                     if(prod!=null) {
                         GlobalProduct.getInstance().producto = prod;
@@ -137,7 +137,6 @@ public class PListaProducto{
         pPrincipal.add(bEliminar, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
 
     }
-
 
     public void lookColumn(Color back, Color fore, Color border, Font font) {
         JTableHeader th = tabla.getTableHeader();
@@ -179,5 +178,11 @@ public class PListaProducto{
         return pPrincipal;
     }
 
-
+    protected void enabledPane(boolean e){
+        tBuscar.setEnabled(e);
+        tabla.setEnabled(e);
+        bEliminar.setEnabled(e);
+        bEditar.setEnabled(e);
+        GlobalProduct.getInstance().pCategoria.getPanelList().setEnabled(e);
+    }
 }

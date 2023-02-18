@@ -22,7 +22,7 @@ public class PanelProducto  implements IPanel {
         sep1.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep1.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
-        PListaProducto plist = new PListaProducto();
+        GlobalProduct.getInstance().pTablaProducto = new PTablaProducto();
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
         GlobalProduct.getInstance().pCategoria = new PCategoria();
 
@@ -31,7 +31,7 @@ public class PanelProducto  implements IPanel {
         pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 4, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
         pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 0.0f, 1.0f));
         pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
-        pPrincipal.add(plist.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
+        pPrincipal.add(GlobalProduct.getInstance().pTablaProducto.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
         pPrincipal.add(GlobalProduct.getInstance().pCategoria.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 10, 1.0f, 1.0f));
 
     }

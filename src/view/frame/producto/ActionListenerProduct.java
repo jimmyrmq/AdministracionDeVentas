@@ -26,6 +26,7 @@ public class ActionListenerProduct implements ActionListener {
             if (action.equals("EDIT_PRODUCT")) {
                 Producto prod = GlobalProduct.getInstance().getProductTableSelected();
                 if (prod != null) {
+                    GlobalProduct.getInstance().pTablaProducto.enabledPane(false);
                     GlobalProduct.getInstance().producto = prod;
                     GlobalProduct.getInstance().detalleProducto.fillerProducto();
                 } else {

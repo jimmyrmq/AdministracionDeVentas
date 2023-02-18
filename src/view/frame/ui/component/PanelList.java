@@ -93,9 +93,9 @@ public class PanelList extends JPanel {
 
     public List<Categoria> getItemSelected(){
         List<Categoria> aux = new ArrayList<>();
-        System.out.println("Cantidad de Categoria: "+this.listCategoriaUI.size());
+        //System.out.println("Cantidad de Categoria: "+this.listCategoriaUI.size());
         cont:for(CategoriaUI cate : this.listCategoriaUI){
-            System.out.println(cate.getCategoria().getID()+" "+cate.isSelected());
+            //System.out.println(cate.getCategoria().getID()+" "+cate.isSelected());
             if(cate.isSelected()){
                 aux.add(cate.getCategoria());
             }
@@ -103,4 +103,9 @@ public class PanelList extends JPanel {
         return aux;
     }
 
+    public void setEnabled(boolean e){
+        for(CategoriaUI cate : this.listCategoriaUI){
+            cate.setEnabled(e);
+        }
+    }
 }
