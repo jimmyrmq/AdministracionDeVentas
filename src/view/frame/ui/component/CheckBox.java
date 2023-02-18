@@ -64,8 +64,6 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
         colorCheck = checkBoxUI.getColorChekSelected();
         colorDisabled = checkBoxUI.getColorChekDisabled();
 
-
-
         calulateDimension();
         Dimension dim = new Dimension(width,heght);
         setPreferredSize(dim);

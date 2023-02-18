@@ -14,6 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +27,11 @@ public class PanelList extends JPanel {
     int index = 0;
     private List<CategoriaUI> listCategoriaUI;
     private boolean rpaint = true;
+    private ActionListener actionListener;
 
-    public PanelList(){
+    public PanelList(ActionListener actionListener){
+        this.actionListener = actionListener;
+
         setBorder(new EmptyBorder(10, 0, 10, 10));
         setOpaque(true);
         setLayout(new GridBagLayout());
@@ -77,22 +81,26 @@ public class PanelList extends JPanel {
     public void addCategoria(Categoria categoria){
 
         CategoriaUI categoriaUI = new CategoriaUI(categoria);
-
+        if(actionListener!=null)
+            categoriaUI.addActionListener(actionListener);
         add(categoriaUI);
+        listCategoriaUI.add(categoriaUI);
     }
 
     public void delCategoria(int index){
         this.listCategoriaUI.remove(index);
     }
 
-    public Categoria getItemSelected(){
-        Categoria aux = null;
+    public List<Categoria> getItemSelected(){
+        List<Categoria> aux = new ArrayList<>();
+        System.out.println("Cantidad de Categoria: "+this.listCategoriaUI.size());
         cont:for(CategoriaUI cate : this.listCategoriaUI){
+            System.out.println(cate.getCategoria().getID()+" "+cate.isSelected());
             if(cate.isSelected()){
-                aux = cate.getCategoria();
-                break cont;
+                aux.add(cate.getCategoria());
             }
         }
         return aux;
     }
+
 }

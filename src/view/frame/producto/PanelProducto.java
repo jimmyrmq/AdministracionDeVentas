@@ -24,7 +24,7 @@ public class PanelProducto  implements IPanel {
 
         PListaProducto plist = new PListaProducto();
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
-        PCategoria pcat = new PCategoria();
+        GlobalProduct.getInstance().pCategoria = new PCategoria();
 
         GlobalProduct.getInstance().init();
 
@@ -32,7 +32,7 @@ public class PanelProducto  implements IPanel {
         pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 0.0f, 1.0f));
         pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
         pPrincipal.add(plist.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
-        pPrincipal.add(pcat.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 10, 1.0f, 1.0f));
+        pPrincipal.add(GlobalProduct.getInstance().pCategoria.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 10, 1.0f, 1.0f));
 
     }
 

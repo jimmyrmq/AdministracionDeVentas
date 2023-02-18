@@ -21,7 +21,9 @@ public class PCategoria {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        pl = new PanelList();
+        ActionListenerProduct actionListenerProduct = new ActionListenerProduct();
+
+        pl = new PanelList(actionListenerProduct);
 
         init();
 
@@ -44,7 +46,12 @@ public class PCategoria {
         thread.start();
     }
 
+
     public JPanel getPanel() {
         return pPrincipal;
+    }
+
+    protected PanelList getPanelList(){
+        return pl;
     }
 }

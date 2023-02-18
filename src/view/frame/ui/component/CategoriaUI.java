@@ -1,6 +1,8 @@
 package view.frame.ui.component;
 
+import com.djm.ui.themes.checkbox.ICheckBoxUI;
 import model.Categoria;
+import view.frame.ui.themes.GlobalUI;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -12,12 +14,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class CategoriaUI extends JComponent implements MouseListener, FocusListener, Accessible {
+public class CategoriaUI extends JComponent implements MouseListener, Accessible {//, FocusListener
+
+    private String actionCommand;
     private Integer ID;
     private String title;
     private Color color;
@@ -30,11 +36,18 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
     private boolean in = false;
     private boolean selected = false;
     private boolean focus = false;
+    private Color colorCheck=Color.white;//  = GlobalUI.getInstance().getTheme().getColorChekSelected();
+    //private Color colorDisabled;//=  = GlobalUI.getInstance().getTheme().getColorChekDisabled();
     private Categoria categoria;
     public CategoriaUI(Categoria categoria){//Integer ID,String title, Color color
         this.categoria =  categoria;
 
+        //ICheckBoxUI checkBoxUI = GlobalUI.getInstance().getTheme().getCheckBoxUI();
+        //colorCheck = checkBoxUI.getColorChekSelected();
+        //colorDisabled = checkBoxUI.getColorChekDisabled();
+
         this.ID = categoria.getID();
+        actionCommand = String.valueOf(categoria.getID());
         setOpaque(false);
         this.title = categoria.getDesrcripcion();
         this.color = categoria.getColor();
@@ -45,7 +58,7 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
         setSize(dim);
         calculate();
         addMouseListener(this);
-        addFocusListener(this);
+        //addFocusListener(this);
     }
 
     private void calculate(){
@@ -63,11 +76,18 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
 
         g2.fillRoundRect(1, 1, getWidth()-1 , getHeight()-1 , 2, 2);
 
-        if(focus){
+        if(selected){
+            g2.setColor(colorCheck);
+            //g2.drawLine(2,2,WIDTH_BOX,HEIGHT_BOX);
+            g2.setStroke(new BasicStroke(2));//, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+            g2.drawLine(90,12,95,5);
+            g2.drawLine(88,9,90,12);
+        }
+
+        if(in){
             g2.setColor(colorClic);
             g2.setStroke(new BasicStroke(2));
             g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 2, 2);
-
         }/*else{
             g2.setColor(color.darker());
             g2.drawRoundRect(0, 0, getWidth()-2 , getHeight()-2 , 2, 2);
@@ -98,8 +118,12 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
     @Override
     public void mouseReleased(MouseEvent e) {
         if(in){
-            selected = true;
-            requestFocus();
+            selected = !selected;
+            //requestFocus();
+
+            //System.out.println(e.getSource()+" "+e.getID()+" "+actionCommand);
+            ActionEvent ae = new ActionEvent(e.getSource(), e.getID(), actionCommand);//me.paramString());
+            fireActionPerformed(ae);
         }
         repaint();
     }
@@ -114,21 +138,21 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
     public void mouseExited(MouseEvent e) {
         in = false;
         repaint();
-    }
+    }/*
 
     @Override
     public void focusGained(FocusEvent e) {
         focus = true;
-        selected = true;
+        //selected = true;
         repaint();
     }
 
     @Override
     public void focusLost(FocusEvent e) {
         focus = false;
-        selected = false;
+        //selected = false;
         repaint();
-    }
+    }*/
 
     public boolean isSelected() {
         return selected;
@@ -141,4 +165,44 @@ public class CategoriaUI extends JComponent implements MouseListener, FocusListe
     public Categoria getCategoria(){
         return this.categoria;
     }
+
+
+
+    public void addActionListener(ActionListener al){
+        listenerList.add(ActionListener.class, al);
+    }
+
+    public void setActionCommand(String actionCommand){
+        this.actionCommand = actionCommand;
+    }
+
+/*
+    private void actionPerformed(ActionEvent event) {
+        fireActionPerformed(event);
+    }
+*/
+
+    private void fireActionPerformed(ActionEvent event) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        ActionEvent e;
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length-2; i>=0; i-=2) {
+            if (listeners[i]==ActionListener.class){
+                //System.out.println(listeners[i]+" "+actionCommand);
+				  /*String actionCommand0 = event.getActionCommand();
+				  if(actionCommand0 == null)
+					 actionCommand0 = getActionCommand();*/
+                e = new ActionEvent(this,
+                        ActionEvent.ACTION_PERFORMED,
+                        actionCommand,
+                        event.getWhen(),
+                        event.getModifiers());
+
+                ((ActionListener)listeners[i+1]).actionPerformed(e);
+            }
+        }
+    }
+
 }

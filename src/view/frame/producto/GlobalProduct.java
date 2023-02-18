@@ -1,5 +1,6 @@
 package view.frame.producto;
 
+import model.Categoria;
 import model.Producto;
 import view.frame.main.FrameMain;
 
@@ -12,6 +13,7 @@ public class GlobalProduct {
     protected ModeloTabla <Producto> modelTable;
     protected Producto producto;
     protected DetalleProducto detalleProducto;
+    protected  PCategoria pCategoria;
 
     protected final ConsultaCategoria consultaCategoria = new ConsultaCategoria();
     protected final ConsultaProducto consultaProducto = new ConsultaProducto();
@@ -46,24 +48,45 @@ public class GlobalProduct {
     protected void init(){
         FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         new InitProduct();
-        modelTable.clearTable();
-
-
 
         detalleProducto.init();
+
+        fillTableProduct();
+
+        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+    }
+
+    protected void fillTableProduct(){
+        modelTable.clearTable();
+        List<Categoria> listCatSel = pCategoria.getPanelList().getItemSelected();
 
         Thread thread = new Thread(()-> {
             List<Producto> list = GlobalProduct.getInstance().consultaProducto.getList();
             boolean e = list != null && !list.isEmpty();
             table.setEnabled(e);
             if (e) {
-                for (Producto prod : list)
-                    modelTable.addProduct(prod);
+                boolean add = listCatSel.isEmpty();
+                boolean reviewCat = !add;
+                System.out.println(add+" "+reviewCat);
+                for (Producto prod : list) {
+                    if(reviewCat) {
+                        add = false;
+                        cont:
+                        for (Categoria cat : listCatSel) {
+                            if (prod.getCategoria().getID() == cat.getID()) {
+                                add = true;
+                                break cont;
+                            }
+                        }
+                    }
+
+                    if(add){
+                        modelTable.addProduct(prod);
+                    }
+                }
             }
         });
         thread.start();
-
-        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     protected Producto getProductTableSelected(){
