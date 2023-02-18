@@ -10,6 +10,7 @@ import java.util.List;
 
 public class GlobalProduct {
     protected JTable table;
+    protected int indexTableProductSelect = -1;
     protected ModeloTabla <Producto> modelTable;
     protected Producto producto;
     protected DetalleProducto detalleProducto;
@@ -91,10 +92,10 @@ public class GlobalProduct {
     }
 
     protected Producto getProductTableSelected(){
-        int index = table.getSelectionModel().getLeadSelectionIndex();
+        indexTableProductSelect = table.getSelectionModel().getLeadSelectionIndex();
         //System.out.println(">> "+index);
         Producto producto = null;
-        if(index != -1) {
+        if(indexTableProductSelect != -1) {
             int[] selection = table.getSelectedRows();
             if(selection.length == 1) {
                 int row = table.convertRowIndexToModel(selection[0]);

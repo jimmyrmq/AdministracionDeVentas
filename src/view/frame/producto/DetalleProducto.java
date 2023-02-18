@@ -19,6 +19,7 @@ import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -436,8 +437,15 @@ public class DetalleProducto implements ActionListener {
             FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
             if(rtn) {
-                if(isEditingProduct){
-
+                int row = GlobalProduct.getInstance().indexTableProductSelect;
+                if(isEditingProduct && row!=-1){
+                    //DefaultTableModel model = (DefaultTableModel)GlobalProduct.getInstance().table.getModel();
+                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getCodigo(),row,0);
+                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getNombre(),row,1);
+                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getMarca(),row,2);
+                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getCategoria(),row,3);
+                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getStock(),row,4);
+                    //model.setValueAt(s, 1, 1);
                 }
                 clear();
             }
@@ -511,6 +519,8 @@ public class DetalleProducto implements ActionListener {
         GlobalProduct.getInstance().producto = null;
 
         GlobalProduct.getInstance().pTablaProducto.enabledPane(true);
+        GlobalProduct.getInstance().indexTableProductSelect = -1;
+
         isEditingProduct = false;
 
         tCodigo.setText(null);
