@@ -19,7 +19,7 @@ public class ActionListenerProduct implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();
         if(action.equals("EDIT_PRODUCT")){
-            Producto prod = selectedProduct();
+            Producto prod = GlobalProduct.getInstance().getProductTableSelected();
             if(prod!=null) {
                 GlobalProduct.getInstance().producto = prod;
                 GlobalProduct.getInstance().detalleProducto.fillerProducto();
@@ -27,7 +27,7 @@ public class ActionListenerProduct implements ActionListener {
         }
         else if (action.equals("DROP_PRODUCT")){
             SystemProperties sp = SystemProperties.getInstance();
-            Producto prod = selectedProduct();
+            Producto prod = GlobalProduct.getInstance().getProductTableSelected();
             if (prod != null) {
                 OptionPane.warning(FrameMain.frame, sp.getValue("produtos.message.warning_delete"));
                 int yes = OptionPane.questionYesOrKey(FrameMain.frame,sp.getValue("produtos.message.delete"));
@@ -42,30 +42,9 @@ public class ActionListenerProduct implements ActionListener {
             }
         }
         else if (action.equals("UPDATE_DATA_PRODUCTO")){
-            FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            new InitProduct();
-            GlobalProduct.getInstance().modelTable.clearTable();
-            FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-
+            GlobalProduct.getInstance().init();
         }
 
     }
 
-    private Producto selectedProduct(){
-        int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
-        //System.out.println(">> "+index);
-        Producto producto = null;
-        if(index != -1) {
-            int[] selection = GlobalProduct.getInstance().table.getSelectedRows();
-            if(selection.length == 1) {
-                int row = GlobalProduct.getInstance().table.convertRowIndexToModel(selection[0]);
-                if (row != -1) {
-                    producto = (Producto) GlobalProduct.getInstance().modelTable.getValue(row);
-                    //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
-                }
-            }
-        }
-
-        return producto;
-    }
 }

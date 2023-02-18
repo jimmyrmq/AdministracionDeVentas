@@ -190,9 +190,6 @@ public class DetalleProducto implements ActionListener {
         Dimension cbdim = new Dimension(210,21);
 
         dcbCategoria = new DefaultComboBoxModel<Categoria> ();
-        Categoria cat1 =  new Categoria();
-        cat1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
-        dcbCategoria.addElement(cat1);
 
         cbCategoria = new ComboBox<>(dcbCategoria);
         cbCategoria.setOpaque(false);
@@ -201,14 +198,7 @@ public class DetalleProducto implements ActionListener {
         cbCategoria.setEditable(false);
         //cbCategoria.getEditor().getEditorComponent().setBackground(Color.RED);
         //cbMediero.setBackground(new Color(255,255,255));
-        cbCategoria.setEnabled(true);
         //cbCategoria.setUI(new MyComboBoxUI());
-
-        List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();
-        if(lcat!=null && !lcat.isEmpty()) {
-            for (Categoria c : lcat)
-                dcbCategoria.addElement(c);
-        }else cbCategoria.setEnabled(false);
 
         dcbMarca = new DefaultComboBoxModel<Marca> ();
 
@@ -219,21 +209,7 @@ public class DetalleProducto implements ActionListener {
         cbMarca.setEditable(false);
         //cbMarca.getEditor().getEditorComponent().setBackground(Color.RED);
         //cbMarca.setBackground(new Color(255,255,255));
-        cbMarca.setEnabled(true);
         //cbMarca.setUI(new MyComboBoxUI());
-
-        Marca mc1 =  new Marca();
-        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
-        dcbMarca.addElement(mc1);
-
-        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
-        if(lmarca!=null && !lmarca.isEmpty()){
-            for(Marca mc: lmarca)
-                dcbMarca.addElement(mc);
-        }
-        else{
-            cbMarca.setEnabled(false);
-        }
 
 
         jsp = new JScrollPane(tNota, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -534,5 +510,33 @@ public class DetalleProducto implements ActionListener {
 
     public JPanel getPanel() {
         return pPrincipal;
+    }
+    protected void init(){
+        dcbCategoria.removeAllElements();
+        dcbMarca.removeAllElements();
+
+        Categoria cat1 =  new Categoria();
+        cat1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
+        dcbCategoria.addElement(cat1);
+
+        Marca mc1 =  new Marca();
+        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
+        dcbMarca.addElement(mc1);
+
+        List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();
+        boolean isCat = lcat!=null && !lcat.isEmpty();
+        cbCategoria.setEnabled(isCat);
+        if(isCat) {
+            for (Categoria c : lcat)
+                dcbCategoria.addElement(c);
+        }
+
+        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
+        boolean isMar = lmarca!=null && !lmarca.isEmpty();
+        cbMarca.setEnabled(isMar);
+        if(isMar){
+            for(Marca mc: lmarca)
+                dcbMarca.addElement(mc);
+        }
     }
 }

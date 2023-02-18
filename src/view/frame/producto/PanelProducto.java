@@ -26,6 +26,8 @@ public class PanelProducto  implements IPanel {
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
         PCategoria pcat = new PCategoria();
 
+        GlobalProduct.getInstance().init();
+
         pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 4, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
         pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 0.0f, 1.0f));
         pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
@@ -37,6 +39,7 @@ public class PanelProducto  implements IPanel {
     private JPanel pToolBar(){
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
+        ActionListenerProduct actionListenerProduct = new ActionListenerProduct();
 
         Button importar = new Button("Importar",new ImageIcon("icon/import.png"));
         importar.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
@@ -68,6 +71,7 @@ public class PanelProducto  implements IPanel {
         actualizar.setOrientationText(Button.BUTTOM);
         actualizar.setOrientationImage(Button.CENTER,Button.TOP);
         actualizar.setActionCommand("UPDATE_DATA_PRODUCTO");
+        actualizar.addActionListener(actionListenerProduct);
 
         JSeparator sep0 = new JSeparator(JSeparator.VERTICAL);
         sep0.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());

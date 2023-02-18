@@ -110,14 +110,16 @@ public class PListaProducto{
         }
         tabla.setPreferredScrollableViewportSize(new Dimension(dimX, 100));
 
-        addProductPrueba();
-
         lookColumn(tableUI.getBackgroundHeader(),tableUI.getForegroundHeader(),panelUI.getColorBorder(),tableUI.getFont());
 
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    System.out.println("Se ha hecho doble click");
+                    Producto prod = GlobalProduct.getInstance().getProductTableSelected();
+                    if(prod!=null) {
+                        GlobalProduct.getInstance().producto = prod;
+                        GlobalProduct.getInstance().detalleProducto.fillerProducto();
+                    }
                 }
             }
         });
@@ -136,38 +138,6 @@ public class PListaProducto{
 
     }
 
-    private void addProductPrueba(){//ModeloTabla modelo) {
-        Thread thread = new Thread(()-> {
-            List<Producto> list = GlobalProduct.getInstance().consultaProducto.getList();
-            if (list != null) {
-                for (Producto prod : list)
-                    GlobalProduct.getInstance().modelTable.addProduct(prod);
-            }
-        });
-        thread.start();
-
-        /*for(int i=1;i<=700;i++) {
-            Marca mrc0 = new Marca();
-            mrc0.setDesrcripcion("Fiat "+i);
-            Categoria cat0 = new Categoria();
-            cat0.setDesrcripcion("Automovil "+i);
-
-            Producto prod1 = new Producto();
-            prod1.setID(i);
-            prod1.setCodigo("000"+i);
-            prod1.setNombre("Carro "+i);
-            prod1.setCodigoBarra("78945112"+i);
-            prod1.setMarca(mrc0);
-            prod1.setCategoria(cat0);
-            prod1.setStock(1);
-            prod1.setNota("Esto es una nota del producto prueba; proudcto: "+i);
-            prod1.setNoRequiereStock(false);
-            prod1.setPrecioIncluyeImpuesto(false);
-            prod1.setDisponible(true);
-
-            modelo.addProduct(prod1);
-        }*/
-    }
 
     public void lookColumn(Color back, Color fore, Color border, Font font) {
         JTableHeader th = tabla.getTableHeader();
@@ -208,4 +178,6 @@ public class PListaProducto{
     public JPanel getPanel(){
         return pPrincipal;
     }
+
+
 }
