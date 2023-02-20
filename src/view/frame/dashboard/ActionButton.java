@@ -24,7 +24,7 @@ public class ActionButton  implements ActionListener {
         Object ob = ae.getSource();
         if(ButtonTabbed.class == ob.getClass() ){
             panel.clear();
-            if(action.equalsIgnoreCase(sp.getValue("produtos.buttom.dashboard.id"))){
+            if(action.equalsIgnoreCase(sp.getValue("productos.buttom.dashboard.id"))){
                 if(pp==null) {
                     pp = new PanelProducto();
                     pp.init();

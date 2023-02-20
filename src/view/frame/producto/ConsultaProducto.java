@@ -1,14 +1,12 @@
 package view.frame.producto;
 
 import com.djm.db.connection.Connection;
-import com.djm.db.result.ResultData;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
 import util.Global;
 import util.SystemProperties;
 
-import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +22,7 @@ public class ConsultaProducto {
         else
             list = new ArrayList<>();
 
-        String ninguno = SystemProperties.getInstance().getValue("produtos.label.ninguno");
+        String ninguno = SystemProperties.getInstance().getValue("productos.label.ninguno");
 
         String query = "select ID,Codigo,CodigoBarra,Nombre,PrecioCosto," +
                 "Precio1,Precio2,Precio3,Nota,UnidadMedida," +

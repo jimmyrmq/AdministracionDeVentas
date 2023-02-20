@@ -128,6 +128,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
 
     public void setSelected(boolean selected) {
         this.selected = enabled && selected;
+        repaint();
     }
 
     public boolean isSelected() {
@@ -150,12 +151,12 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
     @Override
     public void mouseReleased(MouseEvent e) {
         //pressed = false;
-        clic = false;
-        if(enabled && in){
+        if(enabled && in && clic){
             requestFocus();
             selected = !selected;
             repaint();
         }
+        clic = false;
 
     }
 

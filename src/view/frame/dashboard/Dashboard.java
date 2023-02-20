@@ -6,10 +6,8 @@ import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
 import view.frame.ui.themes.ButtonExitUI;
-import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -21,7 +19,7 @@ public class Dashboard {
         SystemProperties sp = SystemProperties.getInstance();
         //String dirIcon = GlobalUI.getInstance().getTheme().pathIcon();
         //System.out.println(dirIcon);
-        ButtonTabbed bProducto = new ButtonTabbed(sp.getValue("produtos.buttom.dashboard"), new ImageIcon("icon/product.png"));
+        ButtonTabbed bProducto = new ButtonTabbed(sp.getValue("productos.buttom.dashboard"), new ImageIcon("icon/product.png"));
         ButtonTabbed bStock = new ButtonTabbed(sp.getValue("stock.buttom.dashboard"), new ImageIcon("icon/stock.png"));
         ButtonTabbed bCliente = new ButtonTabbed(sp.getValue("cliente.buttom.dashboard"), new ImageIcon("icon/cliente.png"));
         ButtonTabbed bInforme = new ButtonTabbed(sp.getValue("informe.buttom.dashboard"), new ImageIcon("icon/informe.png"));
@@ -32,7 +30,7 @@ public class Dashboard {
         ButtonTabbed bUsuario = new ButtonTabbed(sp.getValue("usuario.buttom.dashboard"), new ImageIcon("icon/user.png"));
         Button bSalir = new Button(sp.getValue("salir.buttom.dashboard"), new ImageIcon("icon/closed.png"));
 
-        bProducto.setActionCommand(sp.getValue("produtos.buttom.dashboard.id"));
+        bProducto.setActionCommand(sp.getValue("productos.buttom.dashboard.id"));
 
         bSalir.setButtonUI(new ButtonExitUI());
 

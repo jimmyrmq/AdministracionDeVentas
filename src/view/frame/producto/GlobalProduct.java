@@ -69,7 +69,7 @@ public class GlobalProduct {
             if (e) {
                 boolean add = listCatSel.isEmpty();
                 boolean reviewCat = !add;
-                System.out.println(add+" "+reviewCat);
+                //System.out.println(add+" "+reviewCat);
                 for (Producto prod : list) {
                     if(reviewCat) {
                         add = false;

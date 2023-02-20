@@ -19,7 +19,6 @@ import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.DefaultTableModel;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -105,9 +104,9 @@ public class DetalleProducto implements ActionListener {
         //panel.setBorder(BorderFactory.createLineBorder(cb));
         //panel.setBackground(Color.RED);
 
-        ButtonTabbed bDetalle = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.producto"));
-        ButtonTabbed bPrecioImpuesto = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.precio"));
-        ButtonTabbed bStock = new ButtonTabbed(sp.getValue("produtos.tabbedpane.title.stock"));
+        ButtonTabbed bDetalle = new ButtonTabbed(sp.getValue("productos.tabbedpane.title.producto"));
+        ButtonTabbed bPrecioImpuesto = new ButtonTabbed(sp.getValue("productos.tabbedpane.title.precio"));
+        ButtonTabbed bStock = new ButtonTabbed(sp.getValue("productos.tabbedpane.title.stock"));
         ButtonGroup bg = new ButtonGroup();
         bg.add(bDetalle);
         bg.add(bPrecioImpuesto);
@@ -148,20 +147,20 @@ public class DetalleProducto implements ActionListener {
         //panel.setBorder(getBorder("Detalles del Producto"));
         //panel.setBackground(Color.RED);
 
-        JLabel lCodigo = new JLabel(sp.getValue("produtos.label.codigo")+":");
-        JLabel lCodigoBarra = new JLabel(sp.getValue("produtos.label.codigobarra")+":");
-        JLabel lNombre = new JLabel(sp.getValue("produtos.label.nombre")+":");
+        JLabel lCodigo = new JLabel(sp.getValue("productos.label.codigo")+":");
+        JLabel lCodigoBarra = new JLabel(sp.getValue("productos.label.codigobarra")+":");
+        JLabel lNombre = new JLabel(sp.getValue("productos.label.nombre")+":");
         //JLabel lDescripcion = new JLabel(sp.getValue("produtos.label.descripcion")+":");
-        JLabel lUnidadMedida = new JLabel(sp.getValue("produtos.label.unidadmedida")+":");
-        JLabel lCategoria = new JLabel(sp.getValue("produtos.label.categoria")+":");
-        JLabel lMarca= new JLabel(sp.getValue("produtos.label.marca")+":");
-        JLabel lNota= new JLabel(sp.getValue("produtos.label.nota")+":");
+        JLabel lUnidadMedida = new JLabel(sp.getValue("productos.label.unidadmedida")+":");
+        JLabel lCategoria = new JLabel(sp.getValue("productos.label.categoria")+":");
+        JLabel lMarca= new JLabel(sp.getValue("productos.label.marca")+":");
+        JLabel lNota= new JLabel(sp.getValue("productos.label.nota")+":");
 
         tCodigo = new TextField(10,7);
-        tCodigoBarra = new TextField(25);
-        tNombre = new TextField(20);
+        tCodigoBarra = new TextField(20,50);
+        tNombre = new TextField(20,50);
         //tDescripcion = new TextField(25);
-        tUnidadMedida = new TextField(5);
+        tUnidadMedida = new TextField(5,10);
 
         tNota = new TextArea(3,30);
         tNota.setTabSize(0);
@@ -220,11 +219,11 @@ public class DetalleProducto implements ActionListener {
         jsp.setOpaque(false);
         jsp.setBorder(null);
 
-        disponible = new CheckBox(sp.getValue("produtos.label.disponible"));
+        disponible = new CheckBox(sp.getValue("productos.label.disponible"));
         disponible.setOpaque(false);
         disponible.setSelected(true);
 
-        requiereStock = new CheckBox(sp.getValue("produtos.label.servicio"));
+        requiereStock = new CheckBox(sp.getValue("productos.label.no_requiere_stock"));
         requiereStock.setOpaque(false);
 
         panel.add(lCodigo, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
@@ -255,19 +254,19 @@ public class DetalleProducto implements ActionListener {
         panel.setOpaque(false);
         //panel.setBorder(getBorder("Precio & Impuesto"));
 
-        Button agregarImpuesto = new Button(sp.getValue("produtos.button.agregarImpuesto"));
+        Button agregarImpuesto = new Button(sp.getValue("productos.button.agregarImpuesto"));
 
-        JLabel lCosto = new JLabel(sp.getValue("produtos.label.costo")+":");
-        JLabel lPrecio1 = new JLabel(sp.getValue("produtos.label.precio1")+":");
-        JLabel lPrecio2 = new JLabel(sp.getValue("produtos.label.precio2")+":");
-        JLabel lPrecio3 = new JLabel(sp.getValue("produtos.label.precio3")+":");
+        JLabel lCosto = new JLabel(sp.getValue("productos.label.costo")+":");
+        JLabel lPrecio1 = new JLabel(sp.getValue("productos.label.precio1")+":");
+        JLabel lPrecio2 = new JLabel(sp.getValue("productos.label.precio2")+":");
+        JLabel lPrecio3 = new JLabel(sp.getValue("productos.label.precio3")+":");
         //JLabel lUtilidad = new JLabel(sp.getValue("produtos.label.utilidad")+":");
 
         dlmImpuestp = new DefaultListModel<Impuesto>();
         lImpuesto = new JList<>(dlmImpuestp);
         lImpuesto.setPreferredSize(new Dimension(200, 100));
 
-        precioImpuesto = new CheckBox(sp.getValue("produtos.label.precioImpuesto"));
+        precioImpuesto = new CheckBox(sp.getValue("productos.label.precioImpuesto"));
         precioImpuesto.setSelected(true);
         precioImpuesto.setOpaque(false);
 
@@ -312,8 +311,8 @@ public class DetalleProducto implements ActionListener {
         //panel.setBackground(Color.RED);
         //panel.setBorder(getBorder("Stock"));
 
-        JLabel lAdvertencia = new JLabel(sp.getValue("produtos.label.advertenciaStock")+":");
-        JLabel lDisponible = new JLabel(sp.getValue("produtos.label.cantidad_disponible")+":");
+        JLabel lAdvertencia = new JLabel(sp.getValue("productos.label.advertenciaStock")+":");
+        JLabel lDisponible = new JLabel(sp.getValue("productos.label.cantidad_disponible")+":");
 
         tStockCritico = new TextField(5,5,true);
         tStock = new TextField(5);
@@ -439,12 +438,7 @@ public class DetalleProducto implements ActionListener {
             if(rtn) {
                 int row = GlobalProduct.getInstance().indexTableProductSelect;
                 if(isEditingProduct && row!=-1){
-                    //DefaultTableModel model = (DefaultTableModel)GlobalProduct.getInstance().table.getModel();
-                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getCodigo(),row,0);
-                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getNombre(),row,1);
-                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getMarca(),row,2);
-                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getCategoria(),row,3);
-                    GlobalProduct.getInstance().modelTable.setValueAt(prod.getStock(),row,4);
+                    GlobalProduct.getInstance().modelTable.editProduct(prod,row);
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
@@ -544,6 +538,11 @@ public class DetalleProducto implements ActionListener {
         tStockCritico.setText(null);
         tStock.setText(null);
 
+        disponible.setSelected(true);
+        requiereStock.setSelected(false);
+
+        tCodigo.requestFocus();
+
         //bNuevo.setEnabled(true);
         //bGuardar.setEnabled(false);
         //bCancelar.setEnabled(false);
@@ -558,11 +557,11 @@ public class DetalleProducto implements ActionListener {
         dcbMarca.removeAllElements();
 
         Categoria cat1 =  new Categoria();
-        cat1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
+        cat1.setDesrcripcion(sp.getValue("productos.label.ninguno"));
         dcbCategoria.addElement(cat1);
 
         Marca mc1 =  new Marca();
-        mc1.setDesrcripcion(sp.getValue("produtos.label.ninguno"));
+        mc1.setDesrcripcion(sp.getValue("productos.label.ninguno"));
         dcbMarca.addElement(mc1);
 
         List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();

@@ -6,12 +6,17 @@ import com.djm.ui.themes.table.ITableUI;
 import com.djm.util.LayoutPanel;
 import model.Producto;
 import util.SystemProperties;
+import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
+import view.frame.ui.component.EtiquetaComponent;
+import view.frame.ui.component.Notificaciones;
+import view.frame.ui.component.TipoEtiqueta;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -42,6 +47,12 @@ public class PTablaProducto {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
+
+        JLayeredPane layered = new JLayeredPane();
+
+        layered.add(new Notificaciones("Productos","Esto es una prueba"));
+        FrameMain.frame.getContentPane().add(layered);
+
         bEditar = new Button(sp.getValue("button.editar"),new ImageIcon("icon/edit.png"));
         bEliminar = new Button(sp.getValue("button.eliminar"),new ImageIcon("icon/delete.png"));
         bEliminar.setColorImage(Color.RED);
@@ -54,7 +65,7 @@ public class PTablaProducto {
         bEliminar.addActionListener(actionListener);
 
         tBuscar = new TextField(25);
-        tBuscar.setHint(sp.getValue("produtos.label.buscar_producto"));
+        tBuscar.setHint(sp.getValue("productos.label.buscar_producto"));
         tBuscar.addKeyListener(new KeyListener(){
             public void keyPressed(KeyEvent ke){
                 int key = ke.getKeyCode();
@@ -99,7 +110,7 @@ public class PTablaProducto {
         t1.getTable().getActionMap().put("ENTER",new EnterAction());*/
         int dimX = 0;
         TableColumn column=null;
-        int []anchoColum={80,140,140,150,40};
+        int []anchoColum={80,140,140,150,40,90};
         for (int i = 0; i <anchoColum.length; i++) {//tabla.getColumnCount()
             sorter.setSortable(i, false);
             column = tabla.getColumnModel().getColumn(i);
@@ -123,6 +134,10 @@ public class PTablaProducto {
                 }
             }
         });
+
+        //tabla.getColumn("").setCellRenderer(new BooleanIconRenderer());
+
+        tabla.setDefaultRenderer(EtiquetaComponent.class, new BooleanIconRenderer());
 
         JScrollPane jsp = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
@@ -184,5 +199,44 @@ public class PTablaProducto {
         bEliminar.setEnabled(e);
         bEditar.setEnabled(e);
         GlobalProduct.getInstance().pCategoria.getPanelList().setEnabled(e);
+    }
+
+   private class BooleanIconRenderer extends EtiquetaComponent implements TableCellRenderer {
+
+        public BooleanIconRenderer() {}
+        private String sdisp,snorstock,sstock,sstockcrit;//
+        private String valueSplit[];
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int col) {
+            //System.out.println(row+" "+col+" "+value);
+            if(col == 5) {
+                //return aux.isDisponible()+"@"+aux.isNoRequiereStock()+"@"+aux.getStock()+"@"+aux.getStockCritico();
+                valueSplit = String.valueOf(value).split("@");
+                sdisp = valueSplit[0];//Disponible
+                snorstock = valueSplit[1];//No requiere stock
+                sstock = valueSplit[2];//Stock
+                sstockcrit = valueSplit[3];//Stock Critico
+
+                setSelected(isSelected);
+
+                if(Boolean.valueOf(sdisp)){
+                    if(Boolean.valueOf(snorstock)){
+                        if (Integer.parseInt(sstock) == 0) {
+                            setTipoEtiqueta(TipoEtiqueta.SinStock);
+                        }
+                        else if (Integer.parseInt(sstock) <= Integer.parseInt(sstockcrit)) {
+                            setTipoEtiqueta(TipoEtiqueta.StockCritico);
+                        }
+                    }
+                    else{
+                        setTipoEtiqueta(TipoEtiqueta.Disponible);
+                    }
+                }else{
+                    setTipoEtiqueta(TipoEtiqueta.NoDisponible);
+                }
+            }
+            return this;
+        }
     }
 }

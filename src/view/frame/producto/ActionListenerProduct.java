@@ -30,13 +30,13 @@ public class ActionListenerProduct implements ActionListener {
                     GlobalProduct.getInstance().producto = prod;
                     GlobalProduct.getInstance().detalleProducto.fillerProducto();
                 } else {
-                    OptionPane.error(FrameMain.frame, sp.getValue("produtos.message.selected_product_editar"));
+                    OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_editar"));
                 }
             } else if (action.equals("DROP_PRODUCT")) {
                 Producto prod = GlobalProduct.getInstance().getProductTableSelected();
                 if (prod != null) {
-                    OptionPane.warning(FrameMain.frame, sp.getValue("produtos.message.warning_delete"));
-                    int yes = OptionPane.questionYesOrKey(FrameMain.frame, sp.getValue("produtos.message.delete"));
+                    OptionPane.warning(FrameMain.frame, sp.getValue("productos.message.warning_delete"));
+                    int yes = OptionPane.questionYesOrKey(FrameMain.frame, sp.getValue("productos.message.delete"));
                     if (yes == OptionPane.OK) {
                         int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
                         if (index != -1)
@@ -44,7 +44,7 @@ public class ActionListenerProduct implements ActionListener {
                         //GlobalProduct.getInstance().modelTable.removeRow(3);
                     }
                 } else {
-                    OptionPane.error(FrameMain.frame, sp.getValue("produtos.message.selected_product_delete"));
+                    OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_delete"));
                 }
             } else if (action.equals("UPDATE_DATA_PRODUCTO")) {
                 GlobalProduct.getInstance().init();

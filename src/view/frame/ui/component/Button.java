@@ -214,9 +214,6 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
             cborderPaint = colorBorderDisabled;
         }
 
-
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
         g2.setColor(cbackPaint);
         g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
 

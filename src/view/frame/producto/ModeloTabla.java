@@ -10,7 +10,9 @@ import model.Categoria;
 import model.Marca;
 import model.Producto;
 import util.SystemProperties;
+import view.frame.ui.component.EtiquetaComponent;
 
+import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
 import java.util.LinkedList;
@@ -31,7 +33,16 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
      * datos */
     private LinkedList listeners = new LinkedList();
 
-    private final int COLUMN_COUNT = 5;
+    private Class[] columnClass = {String.class,String.class,Marca.class,Categoria.class, Integer.class, EtiquetaComponent.class};
+
+    private SystemProperties sp = SystemProperties.getInstance();
+    private String [] columnName ={sp.getValue("productos.label.codigo"),
+            sp.getValue("productos.label.nombre"),
+            sp.getValue("productos.label.marca"),
+            sp.getValue("productos.label.categoria"),
+            sp.getValue("productos.label.stock"),
+            ""};
+    private final int COLUMN_COUNT = 6;
     /** Returns the number of columns in the model. A
      * <code>JTable</code> uses this method to determine how many columns it
      * should create and display by default.
@@ -85,6 +96,8 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
                 return aux.getCategoria().toString();
             case 4:
                 return aux.getStock();
+            case 5:
+                return aux.isDisponible()+"@"+aux.isNoRequiereStock()+"@"+aux.getStock()+"@"+aux.getStockCritico();//
             default:
                 return null;
         }
@@ -115,6 +128,19 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
         avisaSuscriptores (evento);
     }
 
+    public void editProduct(E editProduct, int row){
+        if(row!=-1) {
+            Producto prod = (Producto) editProduct;
+            //DefaultTableModel model = (DefaultTableModel)GlobalProduct.getInstance().table.getModel();
+            setValueAt(prod.getCodigo(), row, 0);
+            setValueAt(prod.getNombre(), row, 1);
+            setValueAt(prod.getMarca(), row, 2);
+            setValueAt(prod.getCategoria(), row, 3);
+            setValueAt(prod.getStock(), row, 4);
+            setValueAt(prod.getStock(), row, 5);
+        }
+    }
+
     /** Adds a listener to the list that is notified each time a change
      * to the data model occurs.
      *
@@ -135,24 +161,7 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
      *
      */
     public Class getColumnClass(int columnIndex) {
-        // Devuelve la clase que hay en cada columna.
-        switch (columnIndex){
-            case 0:
-                // La columna cero contiene el nombre de la persona, que es
-                // un String
-                return String.class;
-            case 1:
-                return String.class;
-            case 2:
-                return Marca.class;
-            case 3:
-                return Categoria.class;
-            case 4:
-                return Integer.class;
-            default:
-                // Devuelve una clase Object por defecto.
-                return Object.class;
-        }
+        return columnClass[columnIndex];
     }
 
     /** Returns the name of the column at <code>columnIndex</code>.  This is used
@@ -163,24 +172,8 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
      * @return  the name of the column
      *
      */
-    private SystemProperties sp = SystemProperties.getInstance();
     public String getColumnName(int columnIndex) {
-        // Devuelve el nombre de cada columna. Este texto aparecerá en la
-        // cabecera de la tabla.
-        switch (columnIndex){
-            case 0:
-                return sp.getValue("produtos.label.codigo");
-            case 1:
-                return sp.getValue("produtos.label.nombre");
-            case 2:
-                return sp.getValue("produtos.label.marca");
-            case 3:
-                return sp.getValue("produtos.label.categoria");
-            case 4:
-                return sp.getValue("produtos.label.stock");
-            default:
-                return null;
-        }
+        return columnName[columnIndex];
     }
 
     /** Returns true if the cell at <code>rowIndex</code> and

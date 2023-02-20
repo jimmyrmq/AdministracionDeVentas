@@ -1,7 +1,6 @@
 package view.frame.producto;
 
 import com.djm.db.connection.Connection;
-import com.djm.db.connection.DataConnection;
 import com.djm.db.result.TipoOperacion;
 import model.Producto;
 import util.Global;
@@ -25,10 +24,10 @@ public class AdministracionProducto {
         boolean rtn = false;
 
         if(prod.getCodigo()== null || prod.getCodigo().trim().isEmpty()) {
-            mensaje = sp.getValue("produtos.message.error_codigo");
+            mensaje = sp.getValue("productos.message.error_codigo");
         }
         else if(prod.getNombre()==null || prod.getNombre().trim().isEmpty()){
-            mensaje = sp.getValue("produtos.message.error_nombre");
+            mensaje = sp.getValue("productos.message.error_nombre");
         }
         else{
             Integer id = prod.getID();
@@ -38,10 +37,10 @@ public class AdministracionProducto {
                 if (tipoOperacion == TipoOperacion.INSERT) {
                     GlobalProduct.getInstance().modelTable.addProduct(prod);
                     GlobalProduct.getInstance().consultaProducto.getList().add(prod);
-                }else
-                    System.out.println("Editar Producto...");
+                }/*else
+                    System.out.println("Editar Producto...");*/
             }else
-                mensaje = sp.getValue("produtos.message.error_guardar_bd");
+                mensaje = sp.getValue("productos.message.error_guardar_bd");
         }
         return rtn;
     }
