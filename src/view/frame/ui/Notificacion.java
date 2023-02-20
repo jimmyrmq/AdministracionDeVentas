@@ -42,6 +42,7 @@ public class Notificacion {
         if((!start) && notificacion != null) {
             start = true;
             setVisible(true);
+            notificacion.runShow();
         }
     }
 

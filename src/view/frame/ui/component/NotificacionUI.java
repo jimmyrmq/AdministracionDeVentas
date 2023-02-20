@@ -26,6 +26,7 @@ public class NotificacionUI extends JComponent {
     private Font font0 = GlobalUI.getInstance().getTheme().getPanelUI().getFont();
     private Font font1;//= GlobalUI.getInstance().getTheme().getPanelUI().getFont();
     private Point point;
+    private Point pinit;
 
     public NotificacionUI(String title, String message) {
         setOpaque(false);
@@ -44,9 +45,8 @@ public class NotificacionUI extends JComponent {
         point = new Point();
         point.x = -100;//this.width - getWidth();
         point.y = 500;//screenSize.height - (this.height - getHeight());
+        pinit = point;
 
-
-        movimiento();
     }
 
     private void recalculate() {
@@ -69,9 +69,10 @@ public class NotificacionUI extends JComponent {
         posy_msg = posy_tt + fmt.getHeight() + 12;
     }
 
-    public void movimiento() {
+    public void runShow() {
+        point.x = 0;
         Thread t = new Thread(() -> {
-            for (int i = 20; i >= 0; i--) {
+            for (int i = 10; i >= 0; i--) {
                 calculateTextXY();
                 try {
                     Thread.sleep(20);
