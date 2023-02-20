@@ -33,7 +33,7 @@ public class Init {
 
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
-        new LookAndFeel();//new Dark());//
+        new LookAndFeel(new Dark());//);//
         SystemProperties.getInstance().setLanguaje("es.properties");
         //LookAndFeel lf = new LookAndFeel();
         //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//

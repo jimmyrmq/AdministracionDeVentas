@@ -9,6 +9,7 @@ import model.Marca;
 import model.Producto;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
+import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
@@ -52,6 +53,8 @@ public class DetalleProducto implements ActionListener {
     private boolean stock = false;
     private boolean isEditingProduct = false;
     private JPanel lPanel[] = new JPanel[3];
+
+    private Notificacion notificacion = new Notificacion("Productos");
 
     public DetalleProducto(){
         pPrincipal = new JPanel(new GridBagLayout());
@@ -442,9 +445,14 @@ public class DetalleProducto implements ActionListener {
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
+                notificacion.setMensaje("Producto guardado con exito");
+                notificacion.start();
             }
             else
                 OptionPane.error(FrameMain.frame,administracionProducto.getMensaje());
+
+
+
         }
         else if(action.equals("BUTTON_CANCELAR")){
             clear();
@@ -461,6 +469,10 @@ public class DetalleProducto implements ActionListener {
         FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         Producto prod = GlobalProduct.getInstance().producto;
         if(prod!=null) {
+
+            notificacion.setMensaje("Editar Producto \""+prod.getNombre()+"\"");
+            notificacion.start();
+
             isEditingProduct = true;
 
             tCodigo.setText(prod.getCodigo());

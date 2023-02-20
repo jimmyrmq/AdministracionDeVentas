@@ -6,10 +6,8 @@ import com.djm.ui.themes.table.ITableUI;
 import com.djm.util.LayoutPanel;
 import model.Producto;
 import util.SystemProperties;
-import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.EtiquetaComponent;
-import view.frame.ui.component.Notificaciones;
 import view.frame.ui.component.TipoEtiqueta;
 import view.frame.ui.themes.GlobalUI;
 
@@ -46,12 +44,6 @@ public class PTablaProducto {
     public PTablaProducto() {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
-
-
-        JLayeredPane layered = new JLayeredPane();
-
-        layered.add(new Notificaciones("Productos","Esto es una prueba"));
-        FrameMain.frame.getContentPane().add(layered);
 
         bEditar = new Button(sp.getValue("button.editar"),new ImageIcon("icon/edit.png"));
         bEliminar = new Button(sp.getValue("button.eliminar"),new ImageIcon("icon/delete.png"));
