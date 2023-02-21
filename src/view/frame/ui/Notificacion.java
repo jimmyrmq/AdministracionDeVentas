@@ -15,11 +15,11 @@ public class Notificacion {
     private boolean start = false;
     private int time = 3000;
     public Notificacion(){
-        this(null,null);
+        this(null,null,new Point(10,470));
     }
 
     public Notificacion(String title){
-        this(title,null);
+        this(title,null,new Point(10,470));
     }
     public Notificacion(String title, String messaje){
         this(title,messaje,new Point(10,470));

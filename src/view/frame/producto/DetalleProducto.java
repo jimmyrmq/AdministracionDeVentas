@@ -54,11 +54,13 @@ public class DetalleProducto implements ActionListener {
     private boolean isEditingProduct = false;
     private JPanel lPanel[] = new JPanel[3];
 
-    private final Notificacion notificacion = new Notificacion(sp.getValue("productos.label.title"));
+    private final Notificacion notificacion = new Notificacion();
 
     public DetalleProducto(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
+
+        notificacion.setTitle(sp.getValue("productos.label.title"));
 
         bGuardar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
         bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));

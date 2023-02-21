@@ -25,9 +25,6 @@ public class PanelMarca extends JPanel{
     private void createGUI(){
         tDescripcion = new TextField(20,150);
 
-        if(actionListenerMarca!=null)
-            tDescripcion.addActionListener(actionListenerMarca);
-
         JLabel lDescripcion = new JLabel(sp.getValue("marca.label.descripcion")+":");
 
         add(lDescripcion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
@@ -52,5 +49,8 @@ public class PanelMarca extends JPanel{
 
     public void setActionListenerMarca(ActionListenerMarca actionListenerMarca) {
         this.actionListenerMarca = actionListenerMarca;
+
+        if(actionListenerMarca!=null)
+            tDescripcion.addActionListener(actionListenerMarca);
     }
 }

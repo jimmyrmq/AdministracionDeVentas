@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
 public class ActionListenerProduct implements ActionListener {
     private final SystemProperties sp = SystemProperties.getInstance();
 
-    private Notificacion notificacion = new Notificacion();
-
     public ActionListenerProduct(){}
 
     @Override
@@ -54,11 +52,12 @@ public class ActionListenerProduct implements ActionListener {
                 GlobalProduct.getInstance().init();
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
-                notificacion.setTitle("Marca");
+                Notificacion notificacion2 = new Notificacion();
+                notificacion2.setTitle(sp.getValue("marca.label.title"));
                 DialogMarca dialogMarca = new DialogMarca();
                 if(dialogMarca.isAcept()){
-                    notificacion.setMensaje(sp.getValue("marca.message.marca_registrada_exito"));
-                    notificacion.start();
+                    notificacion2.setMensaje(sp.getValue("marca.message.marca_registrada_exito"));
+                    notificacion2.start();
                 }
             }
         }

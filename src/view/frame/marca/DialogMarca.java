@@ -65,6 +65,7 @@ public class DialogMarca implements ActionListener, WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
+        acept = false;
         dialog.setVisible(false);
         dialog.dispose();
     }
