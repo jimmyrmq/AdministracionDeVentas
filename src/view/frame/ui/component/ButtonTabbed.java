@@ -364,7 +364,7 @@ public class ButtonTabbed extends JComponent implements  MouseMotionListener, Mo
     @Override
     public void mouseReleased(MouseEvent e) {
         pressed = false;
-        if(in){
+        if(e.getButton() == MouseEvent.BUTTON1 && in){
             ActionEvent ae=new ActionEvent(e.getSource(), e.getID(),actionCommand);//me.paramString());
             fireActionPerformed(ae);
             requestFocus();

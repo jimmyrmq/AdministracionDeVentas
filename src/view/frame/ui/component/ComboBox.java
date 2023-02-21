@@ -5,7 +5,6 @@ import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 

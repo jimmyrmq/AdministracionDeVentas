@@ -1,11 +1,7 @@
 package view.frame.ui.component;
 
-import com.djm.ui.themes.button.IButtonUI;
 import com.djm.ui.themes.checkbox.ICheckBoxUI;
-import com.djm.ui.themes.panel.IPanelUI;
-import com.djm.ui.themes.text.ITextUI;
 import view.frame.ui.themes.GlobalUI;
-import view.frame.ui.themes.blue.CheckBoxUI;
 
 import javax.swing.*;
 import java.awt.AlphaComposite;
@@ -18,7 +14,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 //import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -151,7 +146,7 @@ public class CheckBox extends JComponent implements MouseListener{//, FocusListe
     @Override
     public void mouseReleased(MouseEvent e) {
         //pressed = false;
-        if(enabled && in && clic){
+        if(e.getButton() == MouseEvent.BUTTON1 && enabled && in && clic){
             requestFocus();
             selected = !selected;
             repaint();

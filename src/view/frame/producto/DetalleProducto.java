@@ -54,7 +54,7 @@ public class DetalleProducto implements ActionListener {
     private boolean isEditingProduct = false;
     private JPanel lPanel[] = new JPanel[3];
 
-    private Notificacion notificacion = new Notificacion("Productos");
+    private final Notificacion notificacion = new Notificacion(sp.getValue("productos.label.title"));
 
     public DetalleProducto(){
         pPrincipal = new JPanel(new GridBagLayout());
@@ -445,7 +445,7 @@ public class DetalleProducto implements ActionListener {
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
-                notificacion.setMensaje("Producto guardado con exito");
+                notificacion.setMensaje(sp.getValue("productos.message.guardado_exito"));
                 notificacion.start();
             }
             else
@@ -469,8 +469,12 @@ public class DetalleProducto implements ActionListener {
         FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         Producto prod = GlobalProduct.getInstance().producto;
         if(prod!=null) {
-
-            notificacion.setMensaje("Editar Producto \""+prod.getNombre()+"\"");
+            StringBuffer sb = new StringBuffer();
+            sb.append(sp.getValue("productos.message.editar"));
+            sb.append("\"");
+            sb.append(prod.getNombre());
+            sb.append("\"");
+            notificacion.setMensaje(sb.toString());
             notificacion.start();
 
             isEditingProduct = true;

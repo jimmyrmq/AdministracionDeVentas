@@ -120,7 +120,7 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(enabled && in){
+        if(e.getButton() == MouseEvent.BUTTON1 && enabled && in){
             selected = !selected;
             //requestFocus();
 

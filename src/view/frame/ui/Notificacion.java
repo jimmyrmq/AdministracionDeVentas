@@ -1,37 +1,37 @@
 package view.frame.ui;
 
-import view.frame.main.FrameMain;
+import com.djm.util.LayoutPanel;
 import view.frame.ui.component.NotificacionUI;
+import view.frame.main.FrameMain;
 
+import javax.swing.*;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 public class Notificacion {
     private NotificacionUI notificacion;
     private boolean start = false;
-    private Point cursorPoint;
+    private int time = 3000;
     public Notificacion(String title){
         this(title,null);
     }
     public Notificacion(String title, String messaje){
-        notificacion = new NotificacionUI(title,messaje);
-        FrameMain.frame.setGlassPane(notificacion);
-        cursorPoint = new Point();
-        FrameMain.frame.getGlassPane().addMouseMotionListener(new MouseMotionListener() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                cursorPoint.x = e.getX();
-                cursorPoint.y = e.getY();
-            }
-            @Override
-            public void mouseDragged(MouseEvent e) {
-            }
-        });
+        this(title,messaje,new Point(10,470));
 
-        //java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        //System.out.println(screenSize);
+    }
+    public Notificacion(String title, String messaje, Point p){
+        notificacion = new NotificacionUI(title,messaje);
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
+
+        panel.add(notificacion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, p.y, p.x, 0, 0, 1.0f, 1.0f));
+        FrameMain.frame.setGlassPane(panel);
+    }
+
+    public void setTime(int timeSec){
+        time = timeSec * 1000;
     }
 
     public synchronized void setVisible(boolean visible) {
@@ -61,26 +61,23 @@ public class Notificacion {
         }
     }
 
+    public synchronized void show(){
+        setVisible(true);
+    }
+
     private synchronized void runThread(){
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(time);
             } catch (InterruptedException exc) {
             }
             boolean inside ;
-            Point point = notificacion.getPoint();
-            int pxend = (point.x+ notificacion.getDimX());
-            int pyend = (point.y+ notificacion.getDimY());
-            boolean inx,iny;
+
             do{
-                //point = notificacion.getPoint();
-                //System.out.println("Cursor: "+cursorPoint.x+","+cursorPoint.y+" "+point.x+", "+point.y);
                 try{
                     Thread.sleep(100);
                 }catch(InterruptedException exc){}
-                inx = cursorPoint.x >= point.x && cursorPoint.x <= pxend;
-                iny = cursorPoint.y >= point.y && cursorPoint.y <= pyend;
-                inside = inx && iny;
+                inside = notificacion.isMouseIn();//inx && iny;
             }while(inside);
 
             start = false;

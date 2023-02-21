@@ -1,6 +1,5 @@
 package view.frame.ui.component;
 
-import view.frame.main.FrameMain;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -11,14 +10,12 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-public class NotificacionUI extends JComponent {//implements MouseMotionListener{//MouseListener {
+public class NotificacionUI extends JComponent implements MouseListener {//MouseMotionListener{
     private int width = 250;
     private final int height = 60;
     private String message;
@@ -43,19 +40,21 @@ public class NotificacionUI extends JComponent {//implements MouseMotionListener
         String fnme = font0.getFontName();
         font1 = new Font(fnme, 1, 14);
 
-        recalculate();
+        point = new Point();
+        point.x = 5;//this.width - getWidth();
+        point.y = 0;//screenSize.height - (this.height - getHeight());
+
+        calculateDimension();
 
         //Dimension screenSize = FrameMain.frame.getSize();//java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-        point = new Point();
-        point.x = -100;//this.width - getWidth();
-        point.y = 500;//screenSize.height - (this.height - getHeight());
+        calculateTextXY();
 
-        //addMouseListener(this);
+        addMouseListener(this);
         //addMouseMotionListener(this);
     }
 
-    private void recalculate() {
+    private void calculateDimension() {
         FontMetrics fmt = getFontMetrics(font0);
         if(message!=null) {
             int w = fmt.stringWidth(message);
@@ -76,9 +75,9 @@ public class NotificacionUI extends JComponent {//implements MouseMotionListener
     }
 
     public void runShow() {
-        point.x = 0;
+        point.x = -100;
         Thread t = new Thread(() -> {
-            for (int i = 10; i >= 0; i--) {
+            for (int i = 14; i >= 0; i--) {
                 calculateTextXY();
                 try {
                     Thread.sleep(20);
@@ -111,73 +110,54 @@ public class NotificacionUI extends JComponent {//implements MouseMotionListener
             g2.drawString(message, posx_msg, posy_msg);
         }
 
-        g2.dispose();
-        g.dispose();
+        //g2.dispose();
+        //g.dispose();
     }
 
     public void setMessage(String message) {
         this.message = message;
-        recalculate();
+        calculateDimension();
     }
 
+    public boolean isMouseIn() {
+        return mouseIn;
+    }
 
    /* @Override
+    public void mouseDragged(MouseEvent e) { }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        //boolean inx = e.getX() >= point.x && e.getX() <= (point.x+width);
+        //boolean iny = e.getY() >= point.y && e.getY() <= (point.y+height);
+        mouseIn = true;//inx && iny;
+        //System.out.println(e.getX()+" "+e.getY()+" "+point.x+" "+point.y+" "+inx+" "+iny+" "+mouseIn);
+    }
+*/
+    @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("mouseClicked");
 
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("mousePressed");
 
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("mouseReleased");
-        mouseIn = false;
+
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        System.out.println("mouseEntered");
         mouseIn = true;
-
+        System.out.println("mouseEntered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        System.out.println("mouseExited");
         mouseIn = false;
-    }*/
-
-    /*public boolean isMouseIn() {
-        return mouseIn;
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        *Point p = MouseInfo.getPointerInfo().getLocation();
-        System.out.println(p.x+" "+p.y+" "+point.x+" "+point.y);
-
-        boolean inx = p.x >= point.x && p.x <= (point.x+width);
-        boolean iny = p.y >= point.y && p.y <= (point.y+height);
-        mouseIn = inx && iny;*
-    }*/
-
-    public int getDimX(){
-        return this.width;
-    }
-    public int getDimY(){
-        return this.height;
-    }
-    public Point getPoint(){
-        return point;
+        System.out.println("mouseExited");
     }
 }

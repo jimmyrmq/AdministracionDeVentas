@@ -74,13 +74,33 @@ public class ConsultaProducto {
                 list.add(prod);
             }
         } catch (SQLException e) {
-            String desc = "Error en getListCategoria ["+e.getMessage()+"]";
+            String desc = "Error en listarProducto ["+e.getMessage()+"]";
             System.out.println(desc);
         }
 
         conn.cerrarConexion();
     }
 
+    public boolean existeCodigoProducto(String cod){
+        boolean rtn = false;
+
+        String query = "select ID from Producto where Codigo = ?;";
+        Connection conn = Global.getInstance().getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.getPreparedStatementID(query);
+            pstmt.setString(1,cod);
+
+            ResultSet rs = pstmt.executeQuery();
+            rtn = rs.next();
+        } catch (SQLException e) {
+            String desc = "Error en isProducto ["+e.getMessage()+"]";
+            System.out.println(desc);
+        }
+
+        conn.cerrarConexion();
+        return rtn;
+    }
     /*public void listarProducto(){
         ResultData<Producto> resultData = new ResultData<>(Producto.class, Global.getInstance().getConnection());
 

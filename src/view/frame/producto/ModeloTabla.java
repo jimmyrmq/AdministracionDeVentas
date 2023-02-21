@@ -12,7 +12,6 @@ import model.Producto;
 import util.SystemProperties;
 import view.frame.ui.component.EtiquetaComponent;
 
-import javax.swing.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
 import java.util.LinkedList;

@@ -48,7 +48,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private Color cborderIn ;//= new Color(82,6,140);
     private Color colorAccion;//= new Color(82,6,140);
     private Color colorBorderSelect ;//= new Color(82,6,140);
-    private ButtonGroup buttonGroup;
+    private view.frame.ui.component.ButtonGroup buttonGroup;
     private Image image0 =null;
     private Image image1=null;
     private Image imagePaint=null;
@@ -396,7 +396,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(enabled) {
+        if(e.getButton() == MouseEvent.BUTTON1 && enabled) {
             pressed = false;
             if (in) {
                 requestFocus();
@@ -620,6 +620,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     public void focusGained(FocusEvent e) {
         if(enabled) {
             focus = true;
+            in = true;
             repaint();
         }
     }

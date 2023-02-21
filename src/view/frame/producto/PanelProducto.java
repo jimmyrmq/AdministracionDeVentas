@@ -2,10 +2,7 @@ package view.frame.producto;
 
 import com.djm.util.LayoutPanel;
 import util.IPanel;
-import view.frame.main.FrameMain;
-import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
-import view.frame.ui.component.NotificacionUI;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -32,10 +29,10 @@ public class PanelProducto  implements IPanel {
         GlobalProduct.getInstance().init();
 
         pPrincipal.add(pToolBar(), LayoutPanel.constantePane(0, 0, 4, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 10, 0.0f, 1.0f));
-        pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 10, 0, 0.0f, 1.0f));
-        pPrincipal.add(GlobalProduct.getInstance().pTablaProducto.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 0, 0.0f, 1.0f));
-        //pPrincipal.add(GlobalProduct.getInstance().pCategoria.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 10, 20, 10, 1.0f, 1.0f));
+        pPrincipal.add(GlobalProduct.getInstance().detalleProducto.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 5, 0, 5, 0.0f, 1.0f));
+        pPrincipal.add(sep1, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 5, 10, 0, 0.0f, 1.0f));
+        pPrincipal.add(GlobalProduct.getInstance().pTablaProducto.getPanel(), LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 10, 5, 20, 0, 0.0f, 1.0f));
+        pPrincipal.add(GlobalProduct.getInstance().pCategoria.getPanel(), LayoutPanel.constantePane(3, 1, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 10, 5, 20, 0, 1.0f, 1.0f));
 
     }
 

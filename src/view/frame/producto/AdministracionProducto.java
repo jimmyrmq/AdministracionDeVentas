@@ -22,16 +22,19 @@ public class AdministracionProducto {
         producto = prod;
 
         boolean rtn = false;
+        ConsultaProducto consProd = new ConsultaProducto();
+        Integer id = prod.getID();
+        tipoOperacion = id==null?TipoOperacion.INSERT:TipoOperacion.UPDATE;
 
         if(prod.getCodigo()== null || prod.getCodigo().trim().isEmpty()) {
             mensaje = sp.getValue("productos.message.error_codigo");
         }
         else if(prod.getNombre()==null || prod.getNombre().trim().isEmpty()){
             mensaje = sp.getValue("productos.message.error_nombre");
+        } else if(tipoOperacion == TipoOperacion.INSERT && consProd.existeCodigoProducto(prod.getCodigo())){
+            mensaje = sp.getValue("productos.message.error_cod_producto");
         }
         else{
-            Integer id = prod.getID();
-            tipoOperacion = id==null?TipoOperacion.INSERT:TipoOperacion.UPDATE;
             rtn = savedb();
             if(rtn) {
                 if (tipoOperacion == TipoOperacion.INSERT) {

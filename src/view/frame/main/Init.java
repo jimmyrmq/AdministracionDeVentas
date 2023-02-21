@@ -3,23 +3,16 @@ package view.frame.main;
 import com.djm.db.connection.Connection;
 import com.djm.db.connection.DataConnection;
 import com.djm.util.LayoutPanel;
-import model.Producto;
 import util.Global;
 import util.SystemProperties;
 import view.frame.dashboard.ActionButton;
-import view.frame.producto.GlobalProduct;
 import view.frame.producto.InitProduct;
-import view.frame.ui.component.ComboBox;
 import view.frame.ui.themes.GlobalUI;
 import view.frame.ui.themes.LookAndFeel;
 import view.frame.dashboard.Dashboard;
-import view.frame.ui.themes.dark.Dark;
 
 import javax.swing.*;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Init {
     public Init (){
@@ -33,7 +26,7 @@ public class Init {
 
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
-        new LookAndFeel(new Dark());//);//
+        new LookAndFeel();//new Dark());//
         SystemProperties.getInstance().setLanguaje("es.properties");
         //LookAndFeel lf = new LookAndFeel();
         //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//
@@ -58,9 +51,19 @@ public class Init {
         combobox1.setSelectedIndex(-1);
 
         fm.getContainer().add(combobox1,LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        */fm.getContainer().add(ds.getPanel(), LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
-        fm.getContainer().add(sep, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 1.0f, 0.0f));
-        fm.getContainer().add(panelTarea.getPanel(), LayoutPanel.constantePane(0, 4, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
+        */
+        JScrollPane jsp = new JScrollPane(panelTarea.getPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
+        jsp.getViewport().setOpaque(true);
+        jsp.setOpaque(false);
+        jsp.setBorder(null);
+        //jsp.getViewport().setBackground(tableUI.getBackground());
+        //NotificacionUI cat = new NotificacionUI("Producto","Prueba");
+
+        //fm.getContainer().add(cat, LayoutPanel.constantePane(0, 0, 0, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        fm.getContainer().add(ds.getPanel(), LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        fm.getContainer().add(sep, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.HORIZONTAL, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 1.0f, 0.0f));
+        fm.getContainer().add(jsp, LayoutPanel.constantePane(0, 3, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
 
         fm.getFrame().setVisible(true);
     }

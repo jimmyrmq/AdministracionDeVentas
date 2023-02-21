@@ -2,7 +2,6 @@ package view.frame.ui.component.border;
 
 import view.frame.ui.themes.GlobalUI;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;

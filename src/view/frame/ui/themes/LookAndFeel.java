@@ -6,15 +6,10 @@ import com.djm.ui.themes.global.ITheme;
 import com.djm.ui.themes.global.ManagerTextlUI;
 import com.djm.ui.themes.panel.IPanelUI;
 import com.djm.ui.themes.table.ITableUI;
-import util.Global;
-import view.frame.ui.themes.DefaultUI;
-import view.frame.ui.themes.GlobalUI;
-import view.frame.ui.themes.dark.GlobalDark;
 
 import javax.swing.*;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
 
 public class LookAndFeel {
     public LookAndFeel(){
