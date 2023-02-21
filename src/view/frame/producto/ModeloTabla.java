@@ -95,7 +95,7 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
             case 3:
                 return aux.getCategoria().toString();
             case 4:
-                return aux.getStock();
+                return aux.isNoRequiereStock()?"-":aux.getStock();
             case 5:
                 return aux.isDisponible()+"@"+aux.isNoRequiereStock()+"@"+aux.getStock()+"@"+aux.getStockCritico();//
             default:

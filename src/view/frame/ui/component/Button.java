@@ -42,6 +42,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private Color cborderPaint = colorBorder;
     private Color cfPaint = colorFore;
     private Color cfkPaint = colorForeKey;
+    private Color colorImage;
     private Color cbackIn = new Color(82,6,140);
     private Color cfkIn = new Color(217, 214, 214);
     private Color cborderIn ;//= new Color(82,6,140);
@@ -581,7 +582,7 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private IButtonUI buttonUI;
     public void setButtonUI(IButtonUI buttonUI){
         this.buttonUI = buttonUI;
-
+        this.colorImage = buttonUI.getColorImage();
         this.colorBack = buttonUI.getBackground();
         this.colorBackEnabled = buttonUI.getBackgroundDisabled();
         this.colorFore = buttonUI.getForeground();
@@ -603,13 +604,16 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
 
 
     public void setColorImage(Color cimage){
+        this.colorImage = cimage;//buttonUI.getColorImage();
+        setColorFilterImage(this.colorImage);
+    }
 
+    private void setColorFilterImage(Color cimage){
         if(image0!=null && this.isFilterImage) {
             image0 = ColorFilter.filterImage(rutaImage1 ,cimage,false);//ii.getImage();
             image1 = image0;//filterImage(ii.getDescription(),cbs,true);//ii.getImage();
             imagePaint = image0;//filterImage(ii.getDescription(),true);//ii.getImage();
         }
-
     }
 
     @Override
@@ -635,10 +639,10 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     public void setEnabled(boolean enabled){
         this.enabled = enabled;
         if(enabled)
-            setColorImage(buttonUI.getColorImage());
+            setColorFilterImage(colorImage);
         else {
-            setColorImage(buttonUI.getForegroundDisabled());
 
+            setColorFilterImage(buttonUI.getForegroundDisabled());
             focus = false;
             in = false;
             out = true;

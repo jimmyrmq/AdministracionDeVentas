@@ -37,6 +37,7 @@ public class PTablaProducto {
     private TextField tBuscar;
     private Button bEditar;
     private Button bEliminar;
+    private JLabel lCantidad;
 
     private ActionListenerProduct actionListener = GlobalProduct.getInstance().actionListener;
 
@@ -45,10 +46,11 @@ public class PTablaProducto {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        bEditar = new Button(sp.getValue("button.editar"),new ImageIcon("icon/edit.png"));
-        bEliminar = new Button(sp.getValue("button.eliminar"),new ImageIcon("icon/delete.png"));
-        bEliminar.setColorImage(Color.RED);
-        bEliminar.setForeground(Color.RED);
+        bEditar = new Button(sp.getValue("button.editar"), new ImageIcon("icon/edit.png"));
+        bEliminar = new Button(sp.getValue("button.eliminar"), new ImageIcon("icon/delete.png"));
+        Color red = new Color(201, 34, 34);
+        bEliminar.setColorImage(red);
+        bEliminar.setForeground(red);
 
         bEditar.setActionCommand("EDIT_PRODUCT");
         bEliminar.setActionCommand("DROP_PRODUCT");
@@ -58,19 +60,24 @@ public class PTablaProducto {
 
         tBuscar = new TextField(25);
         tBuscar.setHint(sp.getValue("productos.label.buscar_producto"));
-        tBuscar.addKeyListener(new KeyListener(){
-            public void keyPressed(KeyEvent ke){
+        tBuscar.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent ke) {
                 int key = ke.getKeyCode();
-                if(key==40){
-                    tabla.setRowSelectionInterval(0,0);
+                if (key == 40) {
+                    tabla.setRowSelectionInterval(0, 0);
                     tabla.requestFocus();
                 }
             }
-            public void keyReleased(KeyEvent ke){
+
+            public void keyReleased(KeyEvent ke) {
                 soter(tBuscar.getText());
             }
-            public 	void keyTyped(KeyEvent ke){}
+
+            public void keyTyped(KeyEvent ke) {
+            }
         });
+
+        lCantidad = new JLabel();
 
         IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
         ModeloTabla<Producto> modelo = new ModeloTabla<Producto>();
@@ -116,7 +123,7 @@ public class PTablaProducto {
 
         tabla.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
+                if (tabla.isEnabled() && e.getClickCount() == 2) {
                     enabledPane(false);
                     Producto prod = GlobalProduct.getInstance().getProductTableSelected();
                     if(prod!=null) {
@@ -124,6 +131,7 @@ public class PTablaProducto {
                         GlobalProduct.getInstance().detalleProducto.fillerProducto();
                     }
                 }
+
             }
         });
 
@@ -138,10 +146,11 @@ public class PTablaProducto {
         jsp.setBorder(null);
         jsp.getViewport().setBackground(tableUI.getBackground());
 
-        pPrincipal.add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
-        pPrincipal.add(jsp, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
+        pPrincipal.add(tBuscar, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 10, 0, 10, 0.0f, 0.0f));
+        pPrincipal.add(lCantidad, LayoutPanel.constantePane(2, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 0, 0, 0, 20, 1.0f, 0.0f));
+        pPrincipal.add(jsp, LayoutPanel.constantePane(0, 1, 3, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 10, 1.0f, 1.0f));
         pPrincipal.add(bEditar, LayoutPanel.constantePane(0, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        pPrincipal.add(bEliminar, LayoutPanel.constantePane(1, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        pPrincipal.add(bEliminar, LayoutPanel.constantePane(1, 2, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
 
     }
 
@@ -168,7 +177,6 @@ public class PTablaProducto {
                 return c;
             }
         });
-
     }
 
 
@@ -213,7 +221,7 @@ public class PTablaProducto {
                 setSelected(isSelected);
 
                 if(Boolean.valueOf(sdisp)){
-                    if(Boolean.valueOf(snorstock)){
+                    if(!Boolean.valueOf(snorstock)){
                         if (Integer.parseInt(sstock) == 0) {
                             setTipoEtiqueta(TipoEtiqueta.SinStock);
                         }
@@ -230,5 +238,13 @@ public class PTablaProducto {
             }
             return this;
         }
+    }
+    public void setCantidad(int cant){
+        StringBuffer sb = new StringBuffer();
+        sb.append(sp.getValue("productos.label.cantidad_producto"));
+        sb.append(": ");
+        sb.append(cant);
+
+        lCantidad.setText(sb.toString());
     }
 }

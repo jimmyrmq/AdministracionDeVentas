@@ -69,6 +69,7 @@ public class GlobalProduct {
             if (e) {
                 boolean add = listCatSel.isEmpty();
                 boolean reviewCat = !add;
+                int count = 0;
                 //System.out.println(add+" "+reviewCat);
                 for (Producto prod : list) {
                     if(reviewCat) {
@@ -83,9 +84,11 @@ public class GlobalProduct {
                     }
 
                     if(add){
+                        count++;
                         modelTable.addProduct(prod);
                     }
                 }
+                pTablaProducto.setCantidad(count);
             }
         });
         thread.start();

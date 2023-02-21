@@ -11,12 +11,16 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class NotificacionUI extends JComponent {
-    private int width = 230;
-    private final int height = 70;
+public class NotificacionUI extends JComponent {//implements MouseMotionListener{//MouseListener {
+    private int width = 250;
+    private final int height = 60;
     private String message;
     private String title;
     private int posx_tt;
@@ -26,7 +30,8 @@ public class NotificacionUI extends JComponent {
     private Font font0 = GlobalUI.getInstance().getTheme().getPanelUI().getFont();
     private Font font1;//= GlobalUI.getInstance().getTheme().getPanelUI().getFont();
     private Point point;
-    private Point pinit;
+
+    private boolean mouseIn = false;
 
     public NotificacionUI(String title, String message) {
         setOpaque(false);
@@ -45,8 +50,9 @@ public class NotificacionUI extends JComponent {
         point = new Point();
         point.x = -100;//this.width - getWidth();
         point.y = 500;//screenSize.height - (this.height - getHeight());
-        pinit = point;
 
+        //addMouseListener(this);
+        //addMouseMotionListener(this);
     }
 
     private void recalculate() {
@@ -112,5 +118,66 @@ public class NotificacionUI extends JComponent {
     public void setMessage(String message) {
         this.message = message;
         recalculate();
+    }
+
+
+   /* @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("mouseClicked");
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        System.out.println("mousePressed");
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        System.out.println("mouseReleased");
+        mouseIn = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        System.out.println("mouseEntered");
+        mouseIn = true;
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        System.out.println("mouseExited");
+        mouseIn = false;
+    }*/
+
+    /*public boolean isMouseIn() {
+        return mouseIn;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        *Point p = MouseInfo.getPointerInfo().getLocation();
+        System.out.println(p.x+" "+p.y+" "+point.x+" "+point.y);
+
+        boolean inx = p.x >= point.x && p.x <= (point.x+width);
+        boolean iny = p.y >= point.y && p.y <= (point.y+height);
+        mouseIn = inx && iny;*
+    }*/
+
+    public int getDimX(){
+        return this.width;
+    }
+    public int getDimY(){
+        return this.height;
+    }
+    public Point getPoint(){
+        return point;
     }
 }
