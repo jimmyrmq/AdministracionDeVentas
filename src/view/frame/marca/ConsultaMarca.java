@@ -1,4 +1,4 @@
-package view.frame.producto;
+package view.frame.marca;
 
 import com.djm.db.connection.Connection;
 import model.Categoria;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ConsultaMarca {
     private List<Marca> list;
-    protected void listarMarca(){
+    public void listarMarca(){
         if(list!=null)
             list.clear();
         else
@@ -40,6 +40,27 @@ public class ConsultaMarca {
         }
 
         conn.cerrarConexion();
+    }
+
+    public boolean existeDescripcionMarca(String desc){
+        boolean rtn = false;
+
+        String query = "select ID from Marca where Descripcion = ?;";
+        Connection conn = Global.getInstance().getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.getPreparedStatement(query);
+            pstmt.setString(1,desc);
+
+            ResultSet rs = pstmt.executeQuery();
+            rtn = rs.next();
+        } catch (SQLException e) {
+            String msg = "Error en isProducto ["+e.getMessage()+"]";
+            System.out.println(msg);
+        }
+
+        conn.cerrarConexion();
+        return rtn;
     }
 
     public Marca getMarca(int id){

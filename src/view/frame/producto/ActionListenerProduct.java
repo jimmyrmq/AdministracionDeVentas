@@ -3,6 +3,8 @@ package view.frame.producto;
 import model.Producto;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
+import view.frame.marca.DialogMarca;
+import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
@@ -12,6 +14,8 @@ import java.awt.event.ActionListener;
 
 public class ActionListenerProduct implements ActionListener {
     private final SystemProperties sp = SystemProperties.getInstance();
+
+    private Notificacion notificacion = new Notificacion();
 
     public ActionListenerProduct(){}
 
@@ -48,6 +52,14 @@ public class ActionListenerProduct implements ActionListener {
                 }
             } else if (action.equals("UPDATE_DATA_PRODUCTO")) {
                 GlobalProduct.getInstance().init();
+            }
+            else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
+                notificacion.setTitle("Marca");
+                DialogMarca dialogMarca = new DialogMarca();
+                if(dialogMarca.isAcept()){
+                    notificacion.setMensaje(sp.getValue("marca.message.marca_registrada_exito"));
+                    notificacion.start();
+                }
             }
         }
     }

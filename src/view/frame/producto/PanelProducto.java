@@ -2,6 +2,7 @@ package view.frame.producto;
 
 import com.djm.util.LayoutPanel;
 import util.IPanel;
+import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.themes.GlobalUI;
 
@@ -60,6 +61,8 @@ public class PanelProducto  implements IPanel {
         marca.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         marca.setOrientationText(Button.BUTTOM);
         marca.setOrientationImage(Button.CENTER,Button.TOP);
+        marca.setActionCommand("MARCA_PRODUCTO_DIALOG");
+        marca.addActionListener(actionListenerProduct);
 
         Button printer = new Button("Imprimir",new ImageIcon("icon/printer.png"));
         printer.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());

@@ -88,14 +88,14 @@ public class ConsultaProducto {
         Connection conn = Global.getInstance().getConnection();
 
         try {
-            PreparedStatement pstmt = conn.getPreparedStatementID(query);
+            PreparedStatement pstmt = conn.getPreparedStatement(query);
             pstmt.setString(1,cod);
 
             ResultSet rs = pstmt.executeQuery();
             rtn = rs.next();
         } catch (SQLException e) {
-            String desc = "Error en isProducto ["+e.getMessage()+"]";
-            System.out.println(desc);
+            String msg = "Error en isProducto ["+e.getMessage()+"]";
+            System.out.println(msg);
         }
 
         conn.cerrarConexion();

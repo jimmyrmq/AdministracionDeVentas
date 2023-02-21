@@ -101,11 +101,15 @@ public class NotificacionUI extends JComponent implements MouseListener {//Mouse
         g2.setColor(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         g2.drawRoundRect(point.x, point.y, width, height, 4, 4);
 
-        if (message != null) {
-            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-            g2.setColor(Color.WHITE);
-            g2.setFont(font1);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        g2.setColor(Color.WHITE);
+        g2.setFont(font1);
+
+        if (title != null) {
             g2.drawString(title, posx_tt, posy_tt);
+        }
+
+        if (message != null) {
             g2.setFont(font0);
             g2.drawString(message, posx_msg, posy_msg);
         }
@@ -117,6 +121,10 @@ public class NotificacionUI extends JComponent implements MouseListener {//Mouse
     public void setMessage(String message) {
         this.message = message;
         calculateDimension();
+    }
+
+    public void setTitle(String tile){
+        this.title = tile;
     }
 
     public boolean isMouseIn() {

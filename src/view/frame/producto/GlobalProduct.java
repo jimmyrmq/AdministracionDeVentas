@@ -3,6 +3,7 @@ package view.frame.producto;
 import model.Categoria;
 import model.Producto;
 import view.frame.main.FrameMain;
+import view.frame.marca.ConsultaMarca;
 
 import javax.swing.*;
 import java.awt.Cursor;

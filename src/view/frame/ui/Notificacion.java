@@ -14,6 +14,10 @@ public class Notificacion {
     private NotificacionUI notificacion;
     private boolean start = false;
     private int time = 3000;
+    public Notificacion(){
+        this(null,null);
+    }
+
     public Notificacion(String title){
         this(title,null);
     }
@@ -87,5 +91,8 @@ public class Notificacion {
     }
    public void setMensaje(String msg){
         notificacion.setMessage(msg);
+   }
+   public void setTitle(String title){
+        notificacion.setTitle(title);
    }
 }
