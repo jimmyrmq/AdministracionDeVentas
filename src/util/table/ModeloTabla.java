@@ -134,4 +134,8 @@ public class ModeloTabla<E> implements TableModel {//extends DefaultTableModel {
             }
         }
     }
+
+    public IModelTableCustom getModelCustom(){
+        return modelCustom;
+    }
 }

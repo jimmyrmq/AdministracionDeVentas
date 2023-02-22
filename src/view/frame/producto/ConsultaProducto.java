@@ -22,7 +22,7 @@ public class ConsultaProducto {
         else
             list = new ArrayList<>();
 
-        String ninguno = SystemProperties.getInstance().getValue("productos.label.ninguno");
+        String ninguno = SystemProperties.getInstance().getValue("label.ninguno");
 
         String query = "select ID,Codigo,CodigoBarra,Nombre,PrecioCosto," +
                 "Precio1,Precio2,Precio3,Nota,UnidadMedida," +

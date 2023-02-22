@@ -2,10 +2,7 @@ package view.frame.ui.component;
 
 import com.djm.ui.themes.panel.IPanelUI;
 import com.djm.ui.themes.table.ITableUI;
-import model.Producto;
 import util.table.ModeloTabla;
-import view.frame.producto.GlobalProduct;
-import view.frame.producto.ModelTableProductoCustom;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -19,33 +16,35 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 
-public class Table <E>{
-    private JTable tabla;
+public class Table <E> extends JTable{
+    //private JTable tabla;
     private TableRowSorter<TableModel> sorter;
     private ITableUI tableUI = GlobalUI.getInstance().getTheme().getTableUI();
     private IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
+    private ModeloTabla modeloTabla;
+    public Table(ModeloTabla modelo, int height){
+        super(modelo);
+        this.modeloTabla = modelo;
 
-    public Table(ModeloTabla modelo,int [] anchoColum, int height){
+        //tabla = new JTable(modelo);
 
-        tabla = new JTable(modelo);
+        //setAutoCreateColumnsFromModel(false);
+        setShowGrid(false);//Mostrar las lineas
+        setFillsViewportHeight(false);
+        setShowHorizontalLines(true);
+        setShowVerticalLines(false);
+        setBackground(tableUI.getBackground());
+        setRowSelectionAllowed(true);
+        //setCellSelectionEnabled(true);
+        setOpaque(true);
+        setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//Ajustarlo al tama�o del JScrollPane
+        //setSelectionForeground( Color.white );
+        setGridColor(panelUI.getColorBorder());
+        setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        setRowHeight(21);
 
-
-        //tabla.setAutoCreateColumnsFromModel(false);
-        tabla.setShowGrid(false);//Mostrar las lineas
-        tabla.setFillsViewportHeight(false);
-        tabla.setShowHorizontalLines(true);
-        tabla.setShowVerticalLines(false);
-        tabla.setBackground(tableUI.getBackground());
-        tabla.setRowSelectionAllowed(true);
-        //tabla.setCellSelectionEnabled(true);
-        tabla.setOpaque(true);
-        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);//Ajustarlo al tama�o del JScrollPane
-        //tabla.setSelectionForeground( Color.white );
-        tabla.setGridColor(panelUI.getColorBorder());
-        tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        tabla.setRowHeight(21);
         sorter = new TableRowSorter<TableModel>(modelo);
-        tabla.setRowSorter(sorter);
+        setRowSorter(sorter);
 
         /*KeyStroke enter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
         t1.getTable().getInputMap(JTable.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(enter, "ENTER");
@@ -53,21 +52,23 @@ public class Table <E>{
         int dimX = 0;
         TableColumn column=null;
 
-        for (int i = 0; i <anchoColum.length; i++) {//tabla.getColumnCount()
+        int anchoColum [] = modeloTabla.getModelCustom().getWidthCell();
+
+        for (int i = 0; i <anchoColum.length; i++) {//getColumnCount()
             sorter.setSortable(i, false);
-            column = tabla.getColumnModel().getColumn(i);
+            column = getColumnModel().getColumn(i);
             column.setMinWidth(anchoColum[i]);
             column.setPreferredWidth(anchoColum[i]);
             dimX +=anchoColum[i];
         }
-        tabla.setPreferredScrollableViewportSize(new Dimension(dimX, height));
+        setPreferredScrollableViewportSize(new Dimension(dimX, height));
 
         lookColumn(tableUI.getBackgroundHeader(),tableUI.getForegroundHeader(),panelUI.getColorBorder(),tableUI.getFont());
 
     }
 
     public void lookColumn(Color back, Color fore, Color border, Font font) {
-        JTableHeader th = tabla.getTableHeader();
+        JTableHeader th = getTableHeader();
         th.setOpaque(false);
         //th.setFont(new Font("Tahoma",1,15));
         //th.setBorder(BorderFactory.createLineBorder(border));
@@ -91,17 +92,90 @@ public class Table <E>{
         });
     }
 
-    public JTable getTable(){
-        return tabla;
+    public TableRowSorter getSorter(){
+        return sorter;
     }
 
     public JScrollPane getPanel(){
-        JScrollPane jsp = new JScrollPane(tabla, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane jsp = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jsp.setViewportBorder(null);//BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getColorBorderField()));
         jsp.getViewport().setOpaque(true);
         jsp.setOpaque(false);
         jsp.setBorder(null);
         jsp.getViewport().setBackground(tableUI.getBackground());
+
         return jsp;
     }
+
+    public E getSelectedItem(){
+        setEnabled(false);
+        E object = null;
+            int indexTableProductSelect = getSelectionModel().getLeadSelectionIndex();
+            //System.out.println(">> "+index);
+            if (indexTableProductSelect != -1) {
+                int[] selection = getSelectedRows();
+                if (selection.length == 1) {
+                    int row = convertRowIndexToModel(selection[0]);
+                    if (row != -1) {
+                        Object obj = this.modeloTabla.getValue(row);
+                        object = (E) obj;
+                        //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
+                    }
+                }
+            }
+
+        setEnabled(true);
+        return object;
+    }
+
+    public int getSelectedIndex(){
+        int i = getSelectionModel().getLeadSelectionIndex();
+
+        return i;
+    }
+
+    public void setRowSelectionInterval(int row){
+        setRowSelectionInterval(row,row);
+    }
+
+
+    public void soter(String text){
+        if (text==null||text.trim().isEmpty())
+            sorter.setRowFilter(null);
+        else
+            sorter.setRowFilter(RowFilter.regexFilter(text));
+
+        updateUI();
+    }
+
+    public void clearTable(){
+        modeloTabla.clearTable();
+    }
+
+    public void addRow(E e){
+        modeloTabla.addProduct(e);
+    }
+    public void editRow(E e, int row){
+        modeloTabla.editProduct(e,row);
+    }
+
+    public void removeRow(int row){
+        modeloTabla.removeRow(row);
+    }
+    /*
+    public void setEnabled(boolean e){
+        setEnabled(e);
+    }
+
+    public boolean isEnabled(){
+        return isEnabled();
+    }
+
+    public void updateUI(){
+        updateUI();
+    }
+
+    public void addMouseListener(MouseListener ml){
+        addMouseListener(ml);
+    }*/
 }

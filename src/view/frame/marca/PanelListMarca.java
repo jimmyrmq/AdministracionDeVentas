@@ -2,9 +2,13 @@ package view.frame.marca;
 
 import com.djm.util.LayoutPanel;
 import model.Marca;
+import model.Producto;
 import util.SystemProperties;
+import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
+import view.frame.producto.ModelTableProductoCustom;
 import view.frame.ui.component.Button;
+import view.frame.ui.component.Table;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -25,7 +29,7 @@ public class PanelListMarca implements ActionListener,WindowListener {
     private Button bAceptar;
     private Button bCancelar;
     private Button bEliminar;
-    private JTable table;
+    private Table table;
     private final SystemProperties sp = SystemProperties.getInstance();
 
     public PanelListMarca(){
@@ -39,19 +43,24 @@ public class PanelListMarca implements ActionListener,WindowListener {
         bEliminar.setColorImage(red);
         bEliminar.setForeground(red);
 
-
         bAceptar.addActionListener(this);
         bCancelar.addActionListener(this);
+
+        ModelTableMarcaCustom mpc = new ModelTableMarcaCustom();
+        ModeloTabla<Marca> modelo = new ModeloTabla(mpc);
+
+        table = new Table(modelo, 280);
 
         Container container = dialog.getContentPane();
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         container.setLayout(new GridBagLayout());
 
+        container.add(table.getPanel(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.VERTICAL, GridBagConstraints.PAGE_START, 10, 0, 5, 0, 1.0f, 1.0f));
         container.add(bEliminar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 0, 1.0f, 0.0f));
         container.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 0, 5, 0, 0.0f, 0.0f));
-        container.add(bAceptar, LayoutPanel.constantePane(2, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 5, 0.0f, 0.0f));
+        container.add(bAceptar, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 10, 0.0f, 0.0f));
 
-        Dimension dim = new Dimension(340,410);
+        Dimension dim = new Dimension(300,410);
         //dialog.setUndecorated(true);
         dialog.setPreferredSize(dim);
         dialog.setSize(dim);

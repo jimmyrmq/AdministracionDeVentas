@@ -15,4 +15,6 @@ public interface IModelTableCustom<E>{
     void setValueAt(Object aValue,int rowIndex, int columnIndex);
     E getValue(int row);
     List<ObjectModelTable> getValueObject();
+
+    int [] getWidthCell();
 }

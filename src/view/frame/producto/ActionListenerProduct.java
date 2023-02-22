@@ -1,14 +1,15 @@
 package view.frame.producto;
 
 import model.Producto;
+import util.Global;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
 import view.frame.marca.DialogMarca;
-import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,16 +35,25 @@ public class ActionListenerProduct implements ActionListener {
                 } else {
                     OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_editar"));
                 }
-            } else if (action.equals("DROP_PRODUCT")) {
+            }
+            else if (action.equals("DROP_PRODUCT")) {
                 Producto prod = GlobalProduct.getInstance().getProductTableSelected();
                 if (prod != null) {
                     OptionPane.warning(FrameMain.frame, sp.getValue("productos.message.warning_delete"));
                     int yes = OptionPane.questionYesOrKey(FrameMain.frame, sp.getValue("productos.message.delete"));
                     if (yes == OptionPane.OK) {
-                        int index = GlobalProduct.getInstance().table.getSelectionModel().getLeadSelectionIndex();
-                        if (index != -1)
-                            GlobalProduct.getInstance().modelTable.removeRow(index);
-                        //GlobalProduct.getInstance().modelTable.removeRow(3);
+                        int index = GlobalProduct.getInstance().table.getSelectedIndex();
+                        if (index != -1){
+                            AdministracionProducto ap = new AdministracionProducto();
+                            boolean rtn = ap.eliminar(prod.getID());
+                            if(rtn) {
+                                GlobalProduct.getInstance().table.removeRow(index);
+                            }
+
+                            GlobalProduct.getInstance().notificacion.start(sp.getValue("productos.label.title"), ap.getMensaje());
+
+                        }
+
                     }
                 } else {
                     OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_delete"));

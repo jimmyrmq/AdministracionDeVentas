@@ -134,7 +134,13 @@ public class ModelTableProductoCustom implements IModelTableCustom<Producto> {
         return listObject;
     }
 
-    public LinkedList<Producto> getDatos() {
-        return datos;
+    @Override
+    public int[] getWidthCell() {
+        int []anchoColum={80,140,140,150,40,90};
+        return anchoColum;
     }
+
+    /*public LinkedList<Producto> getDatos() {
+        return datos;
+    }*/
 }

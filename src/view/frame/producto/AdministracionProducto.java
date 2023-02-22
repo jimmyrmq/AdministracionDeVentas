@@ -5,7 +5,9 @@ import com.djm.db.result.TipoOperacion;
 import model.Producto;
 import util.Global;
 import util.SystemProperties;
+import view.frame.main.FrameMain;
 
+import java.awt.Cursor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,6 +21,9 @@ public class AdministracionProducto {
     public AdministracionProducto(){}
 
     public boolean guardar(Producto prod){
+
+        FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
         producto = prod;
 
         boolean rtn = false;
@@ -38,13 +43,16 @@ public class AdministracionProducto {
             rtn = savedb();
             if(rtn) {
                 if (tipoOperacion == TipoOperacion.INSERT) {
-                    GlobalProduct.getInstance().modelTable.addProduct(prod);
+                    GlobalProduct.getInstance().table.addRow(prod);
                     GlobalProduct.getInstance().consultaProducto.getList().add(prod);
                 }/*else
                     System.out.println("Editar Producto...");*/
             }else
                 mensaje = sp.getValue("productos.message.error_guardar_bd");
         }
+
+        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
         return rtn;
     }
 
@@ -115,18 +123,51 @@ public class AdministracionProducto {
             rtn = val >0;
 
             if(rtn) {
+
                 ResultSet rs = pstmt.getGeneratedKeys();
                 if (rs.next()) {
                     producto.setID(rs.getInt(1));
                 }
             }
 
-            conn.cerrarConexion();
         }catch (SQLException exc) {
             mensaje = "Error en BD "+exc;
             System.out.println(mensaje);
         }
+        finally {
 
+            conn.cerrarConexion();
+        }
+
+        return rtn;
+    }
+
+    public boolean eliminar(Integer id){
+        boolean rtn = false;
+        Connection conn = Global.getInstance().getConnection();
+        try{
+            String query = "delete from Producto where id = ?";
+            PreparedStatement pstmt = conn.getPreparedStatementID(query);
+
+            pstmt.setInt(1, id);
+
+            int val = pstmt.executeUpdate();
+            rtn = val >0;
+
+            if(rtn) {
+                mensaje = sp.getValue("productos.message.delete_exito");
+            }
+            else{
+                mensaje = sp.getValue("productos.message.delete_error");
+            }
+        }
+        catch (SQLException exc) {
+            mensaje = "Error en BD "+exc;
+            System.out.println(mensaje);
+        }
+        finally {
+            conn.cerrarConexion();
+        }
         return rtn;
     }
 

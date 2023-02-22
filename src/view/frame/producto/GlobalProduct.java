@@ -3,19 +3,18 @@ package view.frame.producto;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
-import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.marca.ConsultaMarca;
 import view.frame.ui.Notificacion;
+import view.frame.ui.component.Table;
 
-import javax.swing.*;
 import java.awt.Cursor;
 import java.util.List;
 
 public class GlobalProduct {
-    protected JTable table;
+    protected Table table;
     protected int indexTableProductSelect = -1;
-    protected ModeloTabla<Producto> modelTable;
+
     protected Producto producto;
     protected DetalleProducto detalleProducto;
     protected  PCategoria pCategoria;
@@ -38,21 +37,6 @@ public class GlobalProduct {
         return globalProduct;
     }
 
-    /*protected JTable getTable() {
-        return table;
-    }
-
-    protected void setTable(JTable table) {
-        this.table = table;
-    }
-
-    public ModeloTabla getModelTable() {
-        return modelTable;
-    }
-
-    public void setModelTable(ModeloTabla modelTable) {
-        this.modelTable = modelTable;
-    }*/
     protected void init(){
         FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         new InitProduct();
@@ -65,7 +49,7 @@ public class GlobalProduct {
     }
 
     protected void fillTableProduct(){
-        modelTable.clearTable();
+        table.clearTable();
         List<Categoria> listCatSel = pCategoria.getPanelList().getItemSelected();
 
         Thread thread = new Thread(()-> {
@@ -90,7 +74,7 @@ public class GlobalProduct {
 
                     if(add){
                         count++;
-                        modelTable.addProduct(prod);
+                        table.addRow(prod);
                     }
                 }
                 pTablaProducto.setCantidad(count);
@@ -100,7 +84,10 @@ public class GlobalProduct {
     }
 
     protected Producto getProductTableSelected(){
-        indexTableProductSelect = table.getSelectionModel().getLeadSelectionIndex();
+        FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        Producto producto = (Producto) table.getSelectedItem();//table;
+        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        /*indexTableProductSelect = table.getSelectionModel().getLeadSelectionIndex();
         //System.out.println(">> "+index);
         Producto producto = null;
         if(indexTableProductSelect != -1) {
@@ -112,7 +99,7 @@ public class GlobalProduct {
                     //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
                 }
             }
-        }
+        }*/
 
         return producto;
     }

@@ -441,7 +441,7 @@ public class DetalleProducto implements ActionListener {
             if(rtn) {
                 int row = GlobalProduct.getInstance().indexTableProductSelect;
                 if(isEditingProduct && row!=-1){
-                    GlobalProduct.getInstance().modelTable.editProduct(prod,row);
+                    GlobalProduct.getInstance().table.editRow(prod,row);
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
@@ -574,11 +574,11 @@ public class DetalleProducto implements ActionListener {
         dcbMarca.removeAllElements();
 
         Categoria cat1 =  new Categoria();
-        cat1.setDesrcripcion(sp.getValue("productos.label.ninguno"));
+        cat1.setDesrcripcion(sp.getValue("label.ninguno"));
         dcbCategoria.addElement(cat1);
 
         Marca mc1 =  new Marca();
-        mc1.setDesrcripcion(sp.getValue("productos.label.ninguno"));
+        mc1.setDesrcripcion(sp.getValue("label.ninguno"));
         dcbMarca.addElement(mc1);
 
         List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();
