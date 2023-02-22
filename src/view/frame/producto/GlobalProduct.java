@@ -3,6 +3,7 @@ package view.frame.producto;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
+import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.marca.ConsultaMarca;
 import view.frame.ui.Notificacion;
@@ -14,7 +15,7 @@ import java.util.List;
 public class GlobalProduct {
     protected JTable table;
     protected int indexTableProductSelect = -1;
-    protected ModeloTabla <Producto> modelTable;
+    protected ModeloTabla<Producto> modelTable;
     protected Producto producto;
     protected DetalleProducto detalleProducto;
     protected  PCategoria pCategoria;

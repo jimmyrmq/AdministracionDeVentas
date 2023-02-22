@@ -157,12 +157,10 @@ public class NotificacionUI extends JComponent implements MouseListener {//Mouse
     @Override
     public void mouseEntered(MouseEvent e) {
         mouseIn = true;
-        System.out.println("mouseEntered");
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         mouseIn = false;
-        System.out.println("mouseExited");
     }
 }
