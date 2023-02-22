@@ -5,6 +5,7 @@ import model.Marca;
 import model.Producto;
 import view.frame.main.FrameMain;
 import view.frame.marca.ConsultaMarca;
+import view.frame.ui.Notificacion;
 
 import javax.swing.*;
 import java.awt.Cursor;
@@ -23,8 +24,10 @@ public class GlobalProduct {
     protected final ConsultaProducto consultaProducto = new ConsultaProducto();
     protected final ConsultaMarca consultaMarca = new ConsultaMarca();
 
+    protected final Notificacion notificacion = new Notificacion();
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
+
     private GlobalProduct(){}
 
     public static GlobalProduct getInstance(){
@@ -76,11 +79,10 @@ public class GlobalProduct {
                 for (Producto prod : list) {
                     if(reviewCat) {
                         add = false;
-                        cont:
                         for (Categoria cat : listCatSel) {
-                            if (prod.getCategoria().getID() == cat.getID()) {
+                            if (prod.getCategoria().getID().intValue() == cat.getID().intValue()) {
                                 add = true;
-                                break cont;
+                                break;
                             }
                         }
                     }

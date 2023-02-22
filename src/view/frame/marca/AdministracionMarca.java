@@ -5,7 +5,9 @@ import com.djm.db.result.TipoOperacion;
 import model.Marca;
 import util.Global;
 import util.SystemProperties;
+import view.frame.main.FrameMain;
 import view.frame.producto.ConsultaProducto;
+import view.frame.ui.component.OptionPane;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,20 +22,23 @@ public class AdministracionMarca {
 
     public boolean guardar(Marca marca){
         boolean rtn = false;
-        this.marca = marca;
-        ConsultaMarca consMarca = new ConsultaMarca();
+        if(marca!=null) {
+            this.marca = marca;
+            ConsultaMarca consMarca = new ConsultaMarca();
 
-        if(marca.getDesrcripcion()==null || marca.getDesrcripcion().trim().isEmpty()){
-            mensaje = sp.getValue("marca.message.error_descripcion");
+            if (marca.getDesrcripcion() == null || marca.getDesrcripcion().trim().isEmpty()) {
+                mensaje = sp.getValue("marca.message.error_descripcion");
+            } else if (consMarca.existeDescripcionMarca(marca.getDesrcripcion())) {
+                mensaje = sp.getValue("marca.message.marca_is_registrada");
+            } else {
+                rtn = savedb();
+                if (rtn) ;
+                else
+                    mensaje = sp.getValue("marca.message.error_guardar_bd");
+            }
         }
-        else if(consMarca.existeDescripcionMarca(marca.getDesrcripcion())){
-            mensaje = sp.getValue("marca.message.marca_is_registrada");
-        }
-        else {
-            rtn = savedb();
-            if(rtn);
-            else
-                mensaje = sp.getValue("marca.message.error_guardar_bd");
+        else{
+            mensaje = sp.getValue("marca.message.marca_null");
         }
         return rtn;
     }

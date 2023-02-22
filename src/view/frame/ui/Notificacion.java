@@ -14,31 +14,25 @@ public class Notificacion {
     private NotificacionUI notificacion;
     private boolean start = false;
     private int time = 3000;
+    private JPanel panel;
+    private Point point;
+    private boolean initialized = false;
+
     public Notificacion(){
-        this(null,null,new Point(10,470));
+        this(new Point(10,470));
     }
 
-    public Notificacion(String title){
-        this(title,null,new Point(10,470));
-    }
-    public Notificacion(String title, String messaje){
-        this(title,messaje,new Point(10,470));
 
-    }
-    public Notificacion(String title, String messaje, Point p){
-        notificacion = new NotificacionUI(title,messaje);
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-
-        panel.add(notificacion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, p.y, p.x, 0, 0, 1.0f, 1.0f));
-        FrameMain.frame.setGlassPane(panel);
+    public Notificacion(Point p){
+        notificacion = new NotificacionUI();
+        this.point  = p;
     }
 
     public void setTime(int timeSec){
         time = timeSec * 1000;
     }
 
-    public synchronized void setVisible(boolean visible) {
+    private synchronized void setVisible(boolean visible) {
         if(FrameMain.frame.getGlassPane()!=null) {
             Component glassPane= FrameMain.frame.getGlassPane();
             if(visible && glassPane.isVisible()) {
@@ -59,6 +53,16 @@ public class Notificacion {
 
     public synchronized void start(){
         if((!start) && notificacion != null) {
+            if(!initialized) {
+                initialized = true;
+                panel = new JPanel(new GridBagLayout());
+                panel.setOpaque(false);
+                FrameMain.frame.setGlassPane(panel);
+                //System.out.println(FrameMain.frame.getGlassPane());
+
+                panel.add(notificacion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, point.y, point.x, 0, 0, 1.0f, 1.0f));
+            }
+
             start = true;
             setVisible(true);
             notificacion.runShow();
@@ -95,4 +99,18 @@ public class Notificacion {
    public void setTitle(String title){
         notificacion.setTitle(title);
    }
+
+   public void start(String title,String msg){
+        notificacion.setTitle(title);
+        notificacion.setMessage(msg);
+        start();
+   }
+
+   public void setPoint(Point point){
+        this.point = point;
+        panel.removeAll();
+        panel.add(notificacion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, point.y, point.x, 0, 0, 1.0f, 1.0f));
+        panel.repaint();
+        panel.updateUI();
+    }
 }

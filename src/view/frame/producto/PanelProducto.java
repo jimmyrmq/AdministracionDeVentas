@@ -2,7 +2,6 @@ package view.frame.producto;
 
 import com.djm.util.LayoutPanel;
 import util.IPanel;
-import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.themes.GlobalUI;
 

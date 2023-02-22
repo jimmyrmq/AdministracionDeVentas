@@ -52,15 +52,12 @@ public class ActionListenerProduct implements ActionListener {
                 GlobalProduct.getInstance().init();
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
-                Notificacion notificacion2 = new Notificacion();
-                notificacion2.setTitle(sp.getValue("marca.label.title"));
                 DialogMarca dialogMarca = new DialogMarca();
                 if(dialogMarca.isAcept()){
                     //System.out.println(dialogMarca.getPanelMarca().getMarca().getDesrcripcion());
                     GlobalProduct.getInstance().consultaMarca.listarMarca();
-                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getPanelMarca().getMarca());
-                    notificacion2.setMensaje(sp.getValue("marca.message.marca_registrada_exito"));
-                    notificacion2.start();
+                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getMarca());
+                    GlobalProduct.getInstance().notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
                 }
             }
         }

@@ -8,6 +8,7 @@ import view.frame.ui.component.Button;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -23,6 +24,7 @@ public class PanelListMarca implements ActionListener,WindowListener {
     private boolean acept = false;
     private Button bAceptar;
     private Button bCancelar;
+    private Button bEliminar;
     private JTable table;
     private final SystemProperties sp = SystemProperties.getInstance();
 
@@ -32,6 +34,11 @@ public class PanelListMarca implements ActionListener,WindowListener {
 
         bAceptar = new Button(sp.getValue("button.aceptar"));
         bCancelar = new Button(sp.getValue("button.cancelar"));
+        bEliminar = new Button(sp.getValue("button.eliminar"), new ImageIcon("icon/delete.png"));
+        Color red = new Color(201, 34, 34);
+        bEliminar.setColorImage(red);
+        bEliminar.setForeground(red);
+
 
         bAceptar.addActionListener(this);
         bCancelar.addActionListener(this);
@@ -40,8 +47,9 @@ public class PanelListMarca implements ActionListener,WindowListener {
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         container.setLayout(new GridBagLayout());
 
-        container.add(bCancelar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 10, 0, 5, 0, 1.0f, 0.0f));
-        container.add(bAceptar, LayoutPanel.constantePane(1, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 5, 0.0f, 0.0f));
+        container.add(bEliminar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 0, 1.0f, 0.0f));
+        container.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 0, 5, 0, 0.0f, 0.0f));
+        container.add(bAceptar, LayoutPanel.constantePane(2, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 5, 0.0f, 0.0f));
 
         Dimension dim = new Dimension(340,410);
         //dialog.setUndecorated(true);

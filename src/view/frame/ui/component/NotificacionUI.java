@@ -30,12 +30,9 @@ public class NotificacionUI extends JComponent implements MouseListener {//Mouse
 
     private boolean mouseIn = false;
 
-    public NotificacionUI(String title, String message) {
+    public NotificacionUI() {
         setOpaque(false);
         setFocusable(false);
-
-        this.title = title;
-        this.message = message;
 
         String fnme = font0.getFontName();
         font1 = new Font(fnme, 1, 14);

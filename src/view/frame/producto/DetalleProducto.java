@@ -9,7 +9,6 @@ import model.Marca;
 import model.Producto;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
-import view.frame.ui.Notificacion;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
@@ -54,13 +53,12 @@ public class DetalleProducto implements ActionListener {
     private boolean isEditingProduct = false;
     private JPanel lPanel[] = new JPanel[3];
 
-    private final Notificacion notificacion = new Notificacion();
 
     public DetalleProducto(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        notificacion.setTitle(sp.getValue("productos.label.title"));
+        GlobalProduct.getInstance().notificacion.setTitle(sp.getValue("productos.label.title"));
 
         bGuardar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
         bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
@@ -447,8 +445,8 @@ public class DetalleProducto implements ActionListener {
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
-                notificacion.setMensaje(sp.getValue("productos.message.guardado_exito"));
-                notificacion.start();
+                GlobalProduct.getInstance().notificacion.setMensaje(sp.getValue("productos.message.guardado_exito"));
+                GlobalProduct.getInstance().notificacion.start();
             }
             else
                 OptionPane.error(FrameMain.frame,administracionProducto.getMensaje());
@@ -476,8 +474,8 @@ public class DetalleProducto implements ActionListener {
             sb.append("\"");
             sb.append(prod.getNombre());
             sb.append("\"");
-            notificacion.setMensaje(sb.toString());
-            notificacion.start();
+            GlobalProduct.getInstance().notificacion.setMensaje(sb.toString());
+            GlobalProduct.getInstance().notificacion.start();
 
             isEditingProduct = true;
 
