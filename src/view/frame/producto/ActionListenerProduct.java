@@ -56,6 +56,9 @@ public class ActionListenerProduct implements ActionListener {
                 notificacion2.setTitle(sp.getValue("marca.label.title"));
                 DialogMarca dialogMarca = new DialogMarca();
                 if(dialogMarca.isAcept()){
+                    //System.out.println(dialogMarca.getPanelMarca().getMarca().getDesrcripcion());
+                    GlobalProduct.getInstance().consultaMarca.listarMarca();
+                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getPanelMarca().getMarca());
                     notificacion2.setMensaje(sp.getValue("marca.message.marca_registrada_exito"));
                     notificacion2.start();
                 }

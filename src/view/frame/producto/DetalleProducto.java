@@ -570,6 +570,7 @@ public class DetalleProducto implements ActionListener {
     public JPanel getPanel() {
         return pPrincipal;
     }
+
     protected void init(){
         dcbCategoria.removeAllElements();
         dcbMarca.removeAllElements();
@@ -585,17 +586,20 @@ public class DetalleProducto implements ActionListener {
         List<Categoria> lcat = GlobalProduct.getInstance().consultaCategoria.getList();
         boolean isCat = lcat!=null && !lcat.isEmpty();
         cbCategoria.setEnabled(isCat);
+
         if(isCat) {
             for (Categoria c : lcat)
                 dcbCategoria.addElement(c);
         }
 
-        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
-        boolean isMar = lmarca!=null && !lmarca.isEmpty();
-        cbMarca.setEnabled(isMar);
-        if(isMar){
-            for(Marca mc: lmarca)
-                dcbMarca.addElement(mc);
-        }
+        GlobalProduct.getInstance().cargarCBMarca();
+    }
+
+    public ComboBox<Marca> getCBMarca(){
+        return cbMarca;
+    }
+
+    public DefaultComboBoxModel<Marca> getDCBMarca(){
+        return dcbMarca;
     }
 }

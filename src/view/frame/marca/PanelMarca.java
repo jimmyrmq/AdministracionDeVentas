@@ -11,9 +11,9 @@ import java.awt.GridBagLayout;
 
 public class PanelMarca extends JPanel{
     private Marca marca = null;
+
     private TextField tDescripcion;
     private final SystemProperties sp = SystemProperties.getInstance();
-    private ActionListenerMarca actionListenerMarca = null;
 
     public PanelMarca(){
         super(new GridBagLayout());
@@ -23,7 +23,7 @@ public class PanelMarca extends JPanel{
     }
 
     private void createGUI(){
-        tDescripcion = new TextField(20,150);
+        tDescripcion = new TextField(15,150);
 
         JLabel lDescripcion = new JLabel(sp.getValue("marca.label.descripcion")+":");
 
@@ -48,8 +48,6 @@ public class PanelMarca extends JPanel{
     }
 
     public void setActionListenerMarca(ActionListenerMarca actionListenerMarca) {
-        this.actionListenerMarca = actionListenerMarca;
-
         if(actionListenerMarca!=null)
             tDescripcion.addActionListener(actionListenerMarca);
     }

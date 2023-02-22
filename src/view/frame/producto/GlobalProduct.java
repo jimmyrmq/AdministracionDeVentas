@@ -1,6 +1,7 @@
 package view.frame.producto;
 
 import model.Categoria;
+import model.Marca;
 import model.Producto;
 import view.frame.main.FrameMain;
 import view.frame.marca.ConsultaMarca;
@@ -111,5 +112,20 @@ public class GlobalProduct {
         }
 
         return producto;
+    }
+
+    public void cargarCBMarca(){
+        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
+        boolean isMar = lmarca!=null && !lmarca.isEmpty();
+        detalleProducto.getCBMarca().setEnabled(isMar);
+        if(isMar){
+            for(Marca mc: lmarca)
+                detalleProducto.getDCBMarca().addElement(mc);
+        }
+    }
+
+    public void addCBCarga(Marca marca){
+        if(marca!=null)
+            detalleProducto.getDCBMarca().addElement(marca);
     }
 }

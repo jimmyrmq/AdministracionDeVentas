@@ -15,6 +15,7 @@ public class ActionListenerMarca implements ActionListener {
         this.dialog = dialog;
     }
 
+
     public void setPanelMarca(PanelMarca panelMarca) {
         this.panelMarca = panelMarca;
     }

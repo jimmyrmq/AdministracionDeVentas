@@ -17,43 +17,33 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class DialogMarca implements ActionListener, WindowListener {
+public class PanelListMarca implements ActionListener,WindowListener {
     private JDialog dialog;
-    private PanelMarca panelMarca;
-    private Button bAceptar,bCancelar,bBuscar;
-    private boolean acept =  true;
-    private boolean edit = false;
+    private Marca marca;
+    private boolean acept = false;
+    private Button bAceptar;
+    private Button bCancelar;
+    private JTable table;
     private final SystemProperties sp = SystemProperties.getInstance();
 
-    public DialogMarca(){
-        dialog = new JDialog(FrameMain.frame,sp.getValue("marca.label.title"),true);
+    public PanelListMarca(){
+        dialog = new JDialog(FrameMain.frame,"Buscar Marca",true);
         dialog.addWindowListener(this);
-
-        ActionListenerMarca actionListenerMarca = new ActionListenerMarca(dialog);
-
-        panelMarca = new PanelMarca();
-        panelMarca.setActionListenerMarca(actionListenerMarca);
-        actionListenerMarca.setPanelMarca(panelMarca);
 
         bAceptar = new Button(sp.getValue("button.aceptar"));
         bCancelar = new Button(sp.getValue("button.cancelar"));
-        bBuscar = new Button(new ImageIcon("icon/search.png"));
-        bBuscar.setActionCommand("BUSCAR_MARCA");
 
-        bAceptar.addActionListener(actionListenerMarca);
+        bAceptar.addActionListener(this);
         bCancelar.addActionListener(this);
-        bBuscar.addActionListener(this);
 
         Container container = dialog.getContentPane();
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         container.setLayout(new GridBagLayout());
 
-        container.add(panelMarca, LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 20, 10, 0, 0, 0.0f, 1.0f));
-        container.add(bBuscar, LayoutPanel.constantePane(2, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 20, 3, 0, 0, 1.0f, 1.0f));
         container.add(bCancelar, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 10, 0, 5, 0, 1.0f, 0.0f));
         container.add(bAceptar, LayoutPanel.constantePane(1, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 5, 0.0f, 0.0f));
 
-        Dimension dim = new Dimension(360,130);
+        Dimension dim = new Dimension(340,410);
         //dialog.setUndecorated(true);
         dialog.setPreferredSize(dim);
         dialog.setSize(dim);
@@ -61,6 +51,14 @@ public class DialogMarca implements ActionListener, WindowListener {
         dialog.setDefaultCloseOperation(0);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
+    }
+
+    public Marca getMarca() {
+        return marca;
+    }
+
+    public boolean isAcept() {
+        return acept;
     }
 
     @Override
@@ -71,13 +69,14 @@ public class DialogMarca implements ActionListener, WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         acept = false;
+        marca = null;
         dialog.setVisible(false);
         dialog.dispose();
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        //System.out.println(dialog.getSize());
+
     }
 
     @Override
@@ -103,31 +102,15 @@ public class DialogMarca implements ActionListener, WindowListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();
-
-        if(action.equalsIgnoreCase("Cancelar")){
+        if(action.equalsIgnoreCase("Aceptar")){
+            acept = true;
+            dialog.setVisible(false);
+            dialog.dispose();
+        }
+        else if(action.equalsIgnoreCase("Cancelar")){
             acept = false;
             dialog.setVisible(false);
             dialog.dispose();
         }
-        else if(action.equalsIgnoreCase("BUSCAR_MARCA")){
-            PanelListMarca plm = new PanelListMarca();
-            if(plm.isAcept()){
-                edit = true;
-                Marca marca = plm.getMarca();
-                panelMarca.setMarca(marca);
-            }
-        }
-    }
-
-    public boolean isAcept(){
-        return acept;
-    }
-
-    public PanelMarca getPanelMarca(){
-        return this.panelMarca;
-    }
-
-    public boolean isEdit() {
-        return edit;
     }
 }
