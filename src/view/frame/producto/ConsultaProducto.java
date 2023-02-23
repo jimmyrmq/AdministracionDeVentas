@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaProducto {
-    private List<Producto> list;
+    private List<Producto> list = null;
 
     public void listarProducto(){
         if(list!=null)
@@ -56,7 +56,7 @@ public class ConsultaProducto {
                 idmarca = rs.getInt(16);
                 idcat = rs.getInt(17);
 
-                Categoria cat = GlobalProduct.getInstance().consultaCategoria.getCategoria(idcat);
+                Categoria cat = LoadData.getInstance().getConsultaCategoria().getCategoria(idcat);
 
                 if(cat==null) {
                     cat = new Categoria();
@@ -64,7 +64,7 @@ public class ConsultaProducto {
                 }
                 prod.setCategoria(cat);
 
-                Marca marca = GlobalProduct.getInstance().consultaMarca.getMarca(idmarca);
+                Marca marca = LoadData.getInstance().getConsultaMarca().getMarca(idmarca);
                 if(marca == null) {
                     marca = new Marca();
                     marca.setDesrcripcion(ninguno);
@@ -122,5 +122,9 @@ public class ConsultaProducto {
 
     public List<Producto> getList() {
         return list;
+    }
+
+    public boolean isListNull(){
+        return list == null;
     }
 }

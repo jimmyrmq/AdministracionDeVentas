@@ -10,10 +10,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 public class PanelProducto  implements IPanel {
-
     private boolean open = false;
     private JPanel pPrincipal;
-    public PanelProducto(){}
+    public PanelProducto(){ }
     private void createPanel(){
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);

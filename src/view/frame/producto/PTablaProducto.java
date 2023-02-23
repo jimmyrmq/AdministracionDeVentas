@@ -52,7 +52,6 @@ public class PTablaProducto {
         tBuscar = new TextField(25);
         tBuscar.setHint(sp.getValue("productos.label.buscar_producto"));
 
-
         ModelTableProductoCustom mpc = new ModelTableProductoCustom();
         ModeloTabla<Producto> modelo = new ModeloTabla(mpc);
 

@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaCategoria {
-    private List<Categoria> list;
+    private List<Categoria> list = null;
+
     protected void listarCategoria(){
         if(list!=null)
             list.clear();
@@ -67,5 +68,9 @@ public class ConsultaCategoria {
 
     public List<Categoria> getList() {
         return list;
+    }
+
+    public boolean isListNull(){
+        return list == null;
     }
 }

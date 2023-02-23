@@ -19,11 +19,6 @@ public class GlobalProduct {
     protected DetalleProducto detalleProducto;
     protected  PCategoria pCategoria;
     protected PTablaProducto pTablaProducto;
-
-    protected final ConsultaCategoria consultaCategoria = new ConsultaCategoria();
-    protected final ConsultaProducto consultaProducto = new ConsultaProducto();
-    protected final ConsultaMarca consultaMarca = new ConsultaMarca();
-
     protected final Notificacion notificacion = new Notificacion();
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
@@ -38,24 +33,27 @@ public class GlobalProduct {
     }
 
     protected void init(){
-        FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        new InitProduct();
+        Thread t = new Thread(()-> {
+            FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            LoadData.getInstance().loadAll();
+            detalleProducto.init();
 
-        detalleProducto.init();
+            fillTableProduct();
+            FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        });
+        t.start();
 
-        fillTableProduct();
-
-        FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     protected void fillTableProduct(){
+        table.setEnabled(false);
         table.clearTable();
+        //Vemos que categoria esta seleccionada
         List<Categoria> listCatSel = pCategoria.getPanelList().getItemSelected();
 
         Thread thread = new Thread(()-> {
-            List<Producto> list = GlobalProduct.getInstance().consultaProducto.getList();
+            List<Producto> list = LoadData.getInstance().getConsultaProducto().getList();
             boolean e = list != null && !list.isEmpty();
-            table.setEnabled(e);
             if (e) {
                 boolean add = listCatSel.isEmpty();
                 boolean reviewCat = !add;
@@ -78,6 +76,8 @@ public class GlobalProduct {
                     }
                 }
                 pTablaProducto.setCantidad(count);
+                e = count > 0;
+                table.setEnabled(e);
             }
         });
         thread.start();
@@ -105,7 +105,7 @@ public class GlobalProduct {
     }
 
     public void cargarCBMarca(){
-        List<Marca> lmarca = GlobalProduct.getInstance().consultaMarca.getList();
+        List<Marca> lmarca = LoadData.getInstance().getConsultaMarca().getList();
         boolean isMar = lmarca!=null && !lmarca.isEmpty();
         detalleProducto.getCBMarca().setEnabled(isMar);
         if(isMar){

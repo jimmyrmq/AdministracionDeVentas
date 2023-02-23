@@ -40,7 +40,7 @@ public class PCategoria {
 
     private void init(){
         Thread thread = new Thread(()-> {
-            List<Categoria> lCat = GlobalProduct.getInstance().consultaCategoria.getList();
+            List<Categoria> lCat = LoadData.getInstance().getConsultaCategoria().getList();
             pl.setListCategoria(lCat);
         });
         thread.start();

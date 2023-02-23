@@ -44,7 +44,7 @@ public class AdministracionProducto {
             if(rtn) {
                 if (tipoOperacion == TipoOperacion.INSERT) {
                     GlobalProduct.getInstance().table.addRow(prod);
-                    GlobalProduct.getInstance().consultaProducto.getList().add(prod);
+                    LoadData.getInstance().getConsultaProducto().getList().add(prod);
                 }/*else
                     System.out.println("Editar Producto...");*/
             }else

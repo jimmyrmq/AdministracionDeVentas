@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsultaMarca {
-    private List<Marca> list;
+    private List<Marca> list = null;
     public void listarMarca(){
         if(list!=null)
             list.clear();
@@ -82,5 +82,9 @@ public class ConsultaMarca {
 
     public List<Marca> getList() {
         return list;
+    }
+
+    public boolean isListNull(){
+        return list == null;
     }
 }
