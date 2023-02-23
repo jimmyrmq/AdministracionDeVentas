@@ -14,7 +14,7 @@ import java.util.List;
 public class ConsultaCategoria {
     private List<Categoria> list = null;
 
-    protected void listarCategoria(){
+    public void listarCategoria(){
         if(list!=null)
             list.clear();
         else

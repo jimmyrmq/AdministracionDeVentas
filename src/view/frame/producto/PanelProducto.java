@@ -21,6 +21,7 @@ public class PanelProducto  implements IPanel {
         sep1.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getColorBorder());
         sep1.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
+
         GlobalProduct.getInstance().pTablaProducto = new PTablaProducto();
         GlobalProduct.getInstance().detalleProducto = new DetalleProducto();
         GlobalProduct.getInstance().pCategoria = new PCategoria();

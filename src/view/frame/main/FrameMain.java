@@ -1,6 +1,8 @@
 package view.frame.main;
 
 
+import view.frame.ui.Notificacion;
+
 import javax.swing.*;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -11,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 public class FrameMain {
+    public static final Notificacion notificacion = new Notificacion();
     public static JFrame frame;
     private Container content;
     public FrameMain(){

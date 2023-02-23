@@ -3,6 +3,7 @@ package view.frame.ui.component;
 import com.djm.ui.themes.panel.IPanelUI;
 import com.djm.util.LayoutPanel;
 import util.SystemProperties;
+import view.frame.main.FrameMain;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -14,6 +15,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class OptionPane {
     private static JDialog dialog;
@@ -29,7 +32,6 @@ public class OptionPane {
     private final static int WARNING = 2;
     private final static int ERROR = 3;
     private final static SystemProperties sp = SystemProperties.getInstance();
-
 
     public OptionPane(){}
 
@@ -71,7 +73,44 @@ public class OptionPane {
     }
 
     private static void createDialog(JFrame frame, String message, int type,String[] optionButtons){
-        dialog = new JDialog(frame,"Administración",true);
+        dialog = new JDialog(FrameMain.frame,"Administración",true);
+        dialog.addWindowListener(new WindowListener(){
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                dialog.revalidate();
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
         /*if(buttonCancel == -1) {
             if (optionButtons.length == 1)
                 buttonCancel = 0;

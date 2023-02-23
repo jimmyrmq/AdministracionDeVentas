@@ -6,6 +6,7 @@ import model.Producto;
 import util.Global;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
+import view.frame.main.LoadData;
 
 import java.awt.Cursor;
 import java.sql.PreparedStatement;

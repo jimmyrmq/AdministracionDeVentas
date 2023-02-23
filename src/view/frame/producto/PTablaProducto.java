@@ -2,9 +2,11 @@ package view.frame.producto;
 
 import com.djm.ui.component.TextField;
 import com.djm.util.LayoutPanel;
+import model.Categoria;
 import model.Producto;
 import util.table.ModeloTabla;
 import util.SystemProperties;
+import view.frame.main.LoadData;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.EtiquetaComponent;
 import view.frame.ui.component.Table;
@@ -22,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class PTablaProducto {
     private Table<Producto> tabla;
@@ -158,5 +161,44 @@ public class PTablaProducto {
         sb.append(cant);
 
         lCantidad.setText(sb.toString());
+    }
+
+    protected void fillTableProduct(){
+
+        tabla.setEnabled(false);
+
+        Thread thread = new Thread(()-> {
+            tabla.clearTable();
+            //Vemos que categoria esta seleccionada
+            List<Categoria> listCatSel = GlobalProduct.getInstance().pCategoria.getPanelList().getItemSelected();//LoadData.getInstance().getConsultaCategoria().getList();//
+            List<Producto> list = LoadData.getInstance().getConsultaProducto().getList();
+            boolean e = list != null && !list.isEmpty();
+            if (e) {
+                boolean add = listCatSel.isEmpty();
+                boolean reviewCat = !add;
+                int count = 0;
+                //System.out.println(add+" "+reviewCat);
+                for (Producto prod : list) {
+                    if(reviewCat) {
+                        add = false;
+                        for (Categoria cat : listCatSel) {
+                            if (prod.getCategoria().getID().intValue() == cat.getID().intValue()) {
+                                add = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(add){
+                        count++;
+                        tabla.addRow(prod);
+                    }
+                }
+                setCantidad(count);
+                e = count > 0;
+                tabla.setEnabled(e);
+            }
+        });
+        thread.start();
     }
 }

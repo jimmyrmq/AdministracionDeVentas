@@ -1,6 +1,8 @@
-package view.frame.producto;
+package view.frame.main;
 
 import view.frame.marca.ConsultaMarca;
+import view.frame.producto.ConsultaCategoria;
+import view.frame.producto.ConsultaProducto;
 
 public class LoadData {
     private final ConsultaCategoria consultaCategoria = new ConsultaCategoria();

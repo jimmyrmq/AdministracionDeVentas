@@ -2,6 +2,7 @@ package view.frame.producto;
 
 import com.djm.util.LayoutPanel;
 import model.Categoria;
+import view.frame.main.LoadData;
 import view.frame.ui.component.PanelList;
 import view.frame.ui.themes.GlobalUI;
 
@@ -25,8 +26,6 @@ public class PCategoria {
 
         pl = new PanelList(actionListenerProduct);
 
-        init();
-
         JScrollPane jspi = new JScrollPane(pl, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jspi.setViewportBorder(null);
         jspi.getViewport().setOpaque(false);
@@ -38,12 +37,12 @@ public class PCategoria {
         pPrincipal.add(jspi, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
     }
 
-    private void init(){
-        Thread thread = new Thread(()-> {
+    public void init(){
+        //Thread thread = new Thread(()-> {
             List<Categoria> lCat = LoadData.getInstance().getConsultaCategoria().getList();
             pl.setListCategoria(lCat);
-        });
-        thread.start();
+        /*});
+        thread.start();*/
     }
 
 

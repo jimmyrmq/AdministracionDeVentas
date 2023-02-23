@@ -9,6 +9,7 @@ import model.Marca;
 import model.Producto;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
+import view.frame.main.LoadData;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ButtonTabbed;
 import view.frame.ui.component.ButtonGroup;
@@ -58,7 +59,7 @@ public class DetalleProducto implements ActionListener {
         pPrincipal = new JPanel(new GridBagLayout());
         pPrincipal.setOpaque(false);
 
-        GlobalProduct.getInstance().notificacion.setTitle(sp.getValue("productos.label.title"));
+        FrameMain.notificacion.setTitle(sp.getValue("productos.label.title"));
 
         bGuardar = new Button(sp.getValue("button.guardar"));//,new ImageIcon("icon/ok.png"));
         bCancelar = new Button(sp.getValue("button.cancelar"));//,new ImageIcon("icon/close.png"));
@@ -445,8 +446,8 @@ public class DetalleProducto implements ActionListener {
                     //model.setValueAt(s, 1, 1);
                 }
                 clear();
-                GlobalProduct.getInstance().notificacion.setMensaje(sp.getValue("productos.message.guardado_exito"));
-                GlobalProduct.getInstance().notificacion.start();
+                FrameMain.notificacion.setMensaje(sp.getValue("productos.message.guardado_exito"));
+                FrameMain.notificacion.start();
             }
             else
                 OptionPane.error(FrameMain.frame,administracionProducto.getMensaje());
@@ -474,8 +475,8 @@ public class DetalleProducto implements ActionListener {
             sb.append("\"");
             sb.append(prod.getNombre());
             sb.append("\"");
-            GlobalProduct.getInstance().notificacion.setMensaje(sb.toString());
-            GlobalProduct.getInstance().notificacion.start();
+            FrameMain.notificacion.setMensaje(sb.toString());
+            FrameMain.notificacion.start();
 
             isEditingProduct = true;
 
@@ -559,9 +560,6 @@ public class DetalleProducto implements ActionListener {
 
         tCodigo.requestFocus();
 
-        //bNuevo.setEnabled(true);
-        //bGuardar.setEnabled(false);
-        //bCancelar.setEnabled(false);
         FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
@@ -570,27 +568,32 @@ public class DetalleProducto implements ActionListener {
     }
 
     protected void init(){
-        dcbCategoria.removeAllElements();
-        dcbMarca.removeAllElements();
 
-        Categoria cat1 =  new Categoria();
-        cat1.setDesrcripcion(sp.getValue("label.ninguno"));
-        dcbCategoria.addElement(cat1);
+        Thread t = new Thread(()-> {
+            dcbCategoria.removeAllElements();
+            dcbMarca.removeAllElements();
 
-        Marca mc1 =  new Marca();
-        mc1.setDesrcripcion(sp.getValue("label.ninguno"));
-        dcbMarca.addElement(mc1);
+            Categoria cat1 = new Categoria();
+            cat1.setDesrcripcion(sp.getValue("label.ninguno"));
+            dcbCategoria.addElement(cat1);
 
-        List<Categoria> lcat = LoadData.getInstance().getConsultaCategoria().getList();
-        boolean isCat = lcat!=null && !lcat.isEmpty();
-        cbCategoria.setEnabled(isCat);
+            Marca mc1 = new Marca();
+            mc1.setDesrcripcion(sp.getValue("label.ninguno"));
+            dcbMarca.addElement(mc1);
 
-        if(isCat) {
-            for (Categoria c : lcat)
-                dcbCategoria.addElement(c);
-        }
+            List<Categoria> lcat = LoadData.getInstance().getConsultaCategoria().getList();
+            boolean isCat = lcat != null && !lcat.isEmpty();
+            cbCategoria.setEnabled(isCat);
 
-        GlobalProduct.getInstance().cargarCBMarca();
+            if (isCat) {
+                for (Categoria c : lcat)
+                    dcbCategoria.addElement(c);
+            }
+
+            GlobalProduct.getInstance().cargarCBMarca();
+        });
+
+        t.start();
     }
 
     public ComboBox<Marca> getCBMarca(){
@@ -600,4 +603,5 @@ public class DetalleProducto implements ActionListener {
     public DefaultComboBoxModel<Marca> getDCBMarca(){
         return dcbMarca;
     }
+
 }

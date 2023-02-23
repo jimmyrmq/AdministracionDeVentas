@@ -1,15 +1,14 @@
 package view.frame.producto;
 
 import model.Producto;
-import util.Global;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
+import view.frame.main.LoadData;
 import view.frame.marca.DialogMarca;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
 
-import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +22,7 @@ public class ActionListenerProduct implements ActionListener {
         String action = e.getActionCommand();
 
         if((e.getSource() instanceof CategoriaUI)){
-            GlobalProduct.getInstance().fillTableProduct();
+            GlobalProduct.getInstance().pTablaProducto.fillTableProduct();
         }
         else  if((e.getSource() instanceof Button)) {
             if (action.equals("EDIT_PRODUCT")) {
@@ -50,7 +49,7 @@ public class ActionListenerProduct implements ActionListener {
                                 GlobalProduct.getInstance().table.removeRow(index);
                             }
 
-                            GlobalProduct.getInstance().notificacion.start(sp.getValue("productos.label.title"), ap.getMensaje());
+                            FrameMain.notificacion.start(sp.getValue("productos.label.title"), ap.getMensaje());
 
                         }
 
@@ -64,10 +63,11 @@ public class ActionListenerProduct implements ActionListener {
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
                 DialogMarca dialogMarca = new DialogMarca();
                 if(dialogMarca.isAcept()){
-                    //System.out.println(dialogMarca.getPanelMarca().getMarca().getDesrcripcion());
+                    boolean edit = dialogMarca.isEdit();
                     LoadData.getInstance().getConsultaMarca().listarMarca();
-                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getMarca());
-                    GlobalProduct.getInstance().notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
+                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getMarca(),edit);
+
+                    FrameMain.notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
                 }
             }
         }

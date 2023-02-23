@@ -46,6 +46,7 @@ public class AdministracionMarca {
     private boolean savedb(){
         boolean rtn = false;
         Connection conn = Global.getInstance().getConnection();
+        tipoOperacion = marca.getID()==null?TipoOperacion.INSERT:TipoOperacion.UPDATE;
         boolean newMarca = tipoOperacion == TipoOperacion.INSERT;
         String query;
         if(newMarca){
@@ -83,6 +84,45 @@ public class AdministracionMarca {
             System.out.println(mensaje);
         }
 
+        return rtn;
+    }
+
+    public boolean eliminar(Integer id){
+        boolean rtn = false;
+        Connection conn = Global.getInstance().getConnection();
+        try{
+            //Actualizamos los productos con esa marca
+            String query = "update producto set IDMarca = null where IDMarca = ?";
+
+            PreparedStatement pstmt = conn.getPreparedStatement(query);
+
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+
+            //Eliminamos los productos de la marca
+            query = "delete from Marca where id = ?";
+            pstmt = conn.getPreparedStatement(query);
+
+            pstmt.setInt(1, id);
+
+            int val = pstmt.executeUpdate();
+            rtn = val >0;
+
+            if(rtn) {
+                mensaje = sp.getValue("marca.message.delete_exito");
+            }
+            else{
+                mensaje = sp.getValue("marca.message.delete_error");
+            }
+        }
+        catch (SQLException exc) {
+            rtn = false;
+            mensaje = "Error en BD "+exc;
+            System.out.println(mensaje);
+        }
+        finally {
+            conn.cerrarConexion();
+        }
         return rtn;
     }
 

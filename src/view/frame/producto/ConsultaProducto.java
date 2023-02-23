@@ -6,6 +6,7 @@ import model.Marca;
 import model.Producto;
 import util.Global;
 import util.SystemProperties;
+import view.frame.main.LoadData;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

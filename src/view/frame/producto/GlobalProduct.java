@@ -4,8 +4,7 @@ import model.Categoria;
 import model.Marca;
 import model.Producto;
 import view.frame.main.FrameMain;
-import view.frame.marca.ConsultaMarca;
-import view.frame.ui.Notificacion;
+import view.frame.main.LoadData;
 import view.frame.ui.component.Table;
 
 import java.awt.Cursor;
@@ -19,7 +18,6 @@ public class GlobalProduct {
     protected DetalleProducto detalleProducto;
     protected  PCategoria pCategoria;
     protected PTablaProducto pTablaProducto;
-    protected final Notificacion notificacion = new Notificacion();
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
 
@@ -36,51 +34,15 @@ public class GlobalProduct {
         Thread t = new Thread(()-> {
             FrameMain.frame.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             LoadData.getInstance().loadAll();
-            detalleProducto.init();
 
-            fillTableProduct();
+            detalleProducto.init();
+            pCategoria.init();
+            pTablaProducto.fillTableProduct();
+
             FrameMain.frame.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         });
         t.start();
 
-    }
-
-    protected void fillTableProduct(){
-        table.setEnabled(false);
-        table.clearTable();
-        //Vemos que categoria esta seleccionada
-        List<Categoria> listCatSel = pCategoria.getPanelList().getItemSelected();
-
-        Thread thread = new Thread(()-> {
-            List<Producto> list = LoadData.getInstance().getConsultaProducto().getList();
-            boolean e = list != null && !list.isEmpty();
-            if (e) {
-                boolean add = listCatSel.isEmpty();
-                boolean reviewCat = !add;
-                int count = 0;
-                //System.out.println(add+" "+reviewCat);
-                for (Producto prod : list) {
-                    if(reviewCat) {
-                        add = false;
-                        for (Categoria cat : listCatSel) {
-                            if (prod.getCategoria().getID().intValue() == cat.getID().intValue()) {
-                                add = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(add){
-                        count++;
-                        table.addRow(prod);
-                    }
-                }
-                pTablaProducto.setCantidad(count);
-                e = count > 0;
-                table.setEnabled(e);
-            }
-        });
-        thread.start();
     }
 
     protected Producto getProductTableSelected(){
@@ -114,8 +76,24 @@ public class GlobalProduct {
         }
     }
 
-    public void addCBCarga(Marca marca){
-        if(marca!=null)
-            detalleProducto.getDCBMarca().addElement(marca);
+    public void addCBCarga(Marca marca,boolean edit){
+        if(marca!=null) {
+            if(edit){
+                int sz = detalleProducto.getDCBMarca().getSize();
+                Marca mccb;
+                cont:for(int i = 0 ; i < sz ;i++) {
+                    mccb = detalleProducto.getDCBMarca().getElementAt(i);
+                    if((marca.getID() !=null && mccb.getID()!=null) &&
+                        (marca.getID().intValue() == mccb.getID().intValue())) {
+                        mccb.setDesrcripcion(marca.getDesrcripcion());
+                        //detalleProducto.getDCBMarca().removeElementAt(i);
+                        //detalleProducto.getDCBMarca().insertElementAt(marca,i);
+                        break cont;
+                    }
+                }
+            }
+            else
+                detalleProducto.getDCBMarca().addElement(marca);
+        }
     }
 }

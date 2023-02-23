@@ -92,9 +92,9 @@ public class Table <E> extends JTable{
         });
     }
 
-    public TableRowSorter getSorter(){
+    /*public TableRowSorter getSorter(){
         return sorter;
-    }
+    }*/
 
     public JScrollPane getPanel(){
         JScrollPane jsp = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -103,6 +103,12 @@ public class Table <E> extends JTable{
         jsp.setOpaque(false);
         jsp.setBorder(null);
         jsp.getViewport().setBackground(tableUI.getBackground());
+        /*jsp.updateUI();
+        jsp.repaint();
+        jsp.revalidate();
+        jsp.getViewport().updateUI();
+        jsp.getViewport().repaint();
+        jsp.getViewport().revalidate();*/
 
         return jsp;
     }
@@ -110,19 +116,19 @@ public class Table <E> extends JTable{
     public E getSelectedItem(){
         setEnabled(false);
         E object = null;
-            int indexTableProductSelect = getSelectionModel().getLeadSelectionIndex();
-            //System.out.println(">> "+index);
-            if (indexTableProductSelect != -1) {
-                int[] selection = getSelectedRows();
-                if (selection.length == 1) {
-                    int row = convertRowIndexToModel(selection[0]);
-                    if (row != -1) {
-                        Object obj = this.modeloTabla.getValue(row);
-                        object = (E) obj;
-                        //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
-                    }
+        int indexTableProductSelect = getSelectionModel().getLeadSelectionIndex();
+        //System.out.println(">> "+index);
+        if (indexTableProductSelect != -1) {
+            int[] selection = getSelectedRows();
+            if (selection.length == 1) {
+                int row = convertRowIndexToModel(selection[0]);
+                if (row != -1) {
+                    Object obj = this.modeloTabla.getValue(row);
+                    object = (E) obj;
+                    //System.out.println(">> " + producto.getCategoria() + " " + producto.getNombre() + " " + producto.getNota());
                 }
             }
+        }
 
         setEnabled(true);
         return object;
