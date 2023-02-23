@@ -1,40 +1,43 @@
-package view.frame.marca;
+package view.frame.categoria;
 
 import com.djm.db.connection.Connection;
 import com.djm.db.result.TipoOperacion;
-import model.Marca;
+import model.Categoria;
 import util.Global;
 import util.SystemProperties;
 
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AdministracionMarca {
+public class AdministracionCategoria {
     private String mensaje;
     private SystemProperties sp = SystemProperties.getInstance();
     private TipoOperacion tipoOperacion = TipoOperacion.INSERT;
-    private Marca marca;
+    private Categoria categoria;
 
-    public boolean guardar(Marca marca){
+    public boolean guardar(Categoria categoria){
         boolean rtn = false;
-        if(marca!=null) {
-            this.marca = marca;
-            ConsultaMarca consMarca = new ConsultaMarca();
+        if(categoria!=null) {
+            this.categoria = categoria;
+            ConsultaCategoria consCat = new ConsultaCategoria();
 
-            if (marca.getDesrcripcion() == null || marca.getDesrcripcion().trim().isEmpty()) {
-                mensaje = sp.getValue("marca.message.error_descripcion");
-            } else if (consMarca.existeDescripcion(marca.getDesrcripcion())) {
-                mensaje = sp.getValue("marca.message.marca_is_registrada");
+            if (categoria.getDesrcripcion() == null || categoria.getDesrcripcion().trim().isEmpty()) {
+                mensaje = sp.getValue("categoria.message.error_descripcion");
+            }if (categoria.getColor() == null) {
+                mensaje = sp.getValue("categoria.message.error_color");
+            } else if (consCat.existeDescripcion(categoria.getDesrcripcion())) {
+                mensaje = sp.getValue("categoria.message.marca_is_registrada");
             } else {
                 rtn = savedb();
                 if (rtn) ;
                 else
-                    mensaje = sp.getValue("marca.message.error_guardar_bd");
+                    mensaje = sp.getValue("categoria.message.error_guardar_bd");
             }
         }
         else{
-            mensaje = sp.getValue("marca.message.marca_null");
+            mensaje = sp.getValue("categoria.message.marca_null");
         }
         return rtn;
     }
@@ -42,23 +45,31 @@ public class AdministracionMarca {
     private boolean savedb(){
         boolean rtn = false;
         Connection conn = Global.getInstance().getConnection();
-        tipoOperacion = marca.getID()==null?TipoOperacion.INSERT:TipoOperacion.UPDATE;
+        tipoOperacion = categoria.getID()==null?TipoOperacion.INSERT:TipoOperacion.UPDATE;
+        Color col = categoria.getColor();
+        int cr = col.getRed();
+        int cg = col.getGreen();
+        int cb = col.getBlue();
+
         boolean newMarca = tipoOperacion == TipoOperacion.INSERT;
         String query;
         if(newMarca){
-            query = "INSERT INTO Marca (Descripcion) VALUES (?)";
+            query = "insert into Categoria (Descripcion,ColorR,ColorG,ColorB) values (?,?,?,?)";
         }
         else{
-            query = "UPDATE MARCA SET DESCRIPCION = ? WHERE ID=?  ";
+            query = "update categoria set descripcion = ?, ColorR = ?, ColorG = ?, ColorB = ? where ID=?  ";
         }
 
         try {
             PreparedStatement pstmt = conn.getPreparedStatementID(query);
 
-            pstmt.setString(1,marca.getDesrcripcion());
+            pstmt.setString(1,categoria.getDesrcripcion());
+            pstmt.setInt(2,cr);
+            pstmt.setInt(3,cg);
+            pstmt.setInt(4,cb);
 
             if(!newMarca) {
-                pstmt.setInt(2, marca.getID());
+                pstmt.setInt(5, categoria.getID());
             }
 
             //String statementText = pstmt.toString();
@@ -70,7 +81,7 @@ public class AdministracionMarca {
             if(rtn) {
                 ResultSet rs = pstmt.getGeneratedKeys();
                 if (rs.next() && newMarca) {
-                    marca.setID(rs.getInt(1));
+                    categoria.setID(rs.getInt(1));
                 }
             }
 
@@ -87,16 +98,16 @@ public class AdministracionMarca {
         boolean rtn = false;
         Connection conn = Global.getInstance().getConnection();
         try{
-            //Actualizamos los productos con esa marca
-            String query = "update producto set IDMarca = null where IDMarca = ?";
+            //Actualizamos los productos con esa categoria
+            String query = "update producto set IDCategoria = null where IDCategoria = ?";
 
             PreparedStatement pstmt = conn.getPreparedStatement(query);
 
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
 
-            //Eliminamos los productos de la marca
-            query = "delete from Marca where id = ?";
+            //Eliminamos los productos de la categoria
+            query = "delete from categoria where id = ?";
             pstmt = conn.getPreparedStatement(query);
 
             pstmt.setInt(1, id);
@@ -105,10 +116,10 @@ public class AdministracionMarca {
             rtn = val >0;
 
             if(rtn) {
-                mensaje = sp.getValue("marca.message.delete_exito");
+                mensaje = sp.getValue("categoria.message.delete_exito");
             }
             else{
-                mensaje = sp.getValue("marca.message.delete_error");
+                mensaje = sp.getValue("categoria.message.delete_error");
             }
         }
         catch (SQLException exc) {
@@ -126,7 +137,7 @@ public class AdministracionMarca {
         return mensaje;
     }
 
-    public Marca getMarca() {
-        return marca;
+    public Categoria getCategoria() {
+        return categoria;
     }
 }

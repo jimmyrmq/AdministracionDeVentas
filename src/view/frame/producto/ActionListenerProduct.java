@@ -2,9 +2,10 @@ package view.frame.producto;
 
 import model.Producto;
 import util.SystemProperties;
+import view.frame.categoria.WindowCategoria;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
-import view.frame.marca.DialogMarca;
+import view.frame.marca.WindowMarca;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
@@ -61,13 +62,23 @@ public class ActionListenerProduct implements ActionListener {
                 GlobalProduct.getInstance().init();
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
-                DialogMarca dialogMarca = new DialogMarca();
-                if(dialogMarca.isAcept()){
-                    boolean edit = dialogMarca.isEdit();
-                    LoadData.getInstance().getConsultaMarca().listarMarca();
-                    GlobalProduct.getInstance().addCBCarga(dialogMarca.getMarca(),edit);
+                WindowMarca windowMarca = new WindowMarca();
+                if(windowMarca.isAcept()){
+                    boolean edit = windowMarca.isEdit();
+                    LoadData.getInstance().getConsultaMarca().loadDBMarca();
+                    GlobalProduct.getInstance().addCBCarga(windowMarca.getMarca(),edit);
 
                     FrameMain.notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
+                }
+            }
+            else if (action.equals("CATEGORIA_PRODUCTO_DIALOG")) {
+                WindowCategoria windowCategoria = new WindowCategoria();
+                if(windowCategoria.isAcept()){
+                    boolean edit = windowCategoria.isEdit();
+                    LoadData.getInstance().getConsultaCategoria().loadDBCategoria();
+                    GlobalProduct.getInstance().addCBCategoria(windowCategoria.getCategoria(),edit);
+
+                    FrameMain.notificacion.start(sp.getValue("categoria.label.title"),sp.getValue("categoria.message.marca_registrada_exito"));
                 }
             }
         }

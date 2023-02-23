@@ -604,4 +604,12 @@ public class DetalleProducto implements ActionListener {
         return dcbMarca;
     }
 
+    public ComboBox<Categoria> getCbCategoria(){
+        return cbCategoria;
+    }
+
+    public DefaultComboBoxModel<Categoria> getDCBCategoria(){
+        return dcbCategoria;
+    }
+
 }

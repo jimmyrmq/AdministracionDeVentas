@@ -1,7 +1,7 @@
 package view.frame.main;
 
 import view.frame.marca.ConsultaMarca;
-import view.frame.producto.ConsultaCategoria;
+import view.frame.categoria.ConsultaCategoria;
 import view.frame.producto.ConsultaProducto;
 
 public class LoadData {
@@ -20,11 +20,11 @@ public class LoadData {
     }
 
     public void loadCategoria(){
-        consultaCategoria.listarCategoria();
+        consultaCategoria.loadDBCategoria();
     }
 
     public void loadMarca(){
-        consultaMarca.listarMarca();
+        consultaMarca.loadDBMarca();
     }
 
     public void loadProductos(){
@@ -39,8 +39,8 @@ public class LoadData {
     }
 
     public void loadAll() {
-        consultaCategoria.listarCategoria();
-        consultaMarca.listarMarca();
+        consultaCategoria.loadDBCategoria();
+        consultaMarca.loadDBMarca();
         consultaProducto.listarProducto();
     }
 

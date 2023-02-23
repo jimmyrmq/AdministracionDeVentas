@@ -63,6 +63,16 @@ public class PanelList extends JPanel {
         }
     }
 
+    public void updateData(Categoria categoria){
+        cont:for(CategoriaUI catui:listCategoriaUI){
+            Categoria cat = catui.getCategoria();
+            if(cat.getID() == categoria.getID()){
+                cat.setDesrcripcion(categoria.getDesrcripcion());
+                cat.setColor(categoria.getColor());
+            }
+        }
+    }
+
     public void setListCategoria(List<Categoria> listCategoria) {
         if(listCategoria!=null) {
             rpaint = false;

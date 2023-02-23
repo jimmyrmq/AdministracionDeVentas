@@ -19,7 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class DialogMarca implements ActionListener, WindowListener {
+public class WindowMarca implements ActionListener, WindowListener {
     private Marca marca = null;
     private JDialog dialog;
     private TextField tDescripcion;
@@ -28,7 +28,7 @@ public class DialogMarca implements ActionListener, WindowListener {
     private boolean acept =  true;
     private boolean edit = false;
 
-    public DialogMarca(){
+    public WindowMarca(){
         dialog = new JDialog(FrameMain.frame,sp.getValue("marca.label.title"),true);
         dialog.addWindowListener(this);
 
@@ -73,7 +73,7 @@ public class DialogMarca implements ActionListener, WindowListener {
         bBuscar.setActionCommand("BUSCAR");
         bBuscar.addActionListener(this);
 
-        JLabel lDescripcion = new JLabel(sp.getValue("marca.label.descripcion")+":");
+        JLabel lDescripcion = new JLabel(sp.getValue("label.descripcion")+":");
 
         panel.add(lDescripcion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
         panel.add(tDescripcion, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 0.0f, 0.0f));
@@ -151,7 +151,6 @@ public class DialogMarca implements ActionListener, WindowListener {
     public void windowDeactivated(WindowEvent e) {
 
     }
-
 
     public boolean isAcept(){
         return acept;

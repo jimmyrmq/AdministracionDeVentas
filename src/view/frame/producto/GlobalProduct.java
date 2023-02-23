@@ -86,14 +86,34 @@ public class GlobalProduct {
                     if((marca.getID() !=null && mccb.getID()!=null) &&
                         (marca.getID().intValue() == mccb.getID().intValue())) {
                         mccb.setDesrcripcion(marca.getDesrcripcion());
-                        //detalleProducto.getDCBMarca().removeElementAt(i);
-                        //detalleProducto.getDCBMarca().insertElementAt(marca,i);
                         break cont;
                     }
                 }
             }
             else
                 detalleProducto.getDCBMarca().addElement(marca);
+        }
+    }
+
+    public void addCBCategoria(Categoria categoria,boolean edit){
+        if(categoria!=null) {
+            if(edit){
+                int sz = detalleProducto.getDCBCategoria().getSize();
+                Categoria catcb;
+                cont:for(int i = 0 ; i < sz ;i++) {
+                    catcb = detalleProducto.getDCBCategoria().getElementAt(i);
+                    if((categoria.getID() !=null && catcb.getID()!=null) &&
+                        (categoria.getID().intValue() == catcb.getID().intValue())) {
+                        catcb.setDesrcripcion(categoria.getDesrcripcion());
+                        pCategoria.getPanelList().updateData(categoria);
+                        break cont;
+                    }
+                }
+            }
+            else {
+                detalleProducto.getDCBCategoria().addElement(categoria);
+                pCategoria.getPanelList().addCategoria(categoria);
+            }
         }
     }
 }

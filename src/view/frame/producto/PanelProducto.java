@@ -55,6 +55,8 @@ public class PanelProducto  implements IPanel {
         category.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         category.setOrientationText(Button.BUTTOM);
         category.setOrientationImage(Button.CENTER,Button.TOP);
+        category.setActionCommand("CATEGORIA_PRODUCTO_DIALOG");
+        category.addActionListener(actionListenerProduct);
 
         Button marca = new Button("Marca",new ImageIcon("icon/marca.png"));
         marca.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());

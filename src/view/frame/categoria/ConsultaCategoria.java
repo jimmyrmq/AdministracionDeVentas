@@ -1,4 +1,4 @@
-package view.frame.producto;
+package view.frame.categoria;
 
 import com.djm.db.connection.Connection;
 import model.Categoria;
@@ -14,7 +14,7 @@ import java.util.List;
 public class ConsultaCategoria {
     private List<Categoria> list = null;
 
-    public void listarCategoria(){
+    public void loadDBCategoria(){
         if(list!=null)
             list.clear();
         else
@@ -50,6 +50,27 @@ public class ConsultaCategoria {
         }
 
         conn.cerrarConexion();
+    }
+
+    public boolean existeDescripcion(String desc){
+        boolean rtn = false;
+
+        String query = "select ID from Categoria where Descripcion = ?;";
+        Connection conn = Global.getInstance().getConnection();
+
+        try {
+            PreparedStatement pstmt = conn.getPreparedStatement(query);
+            pstmt.setString(1,desc);
+
+            ResultSet rs = pstmt.executeQuery();
+            rtn = rs.next();
+        } catch (SQLException e) {
+            String msg = "Error en existeDescripcion ["+e.getMessage()+"]";
+            System.out.println(msg);
+        }
+
+        conn.cerrarConexion();
+        return rtn;
     }
 
     public Categoria getCategoria(int id){

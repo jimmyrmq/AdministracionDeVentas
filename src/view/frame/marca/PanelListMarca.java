@@ -2,12 +2,10 @@ package view.frame.marca;
 
 import com.djm.util.LayoutPanel;
 import model.Marca;
-import model.Producto;
 import util.SystemProperties;
 import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
-import view.frame.producto.GlobalProduct;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.Table;
@@ -95,7 +93,7 @@ public class PanelListMarca implements ActionListener,WindowListener {
 
     private void fillTable(){
         table.setEnabled(false);
-        LoadData.getInstance().getConsultaMarca().listarMarca();
+        LoadData.getInstance().getConsultaMarca().loadDBMarca();
         List<Marca> marcaList = LoadData.getInstance().getConsultaMarca().getList();
         for(Marca mc:marcaList){
             table.addRow(mc);

@@ -42,28 +42,29 @@ public class ModelTableProductoCustom implements IModelTableCustom<Producto> {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Producto aux = datos.get(rowIndex);
+        if(datos.size() > 0) {
+            try {
+                Producto aux = datos.get(rowIndex);
 
-        // Se obtiene el campo apropiado según el valor de columnIndex
-        if (columnIndex == 0) {
-            return aux.getCodigo();
-        }
-        else if (columnIndex == 1){
-                return aux.getNombre();
-        }
-        else if (columnIndex == 2){
-                return aux.getMarca().toString();
-        }
-        else if (columnIndex == 3){
-                return aux.getCategoria().toString();
-        }
-        else if (columnIndex == 4){
-                return aux.isNoRequiereStock()?"-":aux.getStock();
-        }
-        else if (columnIndex == 5){
-            return aux.isDisponible()+"@"+aux.isNoRequiereStock()+"@"+aux.getStock()+"@"+aux.getStockCritico();
-        }
-        else return null;
+                // Se obtiene el campo apropiado según el valor de columnIndex
+                if (columnIndex == 0) {
+                    return aux.getCodigo();
+                } else if (columnIndex == 1) {
+                    return aux.getNombre();
+                } else if (columnIndex == 2) {
+                    return aux.getMarca().toString();
+                } else if (columnIndex == 3) {
+                    return aux.getCategoria().toString();
+                } else if (columnIndex == 4) {
+                    return aux.isNoRequiereStock() ? "-" : aux.getStock();
+                } else if (columnIndex == 5) {
+                    return aux.isDisponible() + "@" + aux.isNoRequiereStock() + "@" + aux.getStock() + "@" + aux.getStockCritico();
+                } else return null;
+            } catch (IndexOutOfBoundsException exc) {
+                System.out.println("rowIndex: " + rowIndex + ", columnIndex:" + columnIndex + " -> " + exc);
+                return null;
+            }
+        }else return null;
     }
     @Override
     public void editObject(Producto object, int row) {

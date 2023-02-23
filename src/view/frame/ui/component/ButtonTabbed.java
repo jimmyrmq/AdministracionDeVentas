@@ -24,7 +24,7 @@ import javax.accessibility.Accessible;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-public class ButtonTabbed extends JComponent implements  MouseMotionListener, MouseListener  , Accessible{
+public class ButtonTabbed extends JComponent implements  MouseMotionListener, MouseListener , Accessible{
     private String actionCommand;
     private String title;
     private String textKey;

@@ -166,9 +166,10 @@ public class PTablaProducto {
     protected void fillTableProduct(){
 
         tabla.setEnabled(false);
+        //Clear tiene que estar afuera
+        tabla.clearTable();
 
         Thread thread = new Thread(()-> {
-            tabla.clearTable();
             //Vemos que categoria esta seleccionada
             List<Categoria> listCatSel = GlobalProduct.getInstance().pCategoria.getPanelList().getItemSelected();//LoadData.getInstance().getConsultaCategoria().getList();//
             List<Producto> list = LoadData.getInstance().getConsultaProducto().getList();

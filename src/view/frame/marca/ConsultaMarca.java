@@ -1,11 +1,9 @@
 package view.frame.marca;
 
 import com.djm.db.connection.Connection;
-import model.Categoria;
 import model.Marca;
 import util.Global;
 
-import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +12,7 @@ import java.util.List;
 
 public class ConsultaMarca {
     private List<Marca> list = null;
-    public void listarMarca(){
+    public void loadDBMarca(){
         if(list!=null)
             list.clear();
         else
@@ -42,7 +40,7 @@ public class ConsultaMarca {
         conn.cerrarConexion();
     }
 
-    public boolean existeDescripcionMarca(String desc){
+    public boolean existeDescripcion(String desc){
         boolean rtn = false;
 
         String query = "select ID from Marca where Descripcion = ?;";
