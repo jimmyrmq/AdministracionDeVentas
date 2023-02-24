@@ -3,6 +3,7 @@ package view.frame.marca;
 import com.djm.ui.component.TextField;
 import com.djm.util.LayoutPanel;
 import model.Marca;
+import util.Global;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
@@ -48,6 +49,9 @@ public class WindowMarca implements ActionListener, WindowListener {
         Container container = dialog.getContentPane();
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         container.setLayout(new GridBagLayout());
+
+        Global.getInstance().startPanelGlass("Registro de Marca",createGUI());
+
 
         container.add(createGUI(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 20, 10, 0, 0, 0.0f, 1.0f));
         container.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 5, 0, 1.0f, 0.0f));

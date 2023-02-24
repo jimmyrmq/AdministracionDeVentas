@@ -1,6 +1,7 @@
 package view.frame.producto;
 
 import model.Producto;
+import util.Global;
 import util.SystemProperties;
 import view.frame.categoria.WindowCategoria;
 import view.frame.main.FrameMain;

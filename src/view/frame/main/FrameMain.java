@@ -2,6 +2,7 @@ package view.frame.main;
 
 
 import view.frame.ui.Notificacion;
+import view.frame.ui.PanelGlass;
 
 import javax.swing.*;
 import java.awt.Container;
