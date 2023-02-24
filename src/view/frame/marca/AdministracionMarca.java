@@ -24,9 +24,11 @@ public class AdministracionMarca {
 
             if (marca.getDesrcripcion() == null || marca.getDesrcripcion().trim().isEmpty()) {
                 mensaje = sp.getValue("marca.message.error_descripcion");
-            } else if (consMarca.existeDescripcion(marca.getDesrcripcion())) {
+            }
+            else if (consMarca.existeDescripcion(marca.getDesrcripcion(),marca.getID())) {
                 mensaje = sp.getValue("marca.message.marca_is_registrada");
-            } else {
+            }
+            else {
                 rtn = savedb();
                 if (rtn) ;
                 else

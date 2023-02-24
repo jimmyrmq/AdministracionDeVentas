@@ -5,7 +5,7 @@ import com.djm.util.LayoutPanel;
 import model.Categoria;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
-import view.frame.marca.PanelListMarca;
+import view.frame.producto.GlobalProduct;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.SelectedColor;
@@ -38,8 +38,8 @@ public class WindowCategoria implements ActionListener, WindowListener {
     private Color col[] = {new Color(213, 24, 24),
             new Color(234, 57, 23),
             new Color(80, 164, 49),
-            new Color(211, 192, 40),
-            //new Color(255, 0, 255),
+            new Color(255, 213, 0),
+            new Color(229, 113, 44),
             new Color(104, 61, 187),
             new Color(49, 119, 175),
             new Color(150, 65, 145)};
@@ -123,9 +123,11 @@ public class WindowCategoria implements ActionListener, WindowListener {
 
         if(action.equals("ACEPT")){
             AdministracionCategoria admin = new AdministracionCategoria();
-            boolean rtn = admin.guardar(getValueCategoria());
+            Categoria cat = getValueCategoria();
+            boolean rtn = admin.guardar(cat);
             if(rtn && dialog !=null){
                 acept = true;
+                //GlobalProduct.getInstance().updateCategoria(cat);
                 dialog.setVisible(false);
                 dialog.dispose();
             }else
@@ -137,11 +139,11 @@ public class WindowCategoria implements ActionListener, WindowListener {
             dialog.dispose();
         }
         else if(action.equals("BUSCAR")){
-            PanelListMarca plm = new PanelListMarca();
+            PanelTableCategoria plm = new PanelTableCategoria();
             if(plm.isAcept()){
                 edit = true;
                 dialog.setTitle(sp.getValue("categoria.label.title")+" - "+sp.getValue("label.editando")+"...");
-                //setCategoria(plm.getMarca());
+                setCategoria(plm.getCategoria());
             }
         }
         else if(action.equals("NUEVO")){
@@ -191,6 +193,12 @@ public class WindowCategoria implements ActionListener, WindowListener {
             edit = true;
             bNuevo.setEnabled(true);
             tDescripcion.setText(categoria.getDesrcripcion());
+            cont:for(SelectedColor sc : selectedColors){
+                if(categoria.getColor().equals(sc.getColor())){
+                    sc.setSelected(true);
+                    break cont;
+                }
+            }
         }
     }
     

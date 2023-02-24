@@ -60,6 +60,7 @@ public class ActionListenerProduct implements ActionListener {
                 }
             } else if (action.equals("UPDATE_DATA_PRODUCTO")) {
                 GlobalProduct.getInstance().init();
+                GlobalProduct.getInstance().reorganizarListCat();
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
                 WindowMarca windowMarca = new WindowMarca();

@@ -14,8 +14,6 @@ import view.frame.ui.component.TipoEtiqueta;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
@@ -75,7 +73,7 @@ public class PTablaProducto {
             }
         });
 
-        tabla.setDefaultRenderer(EtiquetaComponent.class, new BooleanIconRenderer());
+        tabla.setDefaultRenderer(EtiquetaComponent.class, new StatusIconRenderer());
 
         tBuscar.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent ke) {
@@ -116,9 +114,9 @@ public class PTablaProducto {
         GlobalProduct.getInstance().pCategoria.getPanelList().setEnabled(e);
     }
 
-   private class BooleanIconRenderer extends EtiquetaComponent implements TableCellRenderer {
+   private class StatusIconRenderer extends EtiquetaComponent implements TableCellRenderer {
 
-        public BooleanIconRenderer() {}
+        public StatusIconRenderer() {}
         private String sdisp,snorstock,sstock,sstockcrit;//
         private String valueSplit[];
         @Override
@@ -183,7 +181,8 @@ public class PTablaProducto {
                     if(reviewCat) {
                         add = false;
                         for (Categoria cat : listCatSel) {
-                            if (prod.getCategoria().getID().intValue() == cat.getID().intValue()) {
+                            if (prod.getCategoria().getID()!=null &&
+                                    (prod.getCategoria().getID().intValue() == cat.getID().intValue())){
                                 add = true;
                                 break;
                             }

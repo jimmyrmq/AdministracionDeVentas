@@ -27,7 +27,7 @@ public class PanelList extends JPanel {
     public PanelList(ActionListener actionListener){
         this.actionListener = actionListener;
 
-        setBorder(new EmptyBorder(10, 0, 10, 10));
+        setBorder(new EmptyBorder(10, 0, 10, 0));
         setOpaque(true);
         setLayout(new GridBagLayout());
         //setMinimumSize(new Dimension(300,100));
@@ -48,7 +48,6 @@ public class PanelList extends JPanel {
 
     private void add(CategoriaUI cate){
         float wx =(x == 1)?1.0f: 0.0f;
-
         panel.add(cate, LayoutPanel.constantePane(x, y, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 10, 0, wx, 0.0f),index);
         x++;
         if(x==2){
@@ -64,18 +63,29 @@ public class PanelList extends JPanel {
     }
 
     public void updateData(Categoria categoria){
+        //boolean nuevo = true;
         cont:for(CategoriaUI catui:listCategoriaUI){
             Categoria cat = catui.getCategoria();
-            if(cat.getID() == categoria.getID()){
-                cat.setDesrcripcion(categoria.getDesrcripcion());
-                cat.setColor(categoria.getColor());
+            if(cat.getID().intValue() == categoria.getID().intValue()){
+                //nuevo = false;
+                catui.getCategoria().setDesrcripcion(categoria.getDesrcripcion());
+                catui.getCategoria().setColor(categoria.getColor());
+                catui.updateCategoria(categoria);
+                catui.repaint();
+                break cont;
             }
         }
+
+        //System.out.println(nuevo);
+        /*if(nuevo){
+            add(new CategoriaUI(categoria));
+        }*/
     }
 
     public void setListCategoria(List<Categoria> listCategoria) {
         if(listCategoria!=null) {
             rpaint = false;
+            listCategoriaUI.clear();
             for(Categoria categoria:listCategoria){
                 addCategoria(categoria);
             }
@@ -92,8 +102,19 @@ public class PanelList extends JPanel {
         listCategoriaUI.add(categoriaUI);
     }
 
-    public void delCategoria(int index){
-        this.listCategoriaUI.remove(index);
+    public void delCategoria(Categoria categoria){
+        int l = listCategoriaUI.size();
+        cont:for(int i = 0;i<l;i++) {
+            if(listCategoriaUI.get(i).getCategoria().getID().intValue() == categoria.getID().intValue()) {
+                this.listCategoriaUI.remove(i);
+                repaintPanelList();
+                /*panel.remove(i);
+                panel.updateUI();
+                panel.repaint();
+                panel.revalidate();*/
+                break cont;
+            }
+        }
     }
 
     public List<Categoria> getItemSelected(){
@@ -112,5 +133,23 @@ public class PanelList extends JPanel {
         for(CategoriaUI cate : this.listCategoriaUI){
             cate.setEnabled(e);
         }
+    }
+
+    public void repaintPanelList(){
+        panel.removeAll();
+
+        this.index = 0;
+        this.x = 0;
+        this.y = 0;
+        if(listCategoriaUI!=null) {
+            rpaint = false;
+            for(CategoriaUI categoria:listCategoriaUI){
+                //System.out.println(categoria.getCategoria().getDesrcripcion());
+                add(categoria);
+            }
+            rpaint = true;
+        }
+        panel.repaint();
+        panel.revalidate();
     }
 }

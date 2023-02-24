@@ -40,15 +40,20 @@ public class ConsultaMarca {
         conn.cerrarConexion();
     }
 
-    public boolean existeDescripcion(String desc){
+    public boolean existeDescripcion(String desc, Integer id){
         boolean rtn = false;
 
-        String query = "select ID from Marca where Descripcion = ?;";
+        String query = "select ID from Marca where Descripcion = ?";
+        if(id !=null){
+            query +=" and ID != ?";
+        }
         Connection conn = Global.getInstance().getConnection();
 
         try {
             PreparedStatement pstmt = conn.getPreparedStatement(query);
             pstmt.setString(1,desc);
+            if(id !=null)
+                pstmt.setInt(2,id);
 
             ResultSet rs = pstmt.executeQuery();
             rtn = rs.next();

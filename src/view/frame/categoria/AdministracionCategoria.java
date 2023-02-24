@@ -23,11 +23,11 @@ public class AdministracionCategoria {
             this.categoria = categoria;
             ConsultaCategoria consCat = new ConsultaCategoria();
 
-            if (categoria.getDesrcripcion() == null || categoria.getDesrcripcion().trim().isEmpty()) {
+            if ( categoria.getDesrcripcion() == null || categoria.getDesrcripcion().trim().isEmpty()){
                 mensaje = sp.getValue("categoria.message.error_descripcion");
             }if (categoria.getColor() == null) {
                 mensaje = sp.getValue("categoria.message.error_color");
-            } else if (consCat.existeDescripcion(categoria.getDesrcripcion())) {
+            } else if (consCat.existeDescripcion(categoria.getDesrcripcion(),categoria.getID())) {
                 mensaje = sp.getValue("categoria.message.marca_is_registrada");
             } else {
                 rtn = savedb();

@@ -3,6 +3,7 @@ package view.frame.producto;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
+import view.frame.categoria.PCategoria;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
 import view.frame.ui.component.Table;
@@ -16,7 +17,7 @@ public class GlobalProduct {
 
     protected Producto producto;
     protected DetalleProducto detalleProducto;
-    protected  PCategoria pCategoria;
+    protected PCategoria pCategoria;
     protected PTablaProducto pTablaProducto;
     protected final ActionListenerProduct actionListener = new ActionListenerProduct();
     private static GlobalProduct globalProduct;
@@ -115,5 +116,17 @@ public class GlobalProduct {
                 pCategoria.getPanelList().addCategoria(categoria);
             }
         }
+    }
+
+    public void updateCategoria(Categoria categoria){
+        pCategoria.getPanelList().updateData(categoria);
+    }
+
+    public void deleteCategoria(Categoria categoria){
+        pCategoria.getPanelList().delCategoria(categoria);
+    }
+
+    public void reorganizarListCat(){
+        pCategoria.repaintPanel();
     }
 }

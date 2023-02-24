@@ -59,15 +59,16 @@ public class EtiquetaComponent extends JComponent {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        if(title!=null) {
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
-            colBack = selected ? colBackSelected : colBackNoSelected;
-            g2.setColor(colBack);
-            g2.fillRect(0, 0, getWidth(), getHeight());
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        colBack = selected ? colBackSelected : colBackNoSelected;
+        g2.setColor(colBack);
+        g2.fillRect(0, 0, getWidth(), getHeight());
 
-            g2.setColor(tipoEtiqueta.getColor());
-            g2.fillRoundRect(3, 2, getWidth() - 5, getHeight() - 4, 4, 4);
+        g2.setColor(tipoEtiqueta.getColor());
+        g2.fillRoundRect(3, 2, getWidth() - 5, getHeight() - 4, 4, 4);
+
+        if(title!=null) {
 
             g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
             g2.setFont(font);

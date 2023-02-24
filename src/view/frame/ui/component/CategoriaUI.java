@@ -49,6 +49,7 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
         this.ID = categoria.getID();
         actionCommand = String.valueOf(categoria.getID());
         setOpaque(false);
+
         this.title = categoria.getDesrcripcion();
         this.color = categoria.getColor();
         this.colorClic = ColorFilter.getColor(color);
@@ -59,6 +60,14 @@ public class CategoriaUI extends JComponent implements MouseListener, Accessible
         calculate();
         addMouseListener(this);
         //addFocusListener(this);
+    }
+
+    public void updateCategoria(Categoria categoria){
+        this.categoria = categoria;
+        this.title = categoria.getDesrcripcion();
+        this.color = categoria.getColor();
+        this.colorClic = ColorFilter.getColor(color);
+        calculate();
     }
 
     private void calculate(){
