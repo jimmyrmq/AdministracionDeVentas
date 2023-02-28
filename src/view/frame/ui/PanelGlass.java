@@ -26,6 +26,8 @@ public class PanelGlass extends JPanel  {
     private JPanel pTarea = new JPanel();
     private Component aux;
     public JLabel lTitle = null;
+    private JPanel  principal;
+
     public PanelGlass(){
         super(new GridBagLayout());
         setOpaque(false);
@@ -35,9 +37,9 @@ public class PanelGlass extends JPanel  {
         lTitle = new JLabel();
         IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
         Font f0 = panelUI.getFont();
-        Font f1 = new Font(f0.getName(),0,14);
+        Font f1 = new Font(f0.getName(),1,14);
         lTitle.setFont(f1);
-        JPanel  principal= new JPanel(new GridBagLayout())/*{
+        principal= new JPanel(new GridBagLayout())/*{
             protected void paintComponent(Graphics g){
                 super.paintComponent(g); // paint the background image and scale it to fill the entire s
                 Graphics2D g2 = (Graphics2D) g;
@@ -54,23 +56,25 @@ public class PanelGlass extends JPanel  {
 
 
         principal.setOpaque(true);
-        principal.setSize(300,0);
+        principal.setSize(400,0);
         principal.setPreferredSize(new Dimension(300,100));
         principal.setBackground(panelUI.getBackground());
         principal.setBorder(BorderFactory.createMatteBorder(
                 0, 0, 0, 1, panelUI.getColorBorder()));
 
-        bCerrar = new Button("Cerrar");
+        bCerrar = new Button(new ImageIcon("icon/closed.png"));
         bCerrar.addActionListener((ae)->{
             close();
         });
 
+        bCerrar.backgroundTransparent();
+
         addMouseListener(new ListenerGlass());
         principal.addMouseListener(new ListenerPanel());
 
-        principal.add(lTitle, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 5, 1.0f, 0.0f));
-        principal.add(bCerrar, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_END, 5, 0, 0, 5, 0.0f, 0.0f));
-        principal.add(pTarea, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_END, 10, 0, 0, 0, 1.0f, 1.0f));
+        principal.add(lTitle, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 5, 1.0f, 0.0f));
+        principal.add(bCerrar, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 0, 0, 5, 0.0f, 0.0f));
+        principal.add(pTarea, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_END, 15, 0, 0, 0, 1.0f, 1.0f));
 
         add(principal, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 37, 0, 0, 0, 1.0f, 1.0f));
     }
@@ -91,6 +95,22 @@ public class PanelGlass extends JPanel  {
     public void setPanel(String title, JPanel panel){
         lTitle.setText(title);
         lTitle.repaint();
+        Dimension dim0 = panel.getPreferredSize();
+        Dimension dim1 = principal.getPreferredSize();
+
+        if(dim0.getWidth() > dim1.getWidth() ) {
+            Dimension dim = new Dimension((int) dim0.getWidth()+20, (int) dim0.getHeight());
+            /*setPreferredSize(dim);
+            setSize(dim);
+            pTarea.setPreferredSize(dim);
+            pTarea.setSize(dim);*/
+            principal.setPreferredSize(dim);
+            principal.setSize(dim);
+        }
+
+        /*System.out.println(panel.getPreferredSize()+" "+panel.getSize());
+        System.out.println(pTarea.getPreferredSize()+" "+pTarea.getSize());
+        System.out.println(principal.getPreferredSize()+" "+principal.getSize());*/
 
         pTarea.removeAll();
         pTarea.add(panel);

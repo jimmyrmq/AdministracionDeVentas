@@ -6,6 +6,8 @@ import util.SystemProperties;
 import view.frame.categoria.WindowCategoria;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
+import view.frame.marca.GlassPaneMarca;
+import view.frame.marca.PanelMarca;
 import view.frame.marca.WindowMarca;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
@@ -64,14 +66,16 @@ public class ActionListenerProduct implements ActionListener {
                 GlobalProduct.getInstance().reorganizarListCat();
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
-                WindowMarca windowMarca = new WindowMarca();
-                if(windowMarca.isAcept()){
+                //WindowMarca windowMarca = new WindowMarca();
+                GlassPaneMarca gpm = new GlassPaneMarca();
+                Global.getInstance().startPanelGlass("Registro de Marca",gpm);
+                /*if(windowMarca.isAcept()){
                     boolean edit = windowMarca.isEdit();
                     LoadData.getInstance().getConsultaMarca().loadDBMarca();
                     GlobalProduct.getInstance().addCBCarga(windowMarca.getMarca(),edit);
 
                     FrameMain.notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
-                }
+                }*/
             }
             else if (action.equals("CATEGORIA_PRODUCTO_DIALOG")) {
                 WindowCategoria windowCategoria = new WindowCategoria();

@@ -75,6 +75,8 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private int posy_tk = 0;
     private boolean isFilterImage ;
 
+    private boolean paintColBack = true;
+
     public Button(ImageIcon ii) {
         this(null,null,ii,NONE,true);
     }
@@ -215,16 +217,13 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
             cborderPaint = colorBorderDisabled;
         }
 
-        g2.setColor(cbackPaint);
-        g2.fillRoundRect(0, 0, getWidth() , getHeight() , 4, 4);
-
-        /*if(paintSelected) {
+        if(in || pressed ||  paintColBack) {
             g2.setColor(cbackPaint);
-            g2.fillRoundRect(0, getHeight() -3, getWidth() , getHeight() , 2, 2);
-        }*/
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 4, 4);
 
-        g2.setColor(cborderPaint);
-        g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 4, 4);
+            g2.setColor(cborderPaint);
+            g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 4, 4);
+        }
 
         if(imagePaint!=null)
             g2.drawImage(imagePaint,posx_ii,posy_ii,null);
@@ -650,5 +649,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
             pressed = false;
         }
         repaint();
+    }
+
+    public  void backgroundTransparent(){
+        paintColBack = false;
     }
 }

@@ -1,9 +1,7 @@
 package view.frame.marca;
 
-import com.djm.ui.component.TextField;
 import com.djm.util.LayoutPanel;
 import model.Marca;
-import util.Global;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
@@ -23,15 +21,17 @@ import java.awt.event.WindowListener;
 public class WindowMarca implements ActionListener, WindowListener {
     private Marca marca = null;
     private JDialog dialog;
-    private TextField tDescripcion;
     private final SystemProperties sp = SystemProperties.getInstance();
     private Button bAceptar,bCancelar,bBuscar,bNuevo;
     private boolean acept =  true;
     private boolean edit = false;
-
-    public WindowMarca(){
+    private PanelMarca panelMarca;
+    public WindowMarca(){}
+    public void initWindow(){
         dialog = new JDialog(FrameMain.frame,sp.getValue("marca.label.title"),true);
         dialog.addWindowListener(this);
+
+        panelMarca = new PanelMarca();
 
         bAceptar = new Button(sp.getValue("button.aceptar"));
         bAceptar.setActionCommand("ACEPT");
@@ -50,10 +50,12 @@ public class WindowMarca implements ActionListener, WindowListener {
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         container.setLayout(new GridBagLayout());
 
-        Global.getInstance().startPanelGlass("Registro de Marca",createGUI());
+        bBuscar = new Button(new ImageIcon("icon/search.png"));
+        bBuscar.setActionCommand("BUSCAR");
+        bBuscar.addActionListener(this);
 
-
-        container.add(createGUI(), LayoutPanel.constantePane(0, 0, 3, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 20, 10, 0, 0, 0.0f, 1.0f));
+        container.add(panelMarca.createGUI(), LayoutPanel.constantePane(0, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 20, 10, 0, 0, 0.0f, 1.0f));
+        container.add(bBuscar, LayoutPanel.constantePane(2, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 1.0f, 0.0f));
         container.add(bNuevo, LayoutPanel.constantePane(0, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 5, 0, 1.0f, 0.0f));
         container.add(bCancelar, LayoutPanel.constantePane(1, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 10, 0, 5, 0, 0.0f, 0.0f));
         container.add(bAceptar, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 5, 5, 0.0f, 0.0f));
@@ -68,31 +70,13 @@ public class WindowMarca implements ActionListener, WindowListener {
         dialog.setVisible(true);
     }
 
-    private JPanel createGUI(){
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
-        tDescripcion = new TextField(15,150);
-
-        bBuscar = new Button(new ImageIcon("icon/search.png"));
-        bBuscar.setActionCommand("BUSCAR");
-        bBuscar.addActionListener(this);
-
-        JLabel lDescripcion = new JLabel(sp.getValue("label.descripcion")+":");
-
-        panel.add(lDescripcion, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 0, 0, 0, 0.0f, 0.0f));
-        panel.add(tDescripcion, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 0.0f, 0.0f));
-        panel.add(bBuscar, LayoutPanel.constantePane(2, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 1.0f, 0.0f));
-
-        return panel;
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String action = e.getActionCommand();
 
         if(action.equals("ACEPT")){
             AdministracionMarca admin = new AdministracionMarca();
-            boolean rtn = admin.guardar(getValueMarca());
+            boolean rtn = admin.guardar(panelMarca.getValueMarca());
             if(rtn && dialog !=null){
                 acept = true;
                 dialog.setVisible(false);
@@ -106,7 +90,7 @@ public class WindowMarca implements ActionListener, WindowListener {
             dialog.dispose();
         }
         else if(action.equals("BUSCAR")){
-            PanelListMarca plm = new PanelListMarca();
+            WindowListMarca plm = new WindowListMarca();
             if(plm.isAcept()){
                 edit = true;
                 dialog.setTitle(sp.getValue("marca.label.title")+" - "+sp.getValue("marca.message.editar"));
@@ -116,9 +100,7 @@ public class WindowMarca implements ActionListener, WindowListener {
         else if(action.equals("NUEVO")){
             dialog.setTitle(sp.getValue("marca.label.title"));
             bNuevo.setEnabled(false);
-            marca = null;
-            tDescripcion.setText(null);
-            tDescripcion.requestFocus();
+            panelMarca.clear();
         }
     }
     @Override
@@ -165,24 +147,13 @@ public class WindowMarca implements ActionListener, WindowListener {
         return edit;
     }
 
-    public Marca getValueMarca(){
-        if(marca == null)
-            marca = new Marca();
-
-        marca.setDesrcripcion(tDescripcion.getText());
-
-        return marca;
-    }
-    public Marca getMarca(){
-        return marca;
-    }
 
     public void setMarca(Marca marca){
         this.marca = marca;
         if(this.marca!=null) {
             edit = true;
             bNuevo.setEnabled(true);
-            tDescripcion.setText(marca.getDesrcripcion());
+            panelMarca.setMarca(marca);
         }
     }
 }
