@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Ellipse2D;
 
 import javax.accessibility.Accessible;
 import javax.swing.*;
@@ -76,10 +77,12 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
     private boolean isFilterImage ;
 
     private boolean paintColBack = true;
+    private boolean buttonIcon = false;
 
     public Button(ImageIcon ii) {
         this(null,null,ii,NONE,true);
     }
+
     public Button(ImageIcon ii, boolean filter) {
         this(null,null,ii,NONE,filter);
     }
@@ -102,6 +105,8 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         setFocusable(true);
         //setRequestFocusEnabled(true);
         //getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE,0,false), "none");
+
+        //private String rutaImage2;
 
         setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, null);
         setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, null);
@@ -218,15 +223,23 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         }
 
         if(in || pressed ||  paintColBack) {
-            g2.setColor(cbackPaint);
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 4, 4);
+            if(buttonIcon){
+                g2.setColor(cbackPaint);
+                //g2.fillRoundRect(0, 0, getWidth(), getHeight(), 4, 4);
+                //Shape circle = new Ellipse2D.Double()
+                g2.fillOval(posx_ii-3,posy_ii-2,dimx_ii+5,dimy_ii+5);
+            }else {
+                g2.setColor(cbackPaint);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 4, 4);
 
-            g2.setColor(cborderPaint);
-            g2.drawRoundRect(0, 0, getWidth()-1 , getHeight()-1 , 4, 4);
+                g2.setColor(cborderPaint);
+                g2.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 4, 4);
+            }
         }
 
         if(imagePaint!=null)
             g2.drawImage(imagePaint,posx_ii,posy_ii,null);
+
 
         //g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         if(title!=null) {
@@ -521,6 +534,9 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
                 ((ActionListener)listeners[i+1]).actionPerformed(e);
             }
         }
+        //focus =false;
+        in =false;
+        out =true;
     }
 
     /*//Pintar de fondo el buton cuando se pasa el mouse
@@ -651,7 +667,11 @@ public class Button extends JComponent implements  FocusListener,MouseMotionList
         repaint();
     }
 
-    public  void backgroundTransparent(){
+    public void backgroundTransparent(){
+        paintColBack = false;
+    }
+    public void setButtonIcon(boolean buttonIcon){
+        this.buttonIcon = buttonIcon;
         paintColBack = false;
     }
 }

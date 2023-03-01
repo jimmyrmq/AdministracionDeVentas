@@ -3,27 +3,19 @@ package view.frame.marca;
 import com.djm.util.LayoutPanel;
 import model.Marca;
 import util.SystemProperties;
-import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
-import view.frame.main.LoadData;
 import view.frame.ui.component.Button;
-import view.frame.ui.component.OptionPane;
-import view.frame.ui.component.Table;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.List;
 
 public class WindowListMarca implements ActionListener,WindowListener {
     private JDialog dialog;

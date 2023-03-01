@@ -5,7 +5,6 @@ import com.djm.util.LayoutPanel;
 import model.Categoria;
 import util.SystemProperties;
 import view.frame.main.FrameMain;
-import view.frame.producto.GlobalProduct;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.SelectedColor;

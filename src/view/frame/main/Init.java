@@ -9,6 +9,7 @@ import view.frame.dashboard.ActionButton;
 import view.frame.ui.themes.GlobalUI;
 import view.frame.ui.themes.LookAndFeel;
 import view.frame.dashboard.Dashboard;
+import view.frame.ui.themes.dark.Dark;
 
 import javax.swing.*;
 import java.awt.GridBagConstraints;
@@ -26,7 +27,7 @@ public class Init {
 
         //LoadExtension lext = new LoadExtension();
         //GlobalUI.getInstance().setTheme(new Dark());
-        new LookAndFeel();//new Dark());//
+        new LookAndFeel(new Dark());//);//
         SystemProperties.getInstance().setLanguaje("es.properties");
         //LookAndFeel lf = new LookAndFeel();
         //lf.setTheme("Windows");//GlobalUI.getInstance().getTheme());//

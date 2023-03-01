@@ -69,10 +69,11 @@ public class ActionListenerProduct implements ActionListener {
                 //WindowMarca windowMarca = new WindowMarca();
                 GlassPaneMarca gpm = new GlassPaneMarca();
                 Global.getInstance().startPanelGlass("Registro de Marca",gpm);
-                /*if(windowMarca.isAcept()){
-                    boolean edit = windowMarca.isEdit();
+
+                /*if(gpm.isAcept()){//windowMarca.isAcept()){
+                    boolean edit = gpm.isEdit();//windowMarca.isEdit();
                     LoadData.getInstance().getConsultaMarca().loadDBMarca();
-                    GlobalProduct.getInstance().addCBCarga(windowMarca.getMarca(),edit);
+                    GlobalProduct.getInstance().addCBCarga(gpm.getMarca(),edit);//windowMarca.getMarca(),edit);
 
                     FrameMain.notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
                 }*/

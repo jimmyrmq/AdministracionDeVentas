@@ -3,6 +3,7 @@ package view.frame.producto;
 import model.Categoria;
 import model.Marca;
 import model.Producto;
+import util.SystemProperties;
 import view.frame.categoria.PCategoria;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
@@ -71,6 +72,13 @@ public class GlobalProduct {
         List<Marca> lmarca = LoadData.getInstance().getConsultaMarca().getList();
         boolean isMar = lmarca!=null && !lmarca.isEmpty();
         detalleProducto.getCBMarca().setEnabled(isMar);
+        detalleProducto.getDCBMarca().removeAllElements();
+
+        SystemProperties sp = SystemProperties.getInstance();
+        Marca mc1 = new Marca();
+        mc1.setDesrcripcion(sp.getValue("label.ninguno"));
+        detalleProducto.getDCBMarca().addElement(mc1);
+
         if(isMar){
             for(Marca mc: lmarca)
                 detalleProducto.getDCBMarca().addElement(mc);
@@ -125,7 +133,18 @@ public class GlobalProduct {
     public void deleteCategoria(Categoria categoria){
         pCategoria.getPanelList().delCategoria(categoria);
     }
-
+    public void deleteMarca(Marca marca){
+        int sz = detalleProducto.getDCBMarca().getSize();
+        Marca mccb;
+        cont:for(int i = 0 ; i < sz ;i++) {
+            mccb = detalleProducto.getDCBMarca().getElementAt(i);
+            if((marca.getID() !=null && mccb.getID()!=null) &&
+                (marca.getID().intValue() == mccb.getID().intValue())) {
+                detalleProducto.getDCBMarca().removeElementAt(i);
+                break cont;
+            }
+        }
+    }
     public void reorganizarListCat(){
         pCategoria.repaintPanel();
     }

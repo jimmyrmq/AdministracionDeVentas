@@ -2,17 +2,14 @@ package view.frame.categoria;
 
 import com.djm.util.LayoutPanel;
 import model.Categoria;
-import util.Global;
 import util.SystemProperties;
 import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
 import view.frame.producto.GlobalProduct;
 import view.frame.ui.component.Button;
-import view.frame.ui.component.EtiquetaComponent;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.Table;
-import view.frame.ui.component.TipoEtiqueta;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;

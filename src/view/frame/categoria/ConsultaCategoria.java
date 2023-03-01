@@ -45,7 +45,10 @@ public class ConsultaCategoria {
                 list.add(cat);
             }
         } catch (SQLException e) {
-            String desc = "Error en getListCategoria ["+e.getMessage()+"]";
+            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]";
+            System.out.println(desc);
+        }catch (NullPointerException e) {
+            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]";
             System.out.println(desc);
         }
 

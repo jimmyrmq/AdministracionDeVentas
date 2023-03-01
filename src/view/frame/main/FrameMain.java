@@ -58,7 +58,7 @@ public class FrameMain {
 
         //frame.add(panel);
         //Dimension dim = new Dimension(1300, 690);
-        Dimension dim = new Dimension(1350, 670);
+        Dimension dim = new Dimension(1370, 680);
         //frame.addMouseMotionListener(this);
         frame.setUndecorated(false);
         frame.setDefaultLookAndFeelDecorated(true);

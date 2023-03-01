@@ -33,7 +33,7 @@ public class ConsultaMarca {
                 list.add(marca);
             }
         } catch (SQLException e) {
-            String desc = "Error en getListCategoria ["+e.getMessage()+"]";
+            String desc = "Error en loadDBMarca ["+e.getMessage()+"]";
             System.out.println(desc);
         }
 
@@ -58,7 +58,7 @@ public class ConsultaMarca {
             ResultSet rs = pstmt.executeQuery();
             rtn = rs.next();
         } catch (SQLException e) {
-            String msg = "Error en isProducto ["+e.getMessage()+"]";
+            String msg = "Error en existeDescripcion ["+e.getMessage()+"]";
             System.out.println(msg);
         }
 

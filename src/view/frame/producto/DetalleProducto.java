@@ -577,10 +577,6 @@ public class DetalleProducto implements ActionListener {
             cat1.setDesrcripcion(sp.getValue("label.ninguno"));
             dcbCategoria.addElement(cat1);
 
-            Marca mc1 = new Marca();
-            mc1.setDesrcripcion(sp.getValue("label.ninguno"));
-            dcbMarca.addElement(mc1);
-
             List<Categoria> lcat = LoadData.getInstance().getConsultaCategoria().getList();
             boolean isCat = lcat != null && !lcat.isEmpty();
             cbCategoria.setEnabled(isCat);
