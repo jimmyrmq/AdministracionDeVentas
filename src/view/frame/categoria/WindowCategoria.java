@@ -20,6 +20,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -58,6 +59,20 @@ public class WindowCategoria implements ActionListener, WindowListener {
         bAceptar.addActionListener(this);
         bCancelar.addActionListener(this);
         bNuevo.addActionListener(this);
+
+
+        KeyStroke SR = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
+        Action action = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                close();
+            }
+        };
+
+        InputMap inputMap = bCancelar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(SR, "CERRAR_DIALOG");
+        ActionMap actionMap = bCancelar.getActionMap();
+        actionMap.put("CERRAR_DIALOG", action);
+
 
         Container container = dialog.getContentPane();
         container.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
@@ -133,9 +148,7 @@ public class WindowCategoria implements ActionListener, WindowListener {
                 OptionPane.error(FrameMain.frame,admin.getMensaje());
         }
         else if(action.equals("CANCEL")){
-            acept = false;
-            dialog.setVisible(false);
-            dialog.dispose();
+            close();
         }
         else if(action.equals("BUSCAR")){
             PanelTableCategoria plm = new PanelTableCategoria();
@@ -153,6 +166,12 @@ public class WindowCategoria implements ActionListener, WindowListener {
             tDescripcion.requestFocus();
         }
 
+    }
+
+    public void close(){
+        acept = false;
+        dialog.setVisible(false);
+        dialog.dispose();
     }
 
     public boolean isAcept(){

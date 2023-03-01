@@ -144,7 +144,8 @@ public class PanelTableCategoria implements ActionListener, WindowListener {
     private void aceptCategoria() {
         categoria = (Categoria) table.getSelectedItem();
         if(categoria !=null) {
-            FrameMain.notificacion.start(sp.getValue("categoria.label.title"), sp.getValue("categoria.message.editar"));
+            String msg = sp.getValue("categoria.message.editar")+"["+categoria.getDesrcripcion()+"]";
+            FrameMain.notificacion.start(sp.getValue("categoria.label.title"), msg);
             acept = true;
             dialog.setVisible(false);
             dialog.dispose();
