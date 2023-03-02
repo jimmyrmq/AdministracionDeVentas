@@ -1,4 +1,4 @@
-package view.frame.main;
+package view.frame.dashboard;
 
 import com.djm.util.LayoutPanel;
 import util.IPanel;

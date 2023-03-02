@@ -2,7 +2,6 @@ package view.frame.dashboard;
 
 import util.SystemProperties;
 import view.frame.main.FrameMain;
-import view.frame.main.PanelTarea;
 import view.frame.main.Salir;
 import view.frame.producto.PanelProducto;
 import view.frame.ui.component.ButtonTabbed;
