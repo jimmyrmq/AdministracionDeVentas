@@ -3,13 +3,13 @@ package view.frame.categoria;
 import com.djm.ui.component.TextField;
 import com.djm.util.LayoutPanel;
 import model.Categoria;
-import model.Marca;
+import util.Global;
 import util.SystemProperties;
 import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
 import view.frame.producto.GlobalProduct;
-import view.frame.ui.IPanelGlass;
+import view.frame.ui.glass.IPanelGlass;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.SelectedColor;
@@ -194,7 +194,7 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
         }
         else if(action.equals("CANCEL")){
             clear();
-            FrameMain.frame.getGlassPane().setVisible(false);
+            Global.getInstance().closeGlassPane();
         }
         else if(action.equals("NUEVO")){
             bNuevo.setEnabled(false);
@@ -274,6 +274,11 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
     @Override
     public JPanel getPanel() {
         return panelPrincipal;
+    }
+
+    @Override
+    public String getTitle() {
+        return sp.getValue("categoria.label.title.registro");
     }
 
     @Override

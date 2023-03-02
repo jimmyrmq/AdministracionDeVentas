@@ -1,4 +1,4 @@
-package view.frame.ui;
+package view.frame.ui.glass;
 
 import com.djm.util.LayoutPanel;
 import view.frame.ui.component.NotificacionUI;
@@ -69,9 +69,9 @@ public class Notificacion {
         }
     }
 
-    public synchronized void show(){
+    /*public synchronized void show(){
         setVisible(true);
-    }
+    }*/
 
     private synchronized void runThread(){
         Thread thread = new Thread(() -> {

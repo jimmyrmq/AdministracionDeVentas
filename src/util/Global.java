@@ -1,15 +1,15 @@
 package util;
 
 import com.djm.db.connection.Connection;
-import view.frame.ui.IPanelGlass;
-import view.frame.ui.PanelGlass;
-
-import javax.swing.*;
+import view.frame.ui.glass.GlassFrame;
+import view.frame.ui.glass.IPanelGlass;
+import view.frame.ui.glass.PanelGlass;
 
 public class Global {
     private static Global global = null;
     private Connection conn = null;
-    private PanelGlass panelGlass = null;
+    private GlassFrame glassFrame = null;
+
     private Global(){}
 
     public static Global getInstance(){
@@ -29,10 +29,16 @@ public class Global {
         this.conn = conn;
     }
 
-    public void startPanelGlass(String title, IPanelGlass panel){
-        if(panelGlass == null)
-            panelGlass = new PanelGlass();
-        panelGlass.start(title,panel);
+    public void startPanelGlass(IPanelGlass panel){
+        if(glassFrame==null)
+            glassFrame = new GlassFrame();
+        glassFrame.show(panel);
+        /*PanelGlass panelGlass = new PanelGlass();
+        panelGlass.start(title,panel);*/
+    }
+
+    public void closeGlassPane(){
+        glassFrame.close();
     }
 
 }

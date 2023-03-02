@@ -66,8 +66,7 @@ public class ActionListenerProduct implements ActionListener {
             }
             else if (action.equals("MARCA_PRODUCTO_DIALOG")) {
                 //WindowMarca windowMarca = new WindowMarca();
-                GlassPaneMarca gpm = new GlassPaneMarca();
-                Global.getInstance().startPanelGlass("Registro de Marca",gpm);
+                Global.getInstance().startPanelGlass(new GlassPaneMarca());
 
                 /*if(gpm.isAcept()){//windowMarca.isAcept()){
                     boolean edit = gpm.isEdit();//windowMarca.isEdit();
@@ -78,9 +77,7 @@ public class ActionListenerProduct implements ActionListener {
                 }*/
             }
             else if (action.equals("CATEGORIA_PRODUCTO_DIALOG")) {
-
-                GlassPaneCategoria gpc = new GlassPaneCategoria();
-                Global.getInstance().startPanelGlass("Registro de Categoria",gpc);
+                Global.getInstance().startPanelGlass(new GlassPaneCategoria());
                 /*WindowCategoria windowCategoria = new WindowCategoria();
                 if(windowCategoria.isAcept()){
                     boolean edit = windowCategoria.isEdit();
