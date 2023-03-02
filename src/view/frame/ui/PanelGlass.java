@@ -72,13 +72,11 @@ public class PanelGlass extends JPanel  {
         addMouseListener(new ListenerGlass());
         principal.addMouseListener(new ListenerPanel());
 
-
         principal.add(lTitle, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 10, 0, 5, 1.0f, 0.0f));
         principal.add(bCerrar, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 0, 0, 5, 0.0f, 0.0f));
         principal.add(pTarea, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_END, 15, 0, 0, 0, 1.0f, 1.0f));
 
         add(principal, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.FIRST_LINE_START, 37, 0, 0, 0, 1.0f, 1.0f));
-
 
         KeyStroke SR = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, false);
         Action action = new AbstractAction() {
@@ -137,6 +135,7 @@ public class PanelGlass extends JPanel  {
         repaint();
         revalidate();
         bCerrar.transferFocus();
+
     }
 
     private class ListenerGlass implements MouseListener {

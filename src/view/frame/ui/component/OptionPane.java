@@ -7,6 +7,7 @@ import view.frame.main.FrameMain;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -74,7 +75,8 @@ public class OptionPane {
     }
 
     private static void createDialog(JFrame frame, String message, int type,String[] optionButtons){
-        dialog = new JDialog(FrameMain.frame,"Administración",true);
+        //JFrame owner = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        dialog = new JDialog(frame,"Administración",true);
         dialog.addWindowListener(new WindowListener(){
 
             @Override
