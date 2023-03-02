@@ -8,9 +8,7 @@ import java.awt.Component;
 public class GlassFrame {
     private Component aux;
 
-    public GlassFrame(){
-
-    }
+    public GlassFrame(){}
 
     public void show(IPanelGlass panel){
         if(FrameMain.frame.getGlassPane()!=null){
@@ -26,6 +24,7 @@ public class GlassFrame {
 
     public void close(){
         FrameMain.frame.getGlassPane().setVisible(false);
-        FrameMain.frame.setGlassPane(aux);
+        if(aux!=null)
+            FrameMain.frame.setGlassPane(aux);
     }
 }
