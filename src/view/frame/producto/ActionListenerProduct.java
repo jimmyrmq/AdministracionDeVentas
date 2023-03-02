@@ -3,12 +3,11 @@ package view.frame.producto;
 import model.Producto;
 import util.Global;
 import util.SystemProperties;
+import view.frame.categoria.GlassPaneCategoria;
 import view.frame.categoria.WindowCategoria;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
 import view.frame.marca.GlassPaneMarca;
-import view.frame.marca.PanelMarca;
-import view.frame.marca.WindowMarca;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
@@ -36,7 +35,7 @@ public class ActionListenerProduct implements ActionListener {
                     GlobalProduct.getInstance().producto = prod;
                     GlobalProduct.getInstance().detalleProducto.fillerProducto();
                 } else {
-                    OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_editar"));
+                    OptionPane.information(FrameMain.frame, sp.getValue("productos.message.selected_product_editar"));
                 }
             }
             else if (action.equals("DROP_PRODUCT")) {
@@ -59,7 +58,7 @@ public class ActionListenerProduct implements ActionListener {
 
                     }
                 } else {
-                    OptionPane.error(FrameMain.frame, sp.getValue("productos.message.selected_product_delete"));
+                    OptionPane.information(FrameMain.frame, sp.getValue("productos.message.selected_product_delete"));
                 }
             } else if (action.equals("UPDATE_DATA_PRODUCTO")) {
                 GlobalProduct.getInstance().init();
@@ -79,14 +78,17 @@ public class ActionListenerProduct implements ActionListener {
                 }*/
             }
             else if (action.equals("CATEGORIA_PRODUCTO_DIALOG")) {
-                WindowCategoria windowCategoria = new WindowCategoria();
+
+                GlassPaneCategoria gpc = new GlassPaneCategoria();
+                Global.getInstance().startPanelGlass("Registro de Categoria",gpc);
+                /*WindowCategoria windowCategoria = new WindowCategoria();
                 if(windowCategoria.isAcept()){
                     boolean edit = windowCategoria.isEdit();
                     LoadData.getInstance().getConsultaCategoria().loadDBCategoria();
                     GlobalProduct.getInstance().addCBCategoria(windowCategoria.getCategoria(),edit);
 
                     FrameMain.notificacion.start(sp.getValue("categoria.label.title"),sp.getValue("categoria.message.marca_registrada_exito"));
-                }
+                }*/
             }
         }
     }

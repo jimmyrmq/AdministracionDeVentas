@@ -45,4 +45,9 @@ public class TextUI implements ITextUI {
     public Color getColorBorderFocus() {
         return GlobalDark.colorBorderFocus;
     }
+
+    @Override
+    public Color getColorError() {
+        return new Color(201, 14, 14);
+    }
 }

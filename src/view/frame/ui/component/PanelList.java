@@ -39,15 +39,12 @@ public class PanelList extends JPanel {
 
         listCategoriaUI = new ArrayList<>();
 
-        /*for(int i = 0;i<2;i++) {
-            add(new CategoriaUI(1,"Servicio "+i,Color.ORANGE));
-        }*/
-
         add(panel, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
     }
 
-    private void add(CategoriaUI cate){
+    private void addCatUI(CategoriaUI cate){
         float wx =(x == 1)?1.0f: 0.0f;
+
         panel.add(cate, LayoutPanel.constantePane(x, y, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 0, 10, 10, 0, wx, 0.0f),index);
         x++;
         if(x==2){
@@ -75,16 +72,14 @@ public class PanelList extends JPanel {
                 break cont;
             }
         }
-
-        //System.out.println(nuevo);
-        /*if(nuevo){
-            add(new CategoriaUI(categoria));
-        }*/
     }
 
     public void setListCategoria(List<Categoria> listCategoria) {
         if(listCategoria!=null) {
             rpaint = false;
+            x = 0;
+            y = 0;
+            index = 0;
             listCategoriaUI.clear();
             for(Categoria categoria:listCategoria){
                 addCategoria(categoria);
@@ -98,7 +93,7 @@ public class PanelList extends JPanel {
         CategoriaUI categoriaUI = new CategoriaUI(categoria);
         if(actionListener!=null)
             categoriaUI.addActionListener(actionListener);
-        add(categoriaUI);
+        addCatUI(categoriaUI);
         listCategoriaUI.add(categoriaUI);
     }
 
@@ -137,6 +132,9 @@ public class PanelList extends JPanel {
 
     public void repaintPanelList(){
         panel.removeAll();
+        panel.updateUI();
+        panel.revalidate();
+        panel.repaint();
 
         this.index = 0;
         this.x = 0;
@@ -145,7 +143,7 @@ public class PanelList extends JPanel {
             rpaint = false;
             for(CategoriaUI categoria:listCategoriaUI){
                 //System.out.println(categoria.getCategoria().getDesrcripcion());
-                add(categoria);
+                addCatUI(categoria);
             }
             rpaint = true;
         }

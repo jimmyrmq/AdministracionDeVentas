@@ -39,4 +39,9 @@ public class TextUI implements ITextUI {
     public Color getColorBorderFocus() {
         return null;
     }
+
+    @Override
+    public Color getColorError() {
+        return null;
+    }
 }

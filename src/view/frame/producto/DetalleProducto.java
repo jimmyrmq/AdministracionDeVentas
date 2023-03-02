@@ -161,12 +161,14 @@ public class DetalleProducto implements ActionListener {
         JLabel lNota= new JLabel(sp.getValue("productos.label.nota")+":");
 
         tCodigo = new TextField(10,7);
-        tCodigoBarra = new TextField(20,50);
-        tNombre = new TextField(20,50);
+        tCodigoBarra = new TextField(24,41);
+        tNombre = new TextField(24,50);
         //tDescripcion = new TextField(25);
         tUnidadMedida = new TextField(5,10);
 
-        tNota = new TextArea(3,30);
+        tCodigoBarra.setIcon(new ImageIcon("icon/barcode.png"));
+
+        tNota = new TextArea(3,33);
         tNota.setTabSize(0);
         tNota.setOpaque(false);
         //tNota.setBorder(new EmptyBorder(5, 5, 0, 4));

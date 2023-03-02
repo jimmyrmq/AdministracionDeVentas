@@ -126,12 +126,22 @@ public class GlobalProduct {
         }
     }
 
-    public void updateCategoria(Categoria categoria){
+    /*public void updateCategoria(Categoria categoria){
         pCategoria.getPanelList().updateData(categoria);
-    }
+    }*/
 
     public void deleteCategoria(Categoria categoria){
         pCategoria.getPanelList().delCategoria(categoria);
+        int sz = detalleProducto.getDCBCategoria().getSize();
+        Categoria cate;
+        cont:for(int i = 0 ; i < sz ;i++) {
+            cate = detalleProducto.getDCBCategoria().getElementAt(i);
+            if((cate.getID() !=null && cate.getID()!=null) &&
+                    (cate.getID().intValue() == cate.getID().intValue())) {
+                detalleProducto.getDCBCategoria().removeElementAt(i);
+                break cont;
+            }
+        }
     }
     public void deleteMarca(Marca marca){
         int sz = detalleProducto.getDCBMarca().getSize();

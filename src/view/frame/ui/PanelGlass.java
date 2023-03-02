@@ -23,6 +23,7 @@ public class PanelGlass extends JPanel  {
     private Component aux;
     public JLabel lTitle = null;
     private JPanel  principal;
+    private IPanelGlass panelGlass;
 
     public PanelGlass(){
         super(new GridBagLayout());
@@ -90,8 +91,6 @@ public class PanelGlass extends JPanel  {
         inputMap.put(SR, "CERRAR_DIALOG");
         ActionMap actionMap = getActionMap();
         actionMap.put("CERRAR_DIALOG", action);
-
-
     }
 
     private void setVisible(){
@@ -100,9 +99,7 @@ public class PanelGlass extends JPanel  {
         }
         FrameMain.frame.setGlassPane(this);
         FrameMain.frame.getGlassPane().setVisible(true);
-
-        IPanelUI panelUI = GlobalUI.getInstance().getTheme().getPanelUI();
-        FrameMain.frame.getGlassPane().setBackground(panelUI.getBackground());
+        panelGlass.init();
     }
 
     public void start(String title, IPanelGlass panel){
@@ -111,6 +108,8 @@ public class PanelGlass extends JPanel  {
     }
 
     public void setPanel(String title, IPanelGlass panel){
+        this.panelGlass =  panel;
+
         lTitle.setText(title);
         lTitle.repaint();
         Dimension dim0 = panel.getPanel().getPreferredSize();
@@ -138,7 +137,6 @@ public class PanelGlass extends JPanel  {
         repaint();
         revalidate();
         bCerrar.transferFocus();
-        panel.init();
     }
 
     private class ListenerGlass implements MouseListener {

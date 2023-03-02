@@ -23,10 +23,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class GlassPaneMarca implements ActionListener, IPanelGlass {
-
-    private Button bAceptar,bCancelar,bNuevo,bEliminar;
+public class GlassPaneMarca implements ActionListener, IPanelGlass {;
     private final SystemProperties sp = SystemProperties.getInstance();
+    private Button bAceptar,bCancelar,bNuevo,bEliminar;
     private Marca marca = null;
     private TextField tDescripcion;
     private Table table;
@@ -90,7 +89,7 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {
         table = new Table(modelo, 280);
 
         bEliminar = new Button(new ImageIcon("icon/delete.png"));//sp.getValue("button.eliminar"));//,
-        Color red = new Color(201, 34, 34);
+        Color red = new Color(253, 7, 7);
         bEliminar.setColorImage(red);
         bEliminar.setForeground(red);
         bEliminar.setActionCommand("DELETE");
@@ -105,7 +104,6 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {
             }
         });
 
-        fillTable();
 
         panel.add(table.getPanel(), LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.PAGE_START, 10, 10, 5, 0, 0.0f, 1.0f));
         panel.add(bEliminar, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 3, 5, 0, 1.0f, 1.0f));
@@ -141,9 +139,7 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {
             AdministracionMarca admin = new AdministracionMarca();
             boolean rtn = admin.guardar(getValueMarca());
 
-
             if(rtn){
-
                 FrameMain.frame.getGlassPane().setVisible(false);
 
                 LoadData.getInstance().getConsultaMarca().loadDBMarca();
@@ -179,6 +175,9 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {
                         }
                     }
                 }
+            }
+            else{
+                OptionPane.information(FrameMain.frame, sp.getValue("marca.message.info_delete"));
             }
         }
     }
@@ -236,7 +235,10 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {
 
     public void init(){
         clear();
+
+        fillTable();
     }
+
     public JPanel getPanel(){
         return panelPrincipal;
     }

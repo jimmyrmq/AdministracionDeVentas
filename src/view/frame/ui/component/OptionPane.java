@@ -38,6 +38,7 @@ public class OptionPane {
     public static void information(JFrame frame, String message){
         String [] buttons = {sp.getValue("button.aceptar")};
         buttonCancel = 0;
+        buttonRequest = 0;
         createDialog(frame,message,INFORMATION,buttons);
     }
 
@@ -180,6 +181,7 @@ public class OptionPane {
             actionMap.put("ACTION_KEY", new AbstractAction() {
                 @Override
                 public void actionPerformed(ActionEvent ae) {
+                    rtn = -1;
                     dialog.setVisible(false);
                     dialog.dispose();
                 }

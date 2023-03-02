@@ -105,7 +105,7 @@ public class ModelTableCategoriaCustom  implements IModelTableCustom<Categoria> 
 
     @Override
     public int[] getWidthCell() {
-        int []anchoColum={260,120};
+        int []anchoColum={210,70};
         return anchoColum;
     }
 }
