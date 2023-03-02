@@ -222,16 +222,8 @@ public class GlassPaneMarca implements ActionListener, IPanelGlass {;
         if(table!=null)
             table.clearSelection();
 
-        Thread t = new Thread(()-> {
-            boolean repeat = true;
-            do {
-                if(FrameMain.frame.getGlassPane().isVisible()) {
-                    tDescripcion.requestFocus();
-                    repeat = false;
-                }
-            }while (repeat);
-        });
-        t.start();
+        tDescripcion.requestFocus();
+
     }
 
     public void init(){

@@ -298,16 +298,7 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
             sc.setSelected(false);
         }
 
-        Thread t = new Thread(()-> {
-            boolean repeat = true;
-            do {
-                if(FrameMain.frame.getGlassPane().isVisible()) {
-                    tDescripcion.requestFocus();
-                    repeat = false;
-                }
-            }while (repeat);
-        });
-        t.start();
+        tDescripcion.requestFocus();
     }
 
     private class StatusIconRenderer extends JLabel implements TableCellRenderer {

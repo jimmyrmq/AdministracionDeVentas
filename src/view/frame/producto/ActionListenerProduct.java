@@ -9,6 +9,7 @@ import view.frame.marca.GlassPaneMarca;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
+import view.frame.ui.glass.PanelGlass;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

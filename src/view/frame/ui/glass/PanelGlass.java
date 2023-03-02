@@ -73,6 +73,8 @@ public class PanelGlass extends JPanel  {
         inputMap.put(SR, "CERRAR_DIALOG");
         ActionMap actionMap = getActionMap();
         actionMap.put("CERRAR_DIALOG", action);
+
+
     }
 
     private class ListenerGlass implements MouseListener {
