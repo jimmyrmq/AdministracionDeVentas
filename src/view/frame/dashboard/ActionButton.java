@@ -43,7 +43,7 @@ public class ActionButton  implements ActionListener {
 
         if(pp!=null) {
             pp.runBeforeClose();
-            pp = null;
+            //pp = null;
         }
     }
 }
