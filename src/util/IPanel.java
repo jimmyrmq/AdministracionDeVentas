@@ -9,4 +9,5 @@ public interface IPanel {
     void close();
     boolean isOpen();
     boolean isClosed();
+    void runBeforeClose();
 }

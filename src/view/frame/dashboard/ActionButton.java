@@ -22,8 +22,9 @@ public class ActionButton  implements ActionListener {
         String action = ae.getActionCommand();
         Object ob = ae.getSource();
         if(ButtonTabbed.class == ob.getClass() ){
-            panel.clear();
-            if(action.equalsIgnoreCase(sp.getValue("productos.buttom.dashboard.id"))){
+            clear();
+
+            if(action.equalsIgnoreCase("PRODUCTO")){
                 if(pp==null) {
                     pp = new PanelProducto();
                     pp.init();
@@ -34,6 +35,15 @@ public class ActionButton  implements ActionListener {
         }
         else if(action.equalsIgnoreCase("Salir")){
             Salir.getInstance().exitSystem(FrameMain.frame);
+        }
+    }
+
+    private void clear(){
+        panel.clear();
+
+        if(pp!=null) {
+            pp.runBeforeClose();
+            pp = null;
         }
     }
 }

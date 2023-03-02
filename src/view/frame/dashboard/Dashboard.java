@@ -30,7 +30,7 @@ public class Dashboard {
         ButtonTabbed bUsuario = new ButtonTabbed(sp.getValue("usuario.buttom.dashboard"), new ImageIcon("icon/user.png"));
         Button bSalir = new Button(sp.getValue("salir.buttom.dashboard"), new ImageIcon("icon/closed.png"));
 
-        bProducto.setActionCommand(sp.getValue("productos.buttom.dashboard.id"));
+        bProducto.setActionCommand("PRODUCTO");
 
         bSalir.setButtonUI(new ButtonExitUI());
 

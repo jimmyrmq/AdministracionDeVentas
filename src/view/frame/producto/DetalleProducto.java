@@ -589,6 +589,10 @@ public class DetalleProducto implements ActionListener {
             }
 
             GlobalProduct.getInstance().cargarCBMarca();
+            try {
+                Thread.sleep(100);
+                tCodigo.requestFocus();
+            }catch (InterruptedException exc){}
         });
 
         t.start();

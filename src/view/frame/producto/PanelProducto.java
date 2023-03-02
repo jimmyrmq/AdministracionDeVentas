@@ -107,6 +107,7 @@ public class PanelProducto  implements IPanel {
         createPanel();
 
         open = true;
+
     }
 
     @Override
@@ -127,6 +128,10 @@ public class PanelProducto  implements IPanel {
     @Override
     public boolean isClosed() {
         return !open;
+    }
+
+    @Override
+    public void runBeforeClose() {
     }
 
     @Override
