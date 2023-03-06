@@ -45,11 +45,15 @@ public class PanelProducto  implements IPanel {
         importar.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         importar.setOrientationText(Button.BUTTOM);
         importar.setOrientationImage(Button.CENTER,Button.TOP);
+        importar.setActionCommand("IMPORTAR");
+        importar.addActionListener(actionListenerProduct);
 
         Button export = new Button("Exportar",new ImageIcon("icon/export.png"));
         export.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
         export.setOrientationText(Button.BUTTOM);
         export.setOrientationImage(Button.CENTER,Button.TOP);
+        export.setActionCommand("EXPORTAR");
+        export.addActionListener(actionListenerProduct);
 
         Button category = new Button("Categoria",new ImageIcon("icon/category.png"));
         category.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());

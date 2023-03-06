@@ -76,7 +76,7 @@ public class OptionPane {
 
     private static void createDialog(JFrame frame, String message, int type,String[] optionButtons){
         //JFrame owner = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-        dialog = new JDialog(frame,"Administración",true);
+        dialog = new JDialog(frame,sp.getValue("title.program"),true);
         dialog.addWindowListener(new WindowListener(){
 
             @Override

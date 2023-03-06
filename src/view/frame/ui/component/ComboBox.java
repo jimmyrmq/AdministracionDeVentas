@@ -25,6 +25,10 @@ public class ComboBox<E> extends JComboBox<E> {
             setModel(aModel);
         }
 
+        setOpaque(false);
+        setEditable(false);
+        setMaximumRowCount(20);
+
         setPreferredSize(new Dimension(140,21));
         setUI(new ComboBoxUI());
         setBorder(new BorderComboBox());//new EmptyBorder(2, 2, 2, 2));

@@ -198,10 +198,10 @@ public class DetalleProducto implements ActionListener {
         dcbCategoria = new DefaultComboBoxModel<Categoria> ();
 
         cbCategoria = new ComboBox<>(dcbCategoria);
-        cbCategoria.setOpaque(false);
         cbCategoria.setPreferredSize(cbdim);
-        cbCategoria.setMaximumRowCount(20);
-        cbCategoria.setEditable(false);
+        //cbCategoria.setMaximumRowCount(20);
+        //cbCategoria.setOpaque(false);
+        //cbCategoria.setEditable(false);
         //cbCategoria.getEditor().getEditorComponent().setBackground(Color.RED);
         //cbMediero.setBackground(new Color(255,255,255));
         //cbCategoria.setUI(new MyComboBoxUI());
@@ -209,10 +209,10 @@ public class DetalleProducto implements ActionListener {
         dcbMarca = new DefaultComboBoxModel<Marca> ();
 
         cbMarca = new ComboBox<>(dcbMarca);
-        cbMarca.setOpaque(false);
         cbMarca.setPreferredSize(cbdim);
-        cbMarca.setMaximumRowCount(20);
-        cbMarca.setEditable(false);
+        //cbMarca.setMaximumRowCount(20);
+        //cbMarca.setOpaque(false);
+        //cbMarca.setEditable(false);
         //cbMarca.getEditor().getEditorComponent().setBackground(Color.RED);
         //cbMarca.setBackground(new Color(255,255,255));
         //cbMarca.setUI(new MyComboBoxUI());
@@ -272,7 +272,7 @@ public class DetalleProducto implements ActionListener {
         lImpuesto = new JList<>(dlmImpuestp);
         lImpuesto.setPreferredSize(new Dimension(200, 100));
 
-        precioImpuesto = new CheckBox(sp.getValue("productos.label.precioImpuesto"));
+        precioImpuesto = new CheckBox(sp.getValue("productos.label.precioIncluyeImpuesto"));
         precioImpuesto.setSelected(true);
         precioImpuesto.setOpaque(false);
 
@@ -317,7 +317,7 @@ public class DetalleProducto implements ActionListener {
         //panel.setBackground(Color.RED);
         //panel.setBorder(getBorder("Stock"));
 
-        JLabel lAdvertencia = new JLabel(sp.getValue("productos.label.advertenciaStock")+":");
+        JLabel lAdvertencia = new JLabel(sp.getValue("productos.label.advertenciaStockCritico")+":");
         JLabel lDisponible = new JLabel(sp.getValue("productos.label.cantidad_disponible")+":");
 
         tStockCritico = new TextField(5,5,true);

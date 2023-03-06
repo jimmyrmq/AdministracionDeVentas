@@ -6,10 +6,10 @@ import util.SystemProperties;
 import view.frame.categoria.GlassPaneCategoria;
 import view.frame.main.FrameMain;
 import view.frame.marca.GlassPaneMarca;
+import view.frame.producto.importar.ImportProductWindows;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.CategoriaUI;
 import view.frame.ui.component.OptionPane;
-import view.frame.ui.glass.PanelGlass;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,6 +74,9 @@ public class ActionListenerProduct implements ActionListener {
 
                     FrameMain.notificacion.start(sp.getValue("marca.label.title"),sp.getValue("marca.message.marca_registrada_exito"));
                 }*/
+            }
+            else if (action.equals("IMPORTAR")) {
+                ImportProductWindows impWind = new ImportProductWindows();
             }
             else if (action.equals("CATEGORIA_PRODUCTO_DIALOG")) {
                 Global.getInstance().startPanelGlass(new GlassPaneCategoria());

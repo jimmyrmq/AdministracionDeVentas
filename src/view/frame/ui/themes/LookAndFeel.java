@@ -137,7 +137,8 @@ public class LookAndFeel {
 
             /*UIManager.put("List.foreground",Color.BLUE);*/
             UIManager.put("List.background",colBack);
-
+            UIManager.put("List.foreground", colFore);
+            UIManager.put("ScrollPane.background", colBack);
             /*UIManager.put("TabbedPane.foreground",colFore);
             UIManager.put("TabbedPane.background",colBack);
             UIManager.put("TabbedPane.shadow",Color.RED);
