@@ -131,8 +131,14 @@ public class PTablaProducto {
                 sstock = valueSplit[2];//Stock
                 sstockcrit = valueSplit[3];//Stock Critico
 
-                setSelected(isSelected);
+                if(sstock==null||sstock.equals("null"))
+                    sstock = "0";
 
+                if(sstockcrit==null||sstockcrit.equals("null"))
+                    sstockcrit="0";
+
+                setSelected(isSelected);
+                //System.out.println(sdisp+" "+snorstock+" "+sstock+" "+sstockcrit+" "+(Integer.parseInt(sstock) <= Integer.parseInt(sstockcrit)));
                 if(Boolean.valueOf(sdisp)){
                     if(!Boolean.valueOf(snorstock)){
                         if (Integer.parseInt(sstock) == 0) {
@@ -140,7 +146,8 @@ public class PTablaProducto {
                         }
                         else if (Integer.parseInt(sstock) <= Integer.parseInt(sstockcrit)) {
                             setTipoEtiqueta(TipoEtiqueta.StockCritico);
-                        }
+                        }else
+                            setTipoEtiqueta(TipoEtiqueta.Disponible);
                     }
                     else{
                         setTipoEtiqueta(TipoEtiqueta.Disponible);

@@ -52,9 +52,9 @@ public class ModelTableProductoCustom implements IModelTableCustom<Producto> {
                 } else if (columnIndex == 1) {
                     return aux.getNombre();
                 } else if (columnIndex == 2) {
-                    return aux.getMarca().toString();
+                    return aux.getMarca()!=null?aux.getMarca().toString():null;
                 } else if (columnIndex == 3) {
-                    return aux.getCategoria().toString();
+                    return aux.getCategoria()!=null?aux.getCategoria().toString():null;
                 } else if (columnIndex == 4) {
                     return aux.isNoRequiereStock() ? "-" : aux.getStock();
                 } else if (columnIndex == 5) {

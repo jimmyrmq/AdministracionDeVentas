@@ -6,6 +6,7 @@ import view.frame.main.FrameMain;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.ComboBox;
 import view.frame.ui.component.OptionPane;
+import view.frame.ui.glass.Notificacion;
 import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
@@ -22,9 +23,11 @@ import java.util.List;
 
 public class ImportProductWindows implements ActionListener {
     private JDialog dialog;
+    private Notificacion notificacion;
     private SystemProperties sp = SystemProperties.getInstance();
     private Button bSelectFiled,bImportar,bCancelar;
     private JLabel lFile;
+    private JProgressBar progressBar;
     private ComboBox<ColumnSelected> cbCodigo;
     private ComboBox<ColumnSelected> cbCodigoBarra;
     private ComboBox<ColumnSelected> cbNombre;
@@ -60,6 +63,8 @@ public class ImportProductWindows implements ActionListener {
         content.setLayout(new GridBagLayout());
         content.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
 
+        notificacion = new Notificacion();
+
         bSelectFiled = new Button(sp.getValue("importar.button.selected_file"));
         bSelectFiled.setActionCommand("SELECT_FILE");
         bSelectFiled.addActionListener(this);
@@ -73,6 +78,9 @@ public class ImportProductWindows implements ActionListener {
         bCancelar.setActionCommand("CANCELAR");
         bCancelar.addActionListener(this);
 
+        progressBar = new JProgressBar(0,0);
+        progressBar.setBorderPainted(false);
+        progressBar.setVisible(false);
 
         lFile = new JLabel();
         lFile.setFont(GlobalUI.getInstance().getTheme().getPanelUI().getFont());
@@ -92,7 +100,7 @@ public class ImportProductWindows implements ActionListener {
         JLabel lPrecio3 = new JLabel(sp.getValue("productos.label.precio3")+":");
         JLabel lIncluyeImpuesto = new JLabel(sp.getValue("productos.label.precioIncluyeImpuesto")+":");
         JLabel lStockCritico = new JLabel(sp.getValue("productos.label.advertenciaStockCritico")+":");
-        JLabel lRequiereStock = new JLabel(sp.getValue("productos.label.no_requiere_stock")+":");
+        JLabel lRequiereStock = new JLabel(sp.getValue("productos.label.requiere_stock")+":");
         JLabel lCantidadDisponible = new JLabel(sp.getValue("productos.label.cantidad_disponible")+":");
 
         dcbCodigo = new DefaultComboBoxModel<ColumnSelected> ();
@@ -108,9 +116,6 @@ public class ImportProductWindows implements ActionListener {
         dcbStockCritico = new DefaultComboBoxModel<ColumnSelected> ();
         dcbRequiereStock = new DefaultComboBoxModel<ColumnSelected> ();
         dcbCantidadDisponible = new DefaultComboBoxModel<ColumnSelected> ();
-
-        clearcb();
-
         Dimension cbdim = new Dimension(210,21);
 
         cbCodigo = new ComboBox<ColumnSelected>(dcbCodigo);
@@ -139,6 +144,9 @@ public class ImportProductWindows implements ActionListener {
         cbRequiereStock.setPreferredSize(cbdim);
         cbCantidadDisponible = new ComboBox<ColumnSelected>(dcbCantidadDisponible);
         cbCantidadDisponible.setPreferredSize(cbdim);
+
+        clearcb();
+
 
         content.add(bSelectFiled, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
         content.add(lFile, LayoutPanel.constantePane(1, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
@@ -172,6 +180,7 @@ public class ImportProductWindows implements ActionListener {
 
         content.add(bImportar, LayoutPanel.constantePane(2, 14, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 0.0f, 1.0f));
         content.add(bCancelar, LayoutPanel.constantePane(2, 15, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 0, 0, 5, 10, 0.0f, 0.0f));
+        content.add(progressBar, LayoutPanel.constantePane(0, 15, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 10, 5, 0, 0.0f, 0.0f));
 
         createDialog();
     }
@@ -196,38 +205,60 @@ public class ImportProductWindows implements ActionListener {
                 System.out.println("Iniciando lectura");
                 dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-                int codigo = dcbCodigo.getElementAt(cbCodigo.getSelectedIndex()).getIndex();
-                int codigoBarra = dcbCodigoBarra.getElementAt(cbCodigoBarra.getSelectedIndex()).getIndex();
-                int nombre = dcbNombre.getElementAt(cbNombre.getSelectedIndex()).getIndex();
-                int unidad = dcbUnidad.getElementAt(cbUnidad.getSelectedIndex()).getIndex();
-                int disponible = dcbDisponible.getElementAt(cbDisponible.getSelectedIndex()).getIndex();
-                int costo = dcbCosto.getElementAt(cbCosto.getSelectedIndex()).getIndex();
-                int precio1 = dcbPrecio1.getElementAt(cbPrecio1.getSelectedIndex()).getIndex();
-                int precio2 = dcbPrecio2.getElementAt(cbPrecio2.getSelectedIndex()).getIndex();
-                int precio3 = dcbPrecio3.getElementAt(cbPrecio3.getSelectedIndex()).getIndex();
-                int incluyeImpuesto = dcbIncluyeImpuesto.getElementAt(cbIncluyeImpuesto.getSelectedIndex()).getIndex();
-                int stockCritico = dcbStockCritico.getElementAt(cbStockCritico.getSelectedIndex()).getIndex();
-                int requiereStock = dcbRequiereStock.getElementAt(cbRequiereStock.getSelectedIndex()).getIndex();
-                int cantidadDisponible = dcbCantidadDisponible.getElementAt(cbCantidadDisponible.getSelectedIndex()).getIndex();
-                if(codigo == -1){
-                    System.out.println("Seleccione el codigo");
-                }
-                else if (nombre == -1){
-                    System.out.println("Seleccione el nombre");
-                }
-                else {
-                    rf.getData(codigo, codigoBarra, nombre, unidad, disponible, costo, precio1, precio2, precio3,
-                            incluyeImpuesto, stockCritico, requiereStock, cantidadDisponible);
-                }
-                /*Thread t = new Thread(()-> {
-                    System.out.println("start");
-                    while(!rf.endLectura()){ System.out.println("....");}
-                    System.out.println("Cantidad de lectura: "+rf.getCount());
-                    System.out.println("Fin de la lectura");
-                    dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                eText(false);
+                Thread t1 = new Thread(()-> {
+                    int codigo = dcbCodigo.getElementAt(cbCodigo.getSelectedIndex()).getIndex();
+                    int codigoBarra = dcbCodigoBarra.getElementAt(cbCodigoBarra.getSelectedIndex()).getIndex();
+                    int nombre = dcbNombre.getElementAt(cbNombre.getSelectedIndex()).getIndex();
+                    int unidad = dcbUnidad.getElementAt(cbUnidad.getSelectedIndex()).getIndex();
+                    int disponible = dcbDisponible.getElementAt(cbDisponible.getSelectedIndex()).getIndex();
+                    int costo = dcbCosto.getElementAt(cbCosto.getSelectedIndex()).getIndex();
+                    int precio1 = dcbPrecio1.getElementAt(cbPrecio1.getSelectedIndex()).getIndex();
+                    int precio2 = dcbPrecio2.getElementAt(cbPrecio2.getSelectedIndex()).getIndex();
+                    int precio3 = dcbPrecio3.getElementAt(cbPrecio3.getSelectedIndex()).getIndex();
+                    int incluyeImpuesto = dcbIncluyeImpuesto.getElementAt(cbIncluyeImpuesto.getSelectedIndex()).getIndex();
+                    int stockCritico = dcbStockCritico.getElementAt(cbStockCritico.getSelectedIndex()).getIndex();
+                    int requiereStock = dcbRequiereStock.getElementAt(cbRequiereStock.getSelectedIndex()).getIndex();
+                    int cantidadDisponible = dcbCantidadDisponible.getElementAt(cbCantidadDisponible.getSelectedIndex()).getIndex();
+                    if (codigo == -1) {
+                        OptionPane.error(FrameMain.frame,sp.getValue("importar.message.error_codigo"));
+                    } else if (nombre == -1) {
+                        OptionPane.error(FrameMain.frame,sp.getValue("importar.message.error_nombre"));
+                    } else {
+                        notificacion.start(sp.getValue("productos.label.title"),sp.getValue("importar.iniciando"));
+                        
+                        rf.getData(codigo, codigoBarra, nombre, unidad, disponible, costo, precio1, precio2, precio3,
+                                incluyeImpuesto, stockCritico, requiereStock, cantidadDisponible);
 
+                        clearcb();
+                        bImportar.setEnabled(false);
+                        lFile.setText(null);
+                        lFile.setIcon(null);
+                    }
+                    dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 });
-                t.start();*/
+                t1.start();
+
+
+                Thread t2 = new Thread(()-> {
+                    progressBar.setVisible(true);
+                    progressBar.repaint();
+                    progressBar.updateUI();
+                    while (rf.isAlive()) {
+                        progressBar.setValue(rf.getCurrentCount());
+                        progressBar.repaint();
+                        progressBar.updateUI();
+                        System.out.println(progressBar.getValue());
+                    }
+                    //System.out.println("Fin de la lectura");
+                    eText(true);
+                    try{
+                        Thread.sleep(2000);
+                    }catch(InterruptedException exc){}
+
+                    progressBar.setVisible(false);
+                });
+                t2.start();
             }
         }
         else if("CANCELAR".equals(command)){
@@ -255,7 +286,9 @@ public class ImportProductWindows implements ActionListener {
                     System.out.println(fd.getParent());
                     System.out.println(fd.getAbsolutePath());*/
                     lFile.setText(fd.getAbsolutePath());
-                     rf = new ReadFileCVS(fd);
+                    rf = new ReadFileCVS(fd);
+                    progressBar.setMaximum(rf.getAmountProduct());
+                    System.out.println(rf.getAmountProduct());
                     //List<ColumnSelected> listCols = rf.getNameColumns();
                     String listCols[] = rf.getNameColumns();
                     if(listCols == null || listCols.length==0){
@@ -330,17 +363,38 @@ public class ImportProductWindows implements ActionListener {
         dcbCodigoBarra.addElement(new ColumnSelected(" ",-1));
         dcbNombre.addElement(new ColumnSelected(" ",-1));
         dcbUnidad.addElement(new ColumnSelected(" ",-1));
-        dcbDisponible.addElement(new ColumnSelected("true",-2));
-        dcbDisponible.addElement(new ColumnSelected("false",-3));
+        dcbDisponible.addElement(new ColumnSelected(sp.getValue("label.si"),-2));
+        dcbDisponible.addElement(new ColumnSelected(sp.getValue("label.no"),-3));
         dcbCosto.addElement(new ColumnSelected(" ",-1));
         dcbPrecio1.addElement(new ColumnSelected(" ",-1));
         dcbPrecio2.addElement(new ColumnSelected(" ",-1));
         dcbPrecio3.addElement(new ColumnSelected(" ",-1));
-        dcbIncluyeImpuesto.addElement(new ColumnSelected("true",-2));
-        dcbIncluyeImpuesto.addElement(new ColumnSelected("false",-3));
+        dcbIncluyeImpuesto.addElement(new ColumnSelected(sp.getValue("label.si"),-2));
+        dcbIncluyeImpuesto.addElement(new ColumnSelected(sp.getValue("label.no"),-3));
         dcbStockCritico.addElement(new ColumnSelected(" ",-1));
-        dcbRequiereStock.addElement(new ColumnSelected("true",-2));
-        dcbRequiereStock.addElement(new ColumnSelected("false",-3));
+        dcbRequiereStock.addElement(new ColumnSelected(sp.getValue("label.si"),-2));
+        dcbRequiereStock.addElement(new ColumnSelected(sp.getValue("label.no"),-3));
         dcbCantidadDisponible.addElement(new ColumnSelected(" ",-1));
+
+        cbRequiereStock.setSelectedIndex(1);
+    }
+    
+    private void eText(boolean e){
+        cbCodigo.setEnabled(e);
+        cbCodigoBarra.setEnabled(e);
+        cbNombre.setEnabled(e);
+        cbUnidad.setEnabled(e);
+        cbDisponible.setEnabled(e);
+        cbCosto.setEnabled(e);
+        cbPrecio1.setEnabled(e);
+        cbPrecio2.setEnabled(e);
+        cbPrecio3.setEnabled(e);
+        cbIncluyeImpuesto.setEnabled(e);
+        cbStockCritico.setEnabled(e);
+        cbRequiereStock.setEnabled(e);
+        cbCantidadDisponible.setEnabled(e);
+        bImportar.setEnabled(e);
+        bCancelar.setEnabled(e);
+        bSelectFiled.setEnabled(e);
     }
 }

@@ -53,10 +53,11 @@ public class NotificacionUI extends JComponent implements MouseListener {//Mouse
 
     private void calculateDimension() {
         FontMetrics fmt = getFontMetrics(font0);
+
         if(message!=null) {
             int w = fmt.stringWidth(message);
-            if (w > width)
-                width += w + 10;
+            if (w > 100)
+                width = w + 20;
         }
 
         setPreferredSize(new Dimension(width, height));

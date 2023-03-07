@@ -15,8 +15,9 @@ public class ReadFileCVS {
     private String nameColumns[];
     private BufferedReader br = null;
     private List<RowProduct> listProd;
-    private boolean end = true;
-    private int count = 0;
+    private boolean alive = false;
+    private int amountProd = 0;
+    private int currentCount = 0;
     private List<String> msgError;
     public ReadFileCVS(File file){
         msgError = new ArrayList<>();
@@ -55,7 +56,8 @@ public class ReadFileCVS {
     
     private synchronized void fillData(){
         String linea;
-        end = false;
+        alive = true;
+        amountProd = 0;
         try {
             while((linea=br.readLine())!=null) {
                 String row[] = linea.split(";");
@@ -66,12 +68,13 @@ public class ReadFileCVS {
         }
         finally {
             try {
+                amountProd = listProd.size();
                 br.close();
             } catch (IOException e) {
                 System.out.println(e);
             }
         }
-        end = true;
+        alive = false;
     }
 
     public void getData(int codigo, int codigoBarra,
@@ -80,6 +83,8 @@ public class ReadFileCVS {
                         int incluyeImpuesto, int stockCritico,
                         int requiereStock, int cantidadDisponible){
         msgError.clear();
+        currentCount = 0;
+        alive = true;
         /*if(codigo!=-1)
             System.out.println("codigo :"+codigo+" "+nameColumns[codigo]);
         if(codigoBarra!=-1)
@@ -109,7 +114,6 @@ public class ReadFileCVS {
 
         int l = listProd.size();
         AdministracionProducto admin = new AdministracionProducto();
-        int count = 0;
         int countOk  = 0;
         int countErr = 0;
         int countWarning = 0;
@@ -117,9 +121,9 @@ public class ReadFileCVS {
         String nombre0;
         String codigo0;
         cont:for (int i = 0;i < l;i++){
+            currentCount ++;
             nombre0 = null;
             codigo0 = null;
-            count++;
             err = false;
             RowProduct rp = listProd.get(i);
             String row[] = rp.row;
@@ -134,12 +138,12 @@ public class ReadFileCVS {
                     prod.setCodigo(codigo0);
                 }
 
-                System.out.print("Codigo: " + codigo0);
+                //System.out.print"Codigo: " + codigo0);
             }
 
             if(codigoBarra!=-1) {
                 prod.setCodigoBarra(row[codigoBarra]);
-                System.out.print(", codigoBarra:" + row[codigoBarra]);
+                //System.out.print", codigoBarra:" + row[codigoBarra]);
             }
 
             if(nombre!=-1) {
@@ -151,12 +155,12 @@ public class ReadFileCVS {
                 }else {
                     prod.setNombre(nombre0);
                 }
-                System.out.print(", nombre:" + nombre0);
+                //System.out.print", nombre:" + nombre0);
             }
 
             if(unidad!=-1) {
                 prod.setUnidadMedida(row[unidad]);
-                System.out.print(", unidad:" + row[unidad]);
+                //System.out.print", unidad:" + row[unidad]);
             }
 
             if(disponible>-1) {
@@ -167,11 +171,11 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor disponible: "+row[disponible]+" ("+codigo0+" "+nombre0+")");
                 }
                 prod.setDisponible(disp);
-                System.out.print(", disponible:" + disp);
+                //System.out.print", disponible:" + disp);
             }else if(disponible==-2 || disponible == -3) {
                 boolean disp = disponible==-2;
                 prod.setDisponible(disp);
-                System.out.print(", disponible:" + disp);
+                //System.out.print", disponible:" + disp);
             }
 
             if(costo!=-1) {
@@ -183,7 +187,7 @@ public class ReadFileCVS {
                 }
                 prod.setPrecioCosto(v);
 
-                System.out.print(", costo" + v);
+                //System.out.print", costo" + v);
             }
 
             if(precio1!=-1) {
@@ -194,7 +198,7 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor precio1: " + row[precio1] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setPrecio1(v);
-                System.out.print(", precio1" + v);
+                //System.out.print", precio1" + v);
             }
             if(precio2!=-1){
                 Double v = stringToDouble(row[precio2]);
@@ -204,7 +208,7 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor precio2: " + row[precio2] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setPrecio2(v);
-                System.out.print(", precio2" + v);
+                //System.out.print", precio2" + v);
             }
             if(precio3!=-1){
                 Double v = stringToDouble(row[precio3]);
@@ -214,7 +218,7 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor precio3: " + row[precio3] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setPrecio3(v);
-                System.out.print(", precio1" +v);
+                //System.out.print", precio1" +v);
             }
             if(incluyeImpuesto>-1){
                 Boolean v = stringToBoolean(row[incluyeImpuesto]);
@@ -224,11 +228,11 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor incluyeImpuesto: " + row[incluyeImpuesto] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setPrecioIncluyeImpuesto(v);
-                System.out.print(", incluyeImpuesto" + v);
+                //System.out.print", incluyeImpuesto" + v);
             }else if(incluyeImpuesto==-2 || incluyeImpuesto== -3) {
                 boolean disp = incluyeImpuesto==-2;
                 prod.setPrecioIncluyeImpuesto(disp);
-                System.out.print(", incluyeImpuesto" + disp);
+                //System.out.print", incluyeImpuesto" + disp);
             }
 
             if(stockCritico!=-1){
@@ -239,7 +243,7 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor stockCritico: " + row[stockCritico] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setStockCritico(v);
-                System.out.print(", stockCritico" + v);
+                //System.out.print", stockCritico" + v);
             }
             if(requiereStock>-1){
                 Boolean v = stringToBoolean(row[requiereStock]);
@@ -249,11 +253,11 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor requiereStock: " + row[requiereStock] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setNoRequiereStock(v);
-                System.out.print(", requiereStock" + v);
+                //System.out.print", requiereStock" + v);
             }else if(requiereStock==-2 || requiereStock== -3) {
                 boolean disp = requiereStock==-2;
                 prod.setNoRequiereStock(disp);
-                System.out.print(", requiereStock" + disp);
+                //System.out.print", requiereStock" + disp);
             }
 
             if(cantidadDisponible!=-1) {
@@ -264,10 +268,10 @@ public class ReadFileCVS {
                     msgError.add("No se pudo reconocer el valor cantidadDisponible: " + row[cantidadDisponible] + " ("+codigo0+" "+nombre0+")");
                 }
                 prod.setStock(v);
-                System.out.print(", cantidadDisponible" + row[cantidadDisponible]);
+                //System.out.print", cantidadDisponible" + row[cantidadDisponible]);
             }
 
-            boolean rtn = false;//admin.guardar(prod);
+            boolean rtn = admin.guardar(prod);
             if(!rtn){
                 countErr ++;
                 msgError.add("Error al intentar guardar el producto "+ codigo0 + " " + nombre0+":"+admin.getMensaje());
@@ -276,9 +280,11 @@ public class ReadFileCVS {
             }else {
                 countOk++;
             }
-            System.out.println();
+            //System.out.println();
         }
-        System.out.println("Registro: "+count);
+        alive = false;
+
+        System.out.println("Registro: "+currentCount);
         System.out.println("Registro OK: "+countOk);
         System.out.println("Registro Warning: "+countWarning);
         System.out.println("Registro Error: "+countErr);
@@ -287,6 +293,7 @@ public class ReadFileCVS {
             System.out.println(msg);
         }
     }
+
     private Boolean stringToBoolean(String value){
         Boolean rtn = null;
 
@@ -318,20 +325,16 @@ public class ReadFileCVS {
         Integer rtn = null;
 
         if(value!=null && value.length() > 0){
-
+            if(value.indexOf(".")!=-1){
+                Double d = Double.parseDouble(value);
+                int a = (int)Math.round(d);
+                value = String.valueOf(a);
+            }
             try {
                 rtn = Integer.parseInt(value);
             }catch (NumberFormatException exc){}
         }
         return rtn;
-    }
-
-    public boolean endLectura(){
-        return end;
-    }
-
-    public int getCount(){
-        return count;
     }
 
     public String[] getNameColumns() {
@@ -347,5 +350,16 @@ public class ReadFileCVS {
         public String getItem(int index){
             return row[index];
         }
+    }
+
+    public int getAmountProduct(){
+        return amountProd;
+    }
+    public int getCurrentCount(){
+        return currentCount;
+    }
+
+    public boolean isAlive(){
+        return alive;
     }
 }

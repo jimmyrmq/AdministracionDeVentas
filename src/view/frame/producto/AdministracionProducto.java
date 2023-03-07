@@ -82,10 +82,26 @@ public class AdministracionProducto {
                 pstmt.setNull(2, Types.VARCHAR);
 
             pstmt.setString(3, producto.getNombre());
-            pstmt.setDouble(4,producto.getPrecioCosto());
-            pstmt.setDouble(5,producto.getPrecio1());
-            pstmt.setDouble(6,producto.getPrecio2());
-            pstmt.setDouble(7,producto.getPrecio3());
+
+            if(producto.getPrecioCosto()!=null)
+                pstmt.setDouble(4,producto.getPrecioCosto());
+            else
+                pstmt.setDouble(4,0.0);
+
+            if(producto.getPrecio1()!=null)
+                pstmt.setDouble(5,producto.getPrecio1());
+            else
+                pstmt.setDouble(5,0.0);
+
+            if(producto.getPrecio2()!=null)
+                pstmt.setDouble(6,producto.getPrecio2());
+            else
+                pstmt.setDouble(6,0.0);
+
+            if(producto.getPrecio3()!=null)
+                pstmt.setDouble(7,producto.getPrecio3());
+            else
+                pstmt.setDouble(7,0.0);
 
             if(producto.getNota()!=null)
                 pstmt.setString(8, producto.getNota());
@@ -99,8 +115,16 @@ public class AdministracionProducto {
 
             pstmt.setBoolean(10,producto.isPrecioIncluyeImpuesto());
             pstmt.setBoolean(11,producto.isDisponible());
-            pstmt.setInt(12,producto.getStock());
-            pstmt.setInt(13,producto.getStockCritico());
+            if(producto.getStock()!=null)
+                pstmt.setInt(12,producto.getStock());
+            else
+                pstmt.setInt(12,0);
+
+            if(producto.getStockCritico()!=null)
+                pstmt.setInt(13,producto.getStockCritico());
+            else
+                pstmt.setInt(13,0);
+
             pstmt.setBoolean(14,producto.isNoRequiereStock());
 
             if(producto.getMarca()!=null && producto.getMarca().getID()!=null)
