@@ -362,4 +362,11 @@ public class ReadFileCVS {
     public boolean isAlive(){
         return alive;
     }
+
+    public void runExport(){
+        alive = true;
+    }
+    public void stopExport(){
+        alive = false;
+    }
 }

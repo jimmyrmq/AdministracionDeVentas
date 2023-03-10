@@ -57,13 +57,22 @@ public class ImportProductWindows implements ActionListener {
     private DefaultComboBoxModel<ColumnSelected> dcbCantidadDisponible;
     private ReadFileCVS rf = null;
 
-    public ImportProductWindows(){
-        dialog = new JDialog(FrameMain.frame,sp.getValue("importar.label.title"),true);
+    public ImportProductWindows() {
+
+        notificacion = new Notificacion();
+
+        createDialog();
+
         Container content = dialog.getContentPane();
         content.setLayout(new GridBagLayout());
         content.setBackground(GlobalUI.getInstance().getTheme().getPanelUI().getBackground());
+        content.add(pPrincipal(), LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.BOTH, GridBagConstraints.FIRST_LINE_START, 0, 0, 0, 0, 1.0f, 1.0f));
 
-        notificacion = new Notificacion();
+        dialog.setVisible(true);
+    }
+    public JPanel pPrincipal(){
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
 
         bSelectFiled = new Button(sp.getValue("importar.button.selected_file"));
         bSelectFiled.setActionCommand("SELECT_FILE");
@@ -81,6 +90,10 @@ public class ImportProductWindows implements ActionListener {
         progressBar = new JProgressBar(0,0);
         progressBar.setBorderPainted(false);
         progressBar.setVisible(false);
+
+        Dimension dim = new Dimension(146, 14);
+        progressBar.setSize(dim);
+        progressBar.setPreferredSize(dim);
 
         lFile = new JLabel();
         lFile.setFont(GlobalUI.getInstance().getTheme().getPanelUI().getFont());
@@ -147,45 +160,48 @@ public class ImportProductWindows implements ActionListener {
 
         clearcb();
 
+        panel.add(bSelectFiled, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(lFile, LayoutPanel.constantePane(1, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
 
-        content.add(bSelectFiled, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        content.add(lFile, LayoutPanel.constantePane(1, 0, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 1.0f, 0.0f));
+        panel.add(lCodigo, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbCodigo, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lCodigoBarra, LayoutPanel.constantePane(0, 2, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbCodigoBarra, LayoutPanel.constantePane(2, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lNombre, LayoutPanel.constantePane(0, 3, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbNombre, LayoutPanel.constantePane(2, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lUnidad, LayoutPanel.constantePane(0, 4, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbUnidad, LayoutPanel.constantePane(2, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lDisponible, LayoutPanel.constantePane(0, 5, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbDisponible, LayoutPanel.constantePane(2, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lCosto, LayoutPanel.constantePane(0, 6, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbCosto, LayoutPanel.constantePane(2, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio1, LayoutPanel.constantePane(0, 7, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbPrecio1, LayoutPanel.constantePane(2, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio2, LayoutPanel.constantePane(0, 8, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbPrecio2, LayoutPanel.constantePane(2, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lPrecio3, LayoutPanel.constantePane(0, 9, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbPrecio3, LayoutPanel.constantePane(2, 9, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lIncluyeImpuesto, LayoutPanel.constantePane(0, 10, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbIncluyeImpuesto, LayoutPanel.constantePane(2, 10, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lStockCritico, LayoutPanel.constantePane(0, 11, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbStockCritico, LayoutPanel.constantePane(2, 11, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lRequiereStock, LayoutPanel.constantePane(0, 12, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbRequiereStock, LayoutPanel.constantePane(2, 12, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(lCantidadDisponible, LayoutPanel.constantePane(0, 13, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
+        panel.add(cbCantidadDisponible, LayoutPanel.constantePane(2, 13, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
 
-        content.add(lCodigo, LayoutPanel.constantePane(0, 1, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbCodigo, LayoutPanel.constantePane(2, 1, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 10, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lCodigoBarra, LayoutPanel.constantePane(0, 2, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbCodigoBarra, LayoutPanel.constantePane(2, 2, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lNombre, LayoutPanel.constantePane(0, 3, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbNombre, LayoutPanel.constantePane(2, 3, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lUnidad, LayoutPanel.constantePane(0, 4, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbUnidad, LayoutPanel.constantePane(2, 4, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lDisponible, LayoutPanel.constantePane(0, 5, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbDisponible, LayoutPanel.constantePane(2, 5, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lCosto, LayoutPanel.constantePane(0, 6, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbCosto, LayoutPanel.constantePane(2, 6, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lPrecio1, LayoutPanel.constantePane(0, 7, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbPrecio1, LayoutPanel.constantePane(2, 7, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lPrecio2, LayoutPanel.constantePane(0, 8, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbPrecio2, LayoutPanel.constantePane(2, 8, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lPrecio3, LayoutPanel.constantePane(0, 9, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbPrecio3, LayoutPanel.constantePane(2, 9, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lIncluyeImpuesto, LayoutPanel.constantePane(0, 10, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbIncluyeImpuesto, LayoutPanel.constantePane(2, 10, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lStockCritico, LayoutPanel.constantePane(0, 11, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbStockCritico, LayoutPanel.constantePane(2, 11, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lRequiereStock, LayoutPanel.constantePane(0, 12, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbRequiereStock, LayoutPanel.constantePane(2, 12, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
-        content.add(lCantidadDisponible, LayoutPanel.constantePane(0, 13, 2, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 10, 0, 0, 0.0f, 0.0f));
-        content.add(cbCantidadDisponible, LayoutPanel.constantePane(2, 13, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 0.0f, 0.0f));
+        panel.add(bImportar, LayoutPanel.constantePane(2, 14, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 0.0f, 1.0f));
+        panel.add(bCancelar, LayoutPanel.constantePane(2, 15, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 0, 0, 5, 10, 0.0f, 0.0f));
+        panel.add(progressBar, LayoutPanel.constantePane(0, 15, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 10, 5, 0, 0.0f, 0.0f));
+        return panel;
 
-        content.add(bImportar, LayoutPanel.constantePane(2, 14, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 5, 5, 0, 0, 0.0f, 1.0f));
-        content.add(bCancelar, LayoutPanel.constantePane(2, 15, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_END, 0, 0, 5, 10, 0.0f, 0.0f));
-        content.add(progressBar, LayoutPanel.constantePane(0, 15, 2, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 10, 5, 0, 0.0f, 0.0f));
-
-        createDialog();
     }
 
     private void createDialog(){
+
+        dialog = new JDialog(FrameMain.frame, sp.getValue("importar.label.title"), true);
+
+
         Dimension dim = new Dimension(700,490);
 
         //dialog.setUndecorated(true);
@@ -194,7 +210,6 @@ public class ImportProductWindows implements ActionListener {
         dialog.setResizable(false);
         //dialog.setDefaultCloseOperation(0);
         dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
     }
 
     @Override
@@ -205,8 +220,34 @@ public class ImportProductWindows implements ActionListener {
                 System.out.println("Iniciando lectura");
                 dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
+                rf.runExport();
+
+                Thread t2 = new Thread(()-> {
+                    progressBar.setVisible(true);
+                    progressBar.repaint();
+                    progressBar.updateUI();
+                    while (rf.isAlive()) {
+                        progressBar.setValue(rf.getCurrentCount());
+                        progressBar.repaint();
+                    }
+                    progressBar.setIndeterminate(true);
+                    //System.out.println("Fin de la lectura");
+                    eText(true);
+                    try{
+                        Thread.sleep(2000);
+                    }catch(InterruptedException exc){}
+
+                    progressBar.setIndeterminate(false);
+                    progressBar.setVisible(false);
+                    progressBar.setValue(0);
+                });
+
+                t2.start();
+
                 eText(false);
+
                 Thread t1 = new Thread(()-> {
+                    progressBar.setIndeterminate(true);
                     int codigo = dcbCodigo.getElementAt(cbCodigo.getSelectedIndex()).getIndex();
                     int codigoBarra = dcbCodigoBarra.getElementAt(cbCodigoBarra.getSelectedIndex()).getIndex();
                     int nombre = dcbNombre.getElementAt(cbNombre.getSelectedIndex()).getIndex();
@@ -222,11 +263,14 @@ public class ImportProductWindows implements ActionListener {
                     int cantidadDisponible = dcbCantidadDisponible.getElementAt(cbCantidadDisponible.getSelectedIndex()).getIndex();
                     if (codigo == -1) {
                         OptionPane.error(FrameMain.frame,sp.getValue("importar.message.error_codigo"));
+                        rf.stopExport();
                     } else if (nombre == -1) {
                         OptionPane.error(FrameMain.frame,sp.getValue("importar.message.error_nombre"));
+                        rf.stopExport();
                     } else {
                         notificacion.start(sp.getValue("productos.label.title"),sp.getValue("importar.iniciando"));
-                        
+
+                        progressBar.setIndeterminate(false);
                         rf.getData(codigo, codigoBarra, nombre, unidad, disponible, costo, precio1, precio2, precio3,
                                 incluyeImpuesto, stockCritico, requiereStock, cantidadDisponible);
 
@@ -237,28 +281,8 @@ public class ImportProductWindows implements ActionListener {
                     }
                     dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
                 });
+
                 t1.start();
-
-
-                Thread t2 = new Thread(()-> {
-                    progressBar.setVisible(true);
-                    progressBar.repaint();
-                    progressBar.updateUI();
-                    while (rf.isAlive()) {
-                        progressBar.setValue(rf.getCurrentCount());
-                        progressBar.repaint();
-                        progressBar.updateUI();
-                        System.out.println(progressBar.getValue());
-                    }
-                    //System.out.println("Fin de la lectura");
-                    eText(true);
-                    try{
-                        Thread.sleep(2000);
-                    }catch(InterruptedException exc){}
-
-                    progressBar.setVisible(false);
-                });
-                t2.start();
             }
         }
         else if("CANCELAR".equals(command)){
