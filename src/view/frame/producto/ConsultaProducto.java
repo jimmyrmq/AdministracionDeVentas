@@ -17,7 +17,7 @@ import java.util.List;
 public class ConsultaProducto {
     private List<Producto> list = null;
 
-    public void listarProducto(){
+    public synchronized void listarProducto(){
         if(list!=null)
             list.clear();
         else

@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ConsultaMarca {
     private List<Marca> list = null;
-    public void loadDBMarca(){
+    public synchronized void loadDBMarca(){
         if(list!=null)
             list.clear();
         else

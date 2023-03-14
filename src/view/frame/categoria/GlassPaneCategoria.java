@@ -9,21 +9,25 @@ import util.table.ModeloTabla;
 import view.frame.main.FrameMain;
 import view.frame.main.LoadData;
 import view.frame.producto.GlobalProduct;
+import view.frame.ui.component.ColorCategoria;
 import view.frame.ui.glass.IPanelGlass;
 import view.frame.ui.component.Button;
 import view.frame.ui.component.OptionPane;
 import view.frame.ui.component.SelectedColor;
 import view.frame.ui.component.SelectedColorGroup;
 import view.frame.ui.component.Table;
+import view.frame.ui.themes.GlobalUI;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +36,9 @@ import java.util.List;
 
 public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
     private Categoria categoria;
-    private Table table;
+    //private Table table;
+    private DefaultListModel<Categoria> modelCat;
+    private JList<Categoria> listCategoria;
     private JPanel panelPrincipal;
     private TextField tDescripcion;
     private final SystemProperties sp = SystemProperties.getInstance();
@@ -52,6 +58,7 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
             new Color(75, 73, 77),
             new Color(13, 22, 30)};
     private boolean edit = false;
+    private final int widthList = 270;
 
     public GlassPaneCategoria(){
         createGUI();
@@ -131,44 +138,59 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
         bEliminar.addActionListener(this);
         bEliminar.setButtonIcon(true);
 
-        ModelTableCategoriaCustom mpc = new ModelTableCategoriaCustom();
-        ModeloTabla<Categoria> modelo = new ModeloTabla(mpc);
+        modelCat = new DefaultListModel<>();
+        listCategoria = new JList<>(modelCat);
+        listCategoria.setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
+        listCategoria.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
+        Dimension dim0 =  new Dimension(widthList,340);
+        Dimension dim1 =  new Dimension(widthList+10,350);
+        listCategoria.setSize(dim0);
+        listCategoria.setPreferredSize(dim0);
+        listCategoria.addMouseListener(new MouseAdapter() {
+           public void mouseClicked(MouseEvent e) {
+               if (listCategoria.isEnabled() && e.getClickCount() == 2) {
+                   getCategoriaSelected();
+               }
+           }
+       });
 
-        table = new Table(modelo, 280);
+        JScrollPane jsp = new JScrollPane(listCategoria, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jsp.setViewportBorder(BorderFactory.createLineBorder(GlobalUI.getInstance().getTheme().getTextUI().getColorBorder()));
+        jsp.getViewport().setOpaque(true);
+        jsp.setOpaque(false);
+        jsp.setBorder(null);
+        jsp.getViewport().setBackground(GlobalUI.getInstance().getTheme().getTextUI().getBackground());
+        jsp.setSize(dim1);
+        jsp.setPreferredSize(dim1);
 
-        table.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (table.isEnabled() && e.getClickCount() == 2) {
-                    getCategoriaSelected();
-                }
-            }
-        });
+        // set cell renderer
+        listCategoria.setCellRenderer(new CategoriaRenderer());
 
-        table.setDefaultRenderer(JLabel.class, new StatusIconRenderer());
-
-
-        panel.add(table.getPanel(), LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.PAGE_START, 10, 10, 5, 0, 0.0f, 1.0f));
+        panel.add(jsp, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.VERTICAL, GridBagConstraints.PAGE_START, 10, 10, 5, 0, 0.0f, 1.0f));
         panel.add(bEliminar, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.FIRST_LINE_START, 10, 3, 5, 0, 1.0f, 1.0f));
 
         return panel;
     }
 
     public boolean fillTable(){
-        table.setEnabled(false);
+        //table.setEnabled(false);
+        listCategoria.setEnabled(false);
         LoadData.getInstance().getConsultaCategoria().loadDBCategoria();
         List<Categoria> cateList = LoadData.getInstance().getConsultaCategoria().getList();
         int sz = cateList.size();
         for(int i = 0;i<sz;i++){
             try {
                 Categoria cate = cateList.get(i);
-                table.addRow(cate);
+                //table.addRow(cate);
+                modelCat.addElement(cate);
             }catch (IndexOutOfBoundsException exc){
                 System.out.println("Error fillTable Categoria: "+exc);
             }
         }
 
         boolean e = !cateList.isEmpty();
-        table.setEnabled(e);
+        //table.setEnabled(e);
+        listCategoria.setEnabled(e);
         bEliminar.setEnabled(e);
         return e;
     }
@@ -182,19 +204,26 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
             Categoria cat = getValueCategoria();
             boolean rtn = admin.guardar(cat);
             if(rtn){
-                FrameMain.frame.getGlassPane().setVisible(false);
-
                 LoadData.getInstance().getConsultaCategoria().loadDBCategoria();
                 GlobalProduct.getInstance().addCBCategoria(getCategoria(),edit);
 
-                FrameMain.notificacion.start(sp.getValue("categoria.label.title"),sp.getValue("categoria.message.marca_registrada_exito"));
+                if(edit) {
+                    listCategoria.repaint();
+                    clear();
+                }else{
+                    FrameMain.frame.getGlassPane().setVisible(false);
+                    FrameMain.notificacion.start(sp.getValue("categoria.label.title"), sp.getValue("categoria.message.marca_registrada_exito"));
+                }
 
             }else
                 OptionPane.error(FrameMain.frame,admin.getMensaje());
         }
         else if(action.equals("CANCEL")){
+            boolean close = !edit;
             clear();
-            Global.getInstance().closeGlassPane();
+            if(close) {
+                Global.getInstance().closeGlassPane();
+            }
         }
         else if(action.equals("NUEVO")){
             bNuevo.setEnabled(false);
@@ -203,19 +232,18 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
         }
 
         else if(action.equals("DELETE")){
-            Categoria mdel = (Categoria) table.getSelectedItem();
-            if (mdel != null) {
-                OptionPane.warning(FrameMain.frame, sp.getValue("categoria.message.warning_delete"));
-                int yes = OptionPane.questionYesOrKey(FrameMain.frame, sp.getValue("categoria.message.delete"));
-                if (yes == OptionPane.OK) {
-                    int index = table.getSelectedIndex();
-                    if (index != -1) {
+            int index = listCategoria.getSelectedIndex();
+            if(index!=-1) {
+                Categoria mdel = modelCat.get(index);//(Categoria) table.getSelectedItem();
+                if (mdel != null) {
+                    OptionPane.warning(FrameMain.frame, sp.getValue("categoria.message.warning_delete"));
+                    int yes = OptionPane.questionYesOrKey(FrameMain.frame, sp.getValue("categoria.message.delete"));
+                    if (yes == OptionPane.OK) {
                         AdministracionCategoria adminCategoria = new AdministracionCategoria();
                         boolean rtn = adminCategoria.eliminar(mdel.getID());
-                        if(rtn){
-                            table.removeRow(index);
+                        if (rtn) {
+                            modelCat.remove(index);
                             GlobalProduct.getInstance().deleteCategoria(mdel);
-                            //GlobalProduct.getInstance().reorganizarListCat();
                         }
                     }
                 }
@@ -224,12 +252,13 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
     }
 
     public void getCategoriaSelected() {
-        Categoria cate = (Categoria) table.getSelectedItem();
-        if(cate==null) {
-            OptionPane.error(FrameMain.frame, sp.getValue("categoria.message.selected"));
+        int index = listCategoria.getSelectedIndex();
+        if(index!=-1) {
+            Categoria cate = modelCat.get(index);//(Categoria) table.getSelectedItem();
+            setCategoria(cate);
         }
         else{
-            setCategoria(cate);
+            OptionPane.error(FrameMain.frame, sp.getValue("categoria.message.selected"));
         }
     }
 
@@ -289,10 +318,12 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
     }
 
     public void clear(){
+        edit = false;
         categoria = null;
         tDescripcion.setText(null);
-        if(table!=null)
-            table.clearSelection();
+
+        if(listCategoria!=null)
+            listCategoria.clearSelection();
 
         for(SelectedColor sc : selectedColors){
             sc.setSelected(false);
@@ -301,7 +332,7 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
         tDescripcion.requestFocus();
     }
 
-    private class StatusIconRenderer extends JLabel implements TableCellRenderer {
+   /* private class StatusIconRenderer extends JLabel implements TableCellRenderer {
         private Color color;
         public StatusIconRenderer() {}
         @Override
@@ -320,6 +351,35 @@ public class GlassPaneCategoria  implements ActionListener, IPanelGlass {
                 setBackground(color);
                 //setText("Color");
             }
+            return this;
+        }
+    }*/
+
+    public class CategoriaRenderer extends JPanel implements ListCellRenderer<Categoria> {
+        private ColorCategoria colorCategoria = new ColorCategoria();
+        private JLabel lCate = new JLabel();
+        private Color colSel = GlobalUI.getInstance().getTheme().getButtonUI().getBackgroundSelected();
+        private Color colUnsel = GlobalUI.getInstance().getTheme().getTextUI().getBackground();
+        public CategoriaRenderer(){
+            int height = colorCategoria.getHeigth()+6;
+            setSize(widthList,height);
+            setLayout(new GridBagLayout());
+
+            lCate.setForeground(GlobalUI.getInstance().getTheme().getPanelUI().getForeground());
+            lCate.setFont(GlobalUI.getInstance().getTheme().getPanelUI().getFont());
+
+            add(lCate, LayoutPanel.constantePane(0, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 0, 5, 0, 0, 1.0f, 0.0f));
+            add(colorCategoria, LayoutPanel.constantePane(1, 0, 1, 1, GridBagConstraints.NONE, GridBagConstraints.LINE_START, 3, 5, 3, 5, 0.0f, 0.0f));
+        }
+        @Override
+        public Component getListCellRendererComponent(JList<? extends Categoria> list, Categoria value, int index, boolean isSelected, boolean cellHasFocus) {
+            lCate.setText(value.getDesrcripcion());
+            colorCategoria.setColor(value.getColor());
+            if(isSelected){
+                setBackground(colSel);
+            }
+            else
+                setBackground(colUnsel);
             return this;
         }
     }

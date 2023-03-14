@@ -337,6 +337,8 @@ public class ImportProductWindows implements ActionListener {
                             dcbRequiereStock.addElement(cl);
                             dcbCantidadDisponible.addElement(cl);
                         }
+
+                        eCombo(true);
                         bImportar.setEnabled(true);
                     }
                     dialog.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -401,9 +403,18 @@ public class ImportProductWindows implements ActionListener {
         dcbCantidadDisponible.addElement(new ColumnSelected(" ",-1));
 
         cbRequiereStock.setSelectedIndex(1);
+
+        eCombo(false);
     }
     
     private void eText(boolean e){
+        eCombo(e);
+        bImportar.setEnabled(e);
+        bCancelar.setEnabled(e);
+        bSelectFiled.setEnabled(e);
+    }
+
+    private void eCombo(boolean e){
         cbCodigo.setEnabled(e);
         cbCodigoBarra.setEnabled(e);
         cbNombre.setEnabled(e);
@@ -417,8 +428,5 @@ public class ImportProductWindows implements ActionListener {
         cbStockCritico.setEnabled(e);
         cbRequiereStock.setEnabled(e);
         cbCantidadDisponible.setEnabled(e);
-        bImportar.setEnabled(e);
-        bCancelar.setEnabled(e);
-        bSelectFiled.setEnabled(e);
     }
 }

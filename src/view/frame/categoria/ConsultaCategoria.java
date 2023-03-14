@@ -14,7 +14,7 @@ import java.util.List;
 public class ConsultaCategoria {
     private List<Categoria> list = null;
 
-    public void loadDBCategoria(){
+    public synchronized void loadDBCategoria(){
         if(list!=null)
             list.clear();
         else
@@ -45,10 +45,10 @@ public class ConsultaCategoria {
                 list.add(cat);
             }
         } catch (SQLException e) {
-            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]";
+            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]"+e;
             System.out.println(desc);
         }catch (NullPointerException e) {
-            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]";
+            String desc = "Error en loadDBCategoria ["+e.getMessage()+"]:"+e;
             System.out.println(desc);
         }
 
